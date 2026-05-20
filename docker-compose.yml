@@ -48,7 +48,7 @@ services:
       SECRETKEY_PATH: /root/.flowise
       GENERIC_TIMEZONE: ${TIMEZONE:-Europe/Paris}
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/v1/chatflows"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/v1/ping"]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -82,7 +82,6 @@ services:
       OPENAI_API_KEY: ${OPENAI_GATEWAY_API_KEY:-}
 
   init:
-    profiles: [init]
     image: alpine:3.20
     networks: [training_net]
     depends_on:
@@ -92,11 +91,15 @@ services:
       - ./init:/init:ro
     environment:
       FLOWISE_URL: http://flowise:3000
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-flowise}
+      POSTGRES_USER: ${POSTGRES_USER:-flowise}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     command:
       - sh
       - -c
       - |
-        apk add --no-cache curl jq bash >/dev/null 2>&1
+        apk add --no-cache curl jq bash python3 py3-pip postgresql-client >/dev/null 2>&1
         exec /init/import-flows.sh
 
 volumes:
