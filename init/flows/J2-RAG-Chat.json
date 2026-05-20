@@ -1,1 +1,356 @@
-{"name":"J2 - RAG Chat","type":"CHATFLOW","flowData":{"nodes": [{"id": "chatOpenAI_0", "type": "customNode", "position": {"x": 0, "y": 100}, "data": {"id": "chatOpenAI_0", "label": "OpenAI", "name": "chatOpenAI", "version": 8.3, "category": "Chat Models", "baseClasses": ["ChatOpenAI", "BaseChatOpenAI", "BaseChatModel", "BaseLanguageModel", "Runnable"], "inputAnchors": [], "inputParams": [], "inputs": {"modelName": "gpt-4.1-nano", "temperature": 0.9, "streaming": true, "basepath": "https://ai-gateway.liora.tech/v1"}, "outputAnchors": [{"id": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable", "name": "chatOpenAI", "label": "ChatOpenAI", "type": "ChatOpenAI | BaseChatOpenAI | BaseChatModel | BaseLanguageModel | Runnable"}], "outputs": {}, "selected": false, "credential": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238"}}, {"id": "openAIEmbeddings_0", "type": "customNode", "position": {"x": 300, "y": 100}, "data": {"id": "openAIEmbeddings_0", "label": "OpenAI Embedding", "name": "openAIEmbeddings", "version": 4, "category": "Embeddings", "baseClasses": ["OpenAIEmbeddings", "Embeddings"], "inputAnchors": [], "inputParams": [], "inputs": {"modelName": "text-embedding-3-small", "basepath": "https://ai-gateway.liora.tech/v1"}, "outputAnchors": [{"id": "openAIEmbeddings_0-output-openAIEmbeddings_0-OpenAIEmbeddings|Embeddings", "name": "openAIEmbeddings", "label": "OpenAIEmbeddings", "type": "OpenAIEmbeddings | Embeddings"}], "outputs": {}, "selected": false, "credential": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238"}}, {"id": "memoryVectorStore_0", "type": "customNode", "position": {"x": 600, "y": 100}, "data": {"id": "memoryVectorStore_0", "label": "In-Memory Vector Store", "name": "memoryVectorStore", "version": 1, "category": "Vector Stores", "baseClasses": ["Memory", "VectorStoreRetriever", "BaseRetriever"], "inputAnchors": [{"id": "memoryVectorStore_0-input-embeddings-Embeddings", "label": "Embeddings", "name": "embeddings", "type": "Embeddings"}], "inputParams": [], "inputs": {"embeddings": "{{openAIEmbeddings_0.data.instance}}", "topK": 4}, "outputAnchors": [{"name": "output", "label": "Output", "type": "options", "options": [{"id": "memoryVectorStore_0-output-retriever-Memory|VectorStoreRetriever|BaseRetriever", "name": "retriever", "label": "Memory Retriever", "type": "Memory | VectorStoreRetriever | BaseRetriever"}, {"id": "memoryVectorStore_0-output-vectorStore-Memory|VectorStore", "name": "vectorStore", "label": "Memory Vector Store", "type": "Memory | VectorStore"}]}], "outputs": {"output": "retriever"}, "selected": false}}, {"id": "conversationalRetrievalQAChain_0", "type": "customNode", "position": {"x": 900, "y": 100}, "data": {"id": "conversationalRetrievalQAChain_0", "label": "Conversational Retrieval QA Chain", "name": "conversationalRetrievalQAChain", "version": 3, "category": "Chains", "baseClasses": ["ConversationalRetrievalQAChain", "BaseChain", "Runnable"], "inputAnchors": [{"id": "conversationalRetrievalQAChain_0-input-model-BaseChatModel", "label": "Chat Model", "name": "model", "type": "BaseChatModel"}, {"id": "conversationalRetrievalQAChain_0-input-vectorStoreRetriever-BaseRetriever", "label": "Vector Store Retriever", "name": "vectorStoreRetriever", "type": "BaseRetriever"}], "inputParams": [{"id": "conversationalRetrievalQAChain_0-input-returnSourceDocuments-boolean", "label": "Return Source Documents", "name": "returnSourceDocuments", "type": "boolean", "optional": true}], "inputs": {"model": "{{chatOpenAI_0.data.instance}}", "vectorStoreRetriever": "{{memoryVectorStore_0.data.instance}}", "returnSourceDocuments": true}, "outputAnchors": [{"id": "conversationalRetrievalQAChain_0-output-conversationalRetrievalQAChain_0-ConversationalRetrievalQAChain|BaseChain|Runnable", "name": "conversationalRetrievalQAChain", "label": "ConversationalRetrievalQAChain", "type": "ConversationalRetrievalQAChain | BaseChain | Runnable"}], "outputs": {}, "selected": false}}], "edges": [{"id": "edge-model", "source": "chatOpenAI_0", "sourceHandle": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable", "target": "conversationalRetrievalQAChain_0", "targetHandle": "conversationalRetrievalQAChain_0-input-model-BaseChatModel", "type": "buttonedge"}, {"id": "edge-embeddings", "source": "openAIEmbeddings_0", "sourceHandle": "openAIEmbeddings_0-output-openAIEmbeddings_0-OpenAIEmbeddings|Embeddings", "target": "memoryVectorStore_0", "targetHandle": "memoryVectorStore_0-input-embeddings-Embeddings", "type": "buttonedge"}, {"id": "edge-retriever", "source": "memoryVectorStore_0", "sourceHandle": "memoryVectorStore_0-output-retriever-Memory|VectorStoreRetriever|BaseRetriever", "target": "conversationalRetrievalQAChain_0", "targetHandle": "conversationalRetrievalQAChain_0-input-vectorStoreRetriever-BaseRetriever", "type": "buttonedge"}]}}
+{
+  "name": "J2 - RAG Chat",
+  "type": "CHATFLOW",
+  "flowData": {
+    "nodes": [
+      {
+        "id": "chatOpenAI_0",
+        "type": "customNode",
+        "position": {
+          "x": 0,
+          "y": 100
+        },
+        "data": {
+          "id": "chatOpenAI_0",
+          "label": "OpenAI",
+          "name": "chatOpenAI",
+          "version": 8.3,
+          "category": "Chat Models",
+          "baseClasses": [
+            "ChatOpenAI",
+            "BaseChatOpenAI",
+            "BaseChatModel",
+            "BaseLanguageModel",
+            "Runnable"
+          ],
+          "inputAnchors": [],
+          "inputParams": [],
+          "inputs": {
+            "modelName": "gpt-4.1-nano",
+            "temperature": 0.9,
+            "streaming": true,
+            "basepath": "https://ai-gateway.liora.tech/v1"
+          },
+          "outputAnchors": [
+            {
+              "id": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+              "name": "chatOpenAI",
+              "label": "ChatOpenAI",
+              "type": "ChatOpenAI | BaseChatOpenAI | BaseChatModel | BaseLanguageModel | Runnable"
+            }
+          ],
+          "outputs": {},
+          "selected": false,
+          "credential": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238"
+        }
+      },
+      {
+        "id": "openAIEmbeddings_0",
+        "type": "customNode",
+        "position": {
+          "x": 300,
+          "y": 100
+        },
+        "data": {
+          "id": "openAIEmbeddings_0",
+          "label": "OpenAI Embedding",
+          "name": "openAIEmbeddings",
+          "version": 4,
+          "category": "Embeddings",
+          "baseClasses": [
+            "OpenAIEmbeddings",
+            "Embeddings"
+          ],
+          "inputAnchors": [],
+          "inputParams": [],
+          "inputs": {
+            "modelName": "text-embedding-3-small",
+            "basepath": "https://ai-gateway.liora.tech/v1"
+          },
+          "outputAnchors": [
+            {
+              "id": "openAIEmbeddings_0-output-openAIEmbeddings_0-OpenAIEmbeddings|Embeddings",
+              "name": "openAIEmbeddings",
+              "label": "OpenAIEmbeddings",
+              "type": "OpenAIEmbeddings | Embeddings"
+            }
+          ],
+          "outputs": {},
+          "selected": false,
+          "credential": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238"
+        }
+      },
+      {
+        "id": "memoryVectorStore_0",
+        "type": "customNode",
+        "position": {
+          "x": 600,
+          "y": 100
+        },
+        "data": {
+          "id": "memoryVectorStore_0",
+          "label": "In-Memory Vector Store",
+          "name": "memoryVectorStore",
+          "version": 1,
+          "category": "Vector Stores",
+          "baseClasses": [
+            "Memory",
+            "VectorStoreRetriever",
+            "BaseRetriever"
+          ],
+          "inputAnchors": [
+            {
+              "id": "memoryVectorStore_0-input-embeddings-Embeddings",
+              "label": "Embeddings",
+              "name": "embeddings",
+              "type": "Embeddings"
+            },
+            {
+              "id": "memoryVectorStore_0-input-document-Document",
+              "label": "Document",
+              "name": "document",
+              "type": "Document",
+              "list": true,
+              "optional": true
+            }
+          ],
+          "inputParams": [],
+          "inputs": {
+            "embeddings": "{{openAIEmbeddings_0.data.instance}}",
+            "topK": 4,
+            "document": "{{folderFiles_0.data.instance}}"
+          },
+          "outputAnchors": [
+            {
+              "name": "output",
+              "label": "Output",
+              "type": "options",
+              "options": [
+                {
+                  "id": "memoryVectorStore_0-output-retriever-Memory|VectorStoreRetriever|BaseRetriever",
+                  "name": "retriever",
+                  "label": "Memory Retriever",
+                  "type": "Memory | VectorStoreRetriever | BaseRetriever"
+                },
+                {
+                  "id": "memoryVectorStore_0-output-vectorStore-Memory|VectorStore",
+                  "name": "vectorStore",
+                  "label": "Memory Vector Store",
+                  "type": "Memory | VectorStore"
+                }
+              ]
+            }
+          ],
+          "outputs": {
+            "output": "retriever"
+          },
+          "selected": false
+        }
+      },
+      {
+        "id": "conversationalRetrievalQAChain_0",
+        "type": "customNode",
+        "position": {
+          "x": 900,
+          "y": 100
+        },
+        "data": {
+          "id": "conversationalRetrievalQAChain_0",
+          "label": "Conversational Retrieval QA Chain",
+          "name": "conversationalRetrievalQAChain",
+          "version": 3,
+          "category": "Chains",
+          "baseClasses": [
+            "ConversationalRetrievalQAChain",
+            "BaseChain",
+            "Runnable"
+          ],
+          "inputAnchors": [
+            {
+              "id": "conversationalRetrievalQAChain_0-input-model-BaseChatModel",
+              "label": "Chat Model",
+              "name": "model",
+              "type": "BaseChatModel"
+            },
+            {
+              "id": "conversationalRetrievalQAChain_0-input-vectorStoreRetriever-BaseRetriever",
+              "label": "Vector Store Retriever",
+              "name": "vectorStoreRetriever",
+              "type": "BaseRetriever"
+            }
+          ],
+          "inputParams": [
+            {
+              "id": "conversationalRetrievalQAChain_0-input-returnSourceDocuments-boolean",
+              "label": "Return Source Documents",
+              "name": "returnSourceDocuments",
+              "type": "boolean",
+              "optional": true
+            }
+          ],
+          "inputs": {
+            "model": "{{chatOpenAI_0.data.instance}}",
+            "vectorStoreRetriever": "{{memoryVectorStore_0.data.instance}}",
+            "returnSourceDocuments": true
+          },
+          "outputAnchors": [
+            {
+              "id": "conversationalRetrievalQAChain_0-output-conversationalRetrievalQAChain_0-ConversationalRetrievalQAChain|BaseChain|Runnable",
+              "name": "conversationalRetrievalQAChain",
+              "label": "ConversationalRetrievalQAChain",
+              "type": "ConversationalRetrievalQAChain | BaseChain | Runnable"
+            }
+          ],
+          "outputs": {},
+          "selected": false
+        }
+      },
+      {
+        "id": "folderFiles_0",
+        "type": "customNode",
+        "position": {
+          "x": 300,
+          "y": 400
+        },
+        "data": {
+          "id": "folderFiles_0",
+          "label": "Folder with Files",
+          "name": "folderFiles",
+          "type": "Document",
+          "version": 1,
+          "category": "Document Loaders",
+          "icon": "https://raw.githubusercontent.com/FlowiseAI/Flowise/main/packages/components/nodes/documentloaders/Folder/Folder.svg",
+          "inputs": {
+            "folderPath": "/corpus/pedagogical",
+            "recursive": true,
+            "pdfUsage": "perPage"
+          },
+          "inputAnchors": [
+            {
+              "label": "",
+              "name": "textSplitter",
+              "type": "TextSplitter",
+              "optional": true
+            }
+          ],
+          "inputParams": [
+            {
+              "label": "Folder Path",
+              "name": "folderPath",
+              "type": "string",
+              "placeholder": ""
+            },
+            {
+              "label": "Recursive",
+              "name": "recursive",
+              "type": "boolean",
+              "additionalParams": false
+            },
+            {
+              "label": "Text Splitter",
+              "name": "textSplitter",
+              "type": "TextSplitter",
+              "optional": true
+            },
+            {
+              "label": "Pdf Usage",
+              "name": "pdfUsage",
+              "type": "options",
+              "options": [
+                {
+                  "label": "One document per page",
+                  "name": "perPage"
+                },
+                {
+                  "label": "One document per file",
+                  "name": "perFile"
+                }
+              ],
+              "default": "perPage",
+              "optional": true,
+              "additionalParams": true
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "folderFiles_0-output-folderFiles_0-document-Document|json",
+              "label": "Document",
+              "name": "document",
+              "options": [
+                {
+                  "label": "Document",
+                  "name": "document",
+                  "id": "folderFiles_0-output-folderFiles_0-document-Document|json"
+                }
+              ]
+            },
+            {
+              "id": "folderFiles_0-output-folderFiles_0-text-string|json",
+              "label": "Text",
+              "name": "text",
+              "options": [
+                {
+                  "label": "Text",
+                  "name": "text",
+                  "id": "folderFiles_0-output-folderFiles_0-text-string|json"
+                }
+              ]
+            }
+          ],
+          "outputs": {
+            "output": "document",
+            "document": {
+              "label": "Document",
+              "name": "document",
+              "baseClasses": [
+                "Document",
+                "json"
+              ]
+            },
+            "text": {
+              "label": "Text",
+              "name": "text",
+              "baseClasses": [
+                "string",
+                "json"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "edge-model",
+        "source": "chatOpenAI_0",
+        "sourceHandle": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+        "target": "conversationalRetrievalQAChain_0",
+        "targetHandle": "conversationalRetrievalQAChain_0-input-model-BaseChatModel",
+        "type": "buttonedge"
+      },
+      {
+        "id": "edge-embeddings",
+        "source": "openAIEmbeddings_0",
+        "sourceHandle": "openAIEmbeddings_0-output-openAIEmbeddings_0-OpenAIEmbeddings|Embeddings",
+        "target": "memoryVectorStore_0",
+        "targetHandle": "memoryVectorStore_0-input-embeddings-Embeddings",
+        "type": "buttonedge"
+      },
+      {
+        "id": "edge-retriever",
+        "source": "memoryVectorStore_0",
+        "sourceHandle": "memoryVectorStore_0-output-retriever-Memory|VectorStoreRetriever|BaseRetriever",
+        "target": "conversationalRetrievalQAChain_0",
+        "targetHandle": "conversationalRetrievalQAChain_0-input-vectorStoreRetriever-BaseRetriever",
+        "type": "buttonedge"
+      },
+      {
+        "source": "folderFiles_0",
+        "target": "memoryVectorStore_0",
+        "sourceHandle": "folderFiles_0-output-folderFiles_0-document-Document|json",
+        "targetHandle": "memoryVectorStore_0-input-document-Document",
+        "type": "buttonedge"
+      }
+    ]
+  }
+}

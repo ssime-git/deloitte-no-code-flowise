@@ -238,5 +238,23 @@ if has_error:
     sys.exit(1)
 PYEOF
 
+# ---- Upsert J2 RAG flow ----
+if [ -n "$API_KEY" ]; then
+    J2_ID=$(curl -s -H "Authorization: Bearer $API_KEY" "$FLOWISE_URL/api/v1/chatflows" | python3 -c "import json,sys; flows=json.load(sys.stdin); print(next((f['id'] for f in flows if 'RAG' in f['name']),''))" 2>/dev/null || echo "")
+    if [ -n "$J2_ID" ]; then
+        log "Upserting vector store for J2..."
+        UPSERT_OUT=$(curl -sf -X POST "$FLOWISE_URL/api/v1/vector/upsert/$J2_ID" \
+            -H "Authorization: Bearer $API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"question":""}' 2>/dev/null || echo "")
+        if echo "$UPSERT_OUT" | python3 -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if d.get('numAdded',0)>0 else 1)" 2>/dev/null; then
+            DOCS_ADDED=$(echo "$UPSERT_OUT" | python3 -c "import json,sys; print(json.load(sys.stdin).get('numAdded',0))")
+            log "Upsert OK: $DOCS_ADDED documents loaded."
+        else
+            log "Upsert completed (0 new documents)."
+        fi
+    fi
+fi
+
 log "All flows imported successfully."
 exit 0
