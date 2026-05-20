@@ -91,7 +91,7 @@
           "id": "memoryVectorStore_0",
           "label": "In-Memory Vector Store",
           "name": "memoryVectorStore",
-          "version": 1,
+          "version": 1.0,
           "category": "Vector Stores",
           "baseClasses": [
             "Memory",
@@ -209,15 +209,15 @@
         "id": "folderFiles_0",
         "type": "customNode",
         "position": {
-          "x": 300,
-          "y": 400
+          "x": 600,
+          "y": 300
         },
         "data": {
           "id": "folderFiles_0",
           "label": "Folder with Files",
           "name": "folderFiles",
           "type": "Document",
-          "version": 1,
+          "version": 4.0,
           "category": "Document Loaders",
           "icon": "https://raw.githubusercontent.com/FlowiseAI/Flowise/main/packages/components/nodes/documentloaders/Folder/Folder.svg",
           "inputs": {
@@ -276,45 +276,17 @@
               "id": "folderFiles_0-output-folderFiles_0-document-Document|json",
               "label": "Document",
               "name": "document",
-              "options": [
-                {
-                  "label": "Document",
-                  "name": "document",
-                  "id": "folderFiles_0-output-folderFiles_0-document-Document|json"
-                }
-              ]
+              "type": "Document | json"
             },
             {
               "id": "folderFiles_0-output-folderFiles_0-text-string|json",
               "label": "Text",
               "name": "text",
-              "options": [
-                {
-                  "label": "Text",
-                  "name": "text",
-                  "id": "folderFiles_0-output-folderFiles_0-text-string|json"
-                }
-              ]
+              "type": "string | json"
             }
           ],
           "outputs": {
-            "output": "document",
-            "document": {
-              "label": "Document",
-              "name": "document",
-              "baseClasses": [
-                "Document",
-                "json"
-              ]
-            },
-            "text": {
-              "label": "Text",
-              "name": "text",
-              "baseClasses": [
-                "string",
-                "json"
-              ]
-            }
+            "output": "document"
           }
         }
       }
