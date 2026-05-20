@@ -9,8 +9,8 @@ POSTGRES_DB="${POSTGRES_DB:-flowise}"
 POSTGRES_USER="${POSTGRES_USER:-flowise}"
 POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
 
-ADMIN_EMAIL="admin@local.dev"
-ADMIN_PASSWORD="changeme_admin_password"
+ADMIN_EMAIL="${ADMIN_EMAIL:-admin@local.dev}"
+ADMIN_PASSWORD="${ADMIN_PASSWORD:-changeme_admin_password}"
 ADMIN_NAME="Admin"
 
 log()  { echo "[import-flows] $(date -u '+%H:%M:%S') $*"; }
@@ -40,7 +40,7 @@ host = os.environ['POSTGRES_HOST']
 db   = os.environ['POSTGRES_DB']
 user = os.environ['POSTGRES_USER']
 pw   = os.environ.get('POSTGRES_PASSWORD', '')
-ADMIN_EMAIL = "admin@local.dev"
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'admin@local.dev')
 ADMIN_NAME  = "Admin"
 
 def psql(sql):
@@ -137,6 +137,31 @@ log "Workspace ID: $WORKSPACE_ID"
 
 if [ -n "$API_KEY" ]; then
     log "API key: $API_KEY"
+fi
+
+# ---- Create credential ----
+if [ -n "${OPENAI_API_KEY:-}" ] && [ -n "$API_KEY" ] && [ -n "$WORKSPACE_ID" ]; then
+    log "Creating OpenAI credential..."
+    CRED_BODY=$(python3 -c "
+import json
+print(json.dumps({
+    'name': 'OpenAI Gateway',
+    'credentialName': 'openAIApi',
+    'plainDataObj': {'openAIApiKey': '$OPENAI_API_KEY'},
+    'id': '3bf22f9c-6bdc-4e55-9839-c4b9f0300238'
+}))
+")
+    CRED_RESP=$(curl -sf -X POST "${FLOWISE_URL}/api/v1/credentials" \
+        -H "Authorization: Bearer ${API_KEY}" \
+        -H "Content-Type: application/json" \
+        -d "$CRED_BODY" 2>/dev/null || echo "")
+    if echo "$CRED_RESP" | python3 -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if d.get('id') else 1)" 2>/dev/null; then
+        log "Credential created."
+    else
+        log "Credential already exists or creation failed."
+    fi
+else
+    log "Skipping credential creation (missing OPENAI_API_KEY)."
 fi
 
 # ---- Import flows ----

@@ -95,6 +95,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-flowise}
       POSTGRES_USER: ${POSTGRES_USER:-flowise}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      ADMIN_EMAIL: admin@local.dev
+      ADMIN_PASSWORD: ${FLOWISE_PASSWORD:-changeme_admin_password}
+      OPENAI_API_KEY: ${OPENAI_GATEWAY_API_KEY}
     command:
       - sh
       - -c
