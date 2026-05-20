@@ -1,37 +1,4 @@
-# btca (better-context)
-
-btca is installed globally and configured to get up-to-date Flowise documentation from source code.
-
-## Usage
-
-```bash
-# Ask a question about Flowise
-btca ask -r flowise -q "your question"
-
-# Add a new resource
-btca add https://github.com/owner/repo --name resource-name
-
-# Check status
-btca status
-```
-
-## Configuration
-
-btca uses the local LiteLLM proxy for LLM calls. Config is in `btca.config.jsonc`:
-
-- provider: `openai-compat`
-- model: `claude-haiku-4-5`
-- baseURL: `http://localhost:4000/v1`
-- searchPaths: `packages/api-documentation`, `packages/server`, `packages/ui/src/api`
-
-This config is **independent of btca's npm package updates** - updates to btca (via `npm update -g btca`) will NOT break the config. If a future btca version changes its config schema, check https://docs.btca.dev/guides/configuration and update `btca.config.jsonc` accordingly.
-
-## How to re-add a resource with search paths (if needed)
-
-```bash
-btca remove flowise
-btca add https://github.com/FlowiseAI/Flowise --name flowise --search-path packages/api-documentation --search-path packages/server --search-path packages/ui/src/api
-```
+# Deloitte No-Code Flowise — Agent Knowledge
 
 ## Interacting with Flowise 3.1.2
 
@@ -57,7 +24,7 @@ Body: { "email": "...", "password": "..." }
 
 ### API access flow
 
-After login, the JWT token in the cookie is verified by passport-jwt middleware. However, the API key check middleware (`dist/index.js:184`) requires an API key for all non-whitelisted routes. To make API calls:
+After login, the JWT token in the cookie is verified by passport-jwt middleware. However, the API key check middleware requires an API key for all non-whitelisted routes. To make API calls:
 
 - **From scripts**: create an API key in the `apikey` table, use it in `Authorization: Bearer` header
 - **From init container**: the import script writes flows directly to PostgreSQL
@@ -162,4 +129,112 @@ API 403 Forbidden → vérifier les permissions de l'API key :
 ```bash
 docker exec -i deloitte-no-code-flowise-postgres-1 psql -U flowise -d flowise \
   -c "SELECT \"keyName\", permissions FROM apikey;"
+```
+
+## Flow structure rules
+
+### Config panel rendering
+
+Flowise stores node configuration split into three fields in `flowData`:
+
+- **`inputAnchors`**: connection-type inputs (type=`BaseChatModel`, `Embeddings`, `TextSplitter`, `BaseRetriever`, `BaseMemory`, etc.)
+- **`inputParams`**: form fields rendered in the right config panel (type=`string`, `number`, `boolean`, `asyncOptions`, `options`, `json`, etc.)
+- **`inputs`**: actual values for both anchors and params
+
+When importing flows via DB insert (`INSERT INTO chat_flow`), Flowise does **not** auto-populate `inputAnchors` or `inputParams`. These must be correctly pre-populated in the JSON, otherwise:
+- `inputParams = []` → clicking the node shows a blank config panel
+- `textSplitter` in both `inputAnchors` AND `inputParams` → rendering conflict
+- Missing anchor definitions → edge won't appear in canvas
+
+### Component definitions (flowise-components v3.1.2)
+
+Key node versions and their input structure:
+
+#### chatOpenAI (v8.3)
+- anchors: `cache` (BaseCache)
+- params: `modelName`, `temperature`, `streaming`, `allowImageUploads`, `reasoning`, `maxTokens`, `topP`, `frequencyPenalty`, `presencePenalty`, `timeout`
+
+#### openAIEmbeddings (v4)
+- anchors: none
+- params: `modelName`, `stripNewLines`, `batchSize`, `timeout`
+
+#### memoryVectorStore (v1.0)
+- anchors: `embeddings` (Embeddings), `document` (Document, list, optional)
+- params: `topK` (number)
+
+#### conversationalRetrievalQAChain (v3)
+- anchors: `model` (BaseChatModel), `vectorStoreRetriever` (BaseRetriever), `memory` (BaseMemory, optional)
+- params: `returnSourceDocuments` (boolean), `rephrasePrompt` (string), `responsePrompt` (string)
+
+#### folderFiles (v4.0)
+- anchors: `textSplitter` (TextSplitter) — do NOT include in inputParams
+- params: `folderPath`, `recursive`, `pdfUsage`, `pointerName`, `metadata`, `omitMetadataKeys`
+
+#### bufferMemory (v2)
+- anchors: none
+- params: `sessionId`, `memoryKey`
+
+#### conversationChain
+- anchors: `model` (BaseChatModel), `memory` (BaseMemory, optional)
+- params: `systemMessagePrompt` (string)
+
+### Version mismatch issue
+
+When a node's `version` in flowData doesn't match the installed component version, Flowise shows "Node version X outdated Update to latest version Y" in the UI. More critically, this can cause:
+- Edges to disappear from canvas (output anchor format changed between versions)
+- PUT API endpoint may strip non-standard inputs during node rebuild
+
+Example: `folderFiles` was v1 in flow data but v4 installed. The v1 `outputAnchors` had nested `options` objects; v4 has a flat format. Caused the edge to not render.
+
+### Edge format
+
+Flowise stores edges with `source`, `target`, `sourceHandle`, `targetHandle`, and optional `id`. The `sourceHandle`/`targetHandle` format must match the `id` of the corresponding output/input anchor. Handle IDs follow the pattern:
+- Source: `{nodeId}-output-{nodeName}-{outputName}-{BaseClass1}|{BaseClass2}`
+- Target: `{nodeId}-input-{inputName}-{Type}`
+
+### Upsert behavior for In-Memory Vector Store
+
+The upsert endpoint (`POST /api/v1/vector/upsert/:chatflowId`) runs the component's `vectorStoreMethods.upsert` but creates an ephemeral vector store. On prediction, the `init` method creates a fresh vector store from the `document` input (folderFiles output). This means:
+- Upsert is not strictly needed for In-Memory (each prediction loads from scratch)
+- But upsert is still required by the init script to verify the document loader works
+- For persistent vector stores (Chroma, Pinecone, etc.), upsert is essential
+
+## Makefile targets
+
+| Target | Description |
+|--------|-------------|
+| `up` | Start all services |
+| `down` | Stop all services |
+| `reset` | Reset stack (with confirmation) |
+| `force-reset` | Reset without confirmation |
+| `status` | Container status |
+| `logs-flowise` | Tail Flowise logs |
+| `logs-init` | Show init bootstrap logs |
+| `api-key` | Get generated API key |
+| `ping` | Healthcheck |
+| `psql` | Open PostgreSQL shell |
+| `test-j1` | Test J1 prediction |
+| `test-j2` | Test J2 prediction |
+| `docs` | List training docs |
+
+## Stack layout
+
+```
+docker-compose.yml
+├── postgres:16-alpine
+├── flowise:3.1.2
+├── mcp-server (profile: mcp)
+└── init (alpine, runs once)
+
+init/import-flows.sh:
+  1. Wait for Flowise ping
+  2. Bootstrap: user + org + workspace + API key
+  3. Create OpenAI credential via API
+  4. Import flows via INSERT INTO chat_flow
+  5. Upsert J2 vector store
+
+Volume mounts:
+  ./data → /data (read-only)
+  ./corpus → /corpus (read-only)
+  ./project → /project (read-only)
 ```
