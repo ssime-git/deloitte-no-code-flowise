@@ -1,0 +1,108 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    networks: [training_net]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-flowise}
+      POSTGRES_USER: ${POSTGRES_USER:-flowise}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-flowise} -d ${POSTGRES_DB:-flowise}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  flowise:
+    image: flowiseai/flowise:3.1.2
+    restart: unless-stopped
+    networks: [training_net]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${FLOWISE_PORT:-3000}:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - flowise_data:/root/.flowise
+      - ./data:/data:ro
+      - ./corpus:/corpus:ro
+      - ./project:/project:ro
+    environment:
+      PORT: 3000
+      DATABASE_TYPE: postgres
+      DATABASE_PORT: 5432
+      DATABASE_HOST: postgres
+      DATABASE_NAME: ${POSTGRES_DB:-flowise}
+      DATABASE_USER: ${POSTGRES_USER:-flowise}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
+      FLOWISE_USERNAME: ${FLOWISE_USERNAME:-admin}
+      FLOWISE_PASSWORD: ${FLOWISE_PASSWORD}
+      DEBUG: ${DEBUG:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      APIKEY_PATH: /root/.flowise/apikeys
+      SECRETKEY_PATH: /root/.flowise
+      GENERIC_TIMEZONE: ${TIMEZONE:-Europe/Paris}
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/v1/chatflows"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  mcp-server:
+    build: ./mcp-server
+    restart: unless-stopped
+    profiles: [mcp]
+    networks: [training_net]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "${MCP_SERVER_PORT:-8001}:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./data:/data:ro
+      - ./corpus:/corpus:ro
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-flowise}
+      POSTGRES_USER: ${POSTGRES_USER:-flowise}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      DATA_DIR: /data
+      CORPUS_DIR: /corpus
+      FASTMCP_HOST: 0.0.0.0
+      FASTMCP_PORT: "8000"
+      OPENAI_BASE_URL: ${OPENAI_GATEWAY_BASE_URL:-https://ai-gateway.liora.tech/v1}
+      OPENAI_API_KEY: ${OPENAI_GATEWAY_API_KEY:-}
+
+  init:
+    profiles: [init]
+    image: alpine:3.20
+    networks: [training_net]
+    depends_on:
+      flowise:
+        condition: service_healthy
+    volumes:
+      - ./init:/init:ro
+    environment:
+      FLOWISE_URL: http://flowise:3000
+    command:
+      - sh
+      - -c
+      - |
+        apk add --no-cache curl jq bash >/dev/null 2>&1
+        exec /init/import-flows.sh
+
+volumes:
+  pgdata:
+  flowise_data:
+
+networks:
+  training_net:
+    driver: bridge

@@ -1,0 +1,46 @@
+{
+  "documents": [
+    {
+      "id": "URSSAF-CTRL",
+      "path": "corpus/pedagogical/note_urssaf_controles_base_taux.md",
+      "version": "1.0",
+      "usage": "rag",
+      "status": "active"
+    },
+    {
+      "id": "DSN-ID",
+      "path": "corpus/pedagogical/note_dsn_identifiants_et_nir_fictif.md",
+      "version": "1.0",
+      "usage": "rag",
+      "status": "active"
+    },
+    {
+      "id": "PAYROLL-STATUS",
+      "path": "corpus/pedagogical/note_sorties_salaries_et_statut_paie.md",
+      "version": "1.0",
+      "usage": "rag",
+      "status": "active"
+    },
+    {
+      "id": "RETIREMENT-CTRL",
+      "path": "corpus/pedagogical/note_retraite_complementaire_controles.md",
+      "version": "1.0",
+      "usage": "rag",
+      "status": "active"
+    },
+    {
+      "id": "AUDIT-EVIDENCE",
+      "path": "corpus/pedagogical/note_methode_audit_paie_preuves.md",
+      "version": "1.0",
+      "usage": "rag",
+      "status": "active"
+    },
+    {
+      "id": "URSSAF-EVIDENCE-MAP",
+      "path": "corpus/pedagogical/note_urssaf_exceptions_et_preuves.md",
+      "version": "1.0",
+      "usage": "rag",
+      "status": "active"
+    }
+  ]
+}

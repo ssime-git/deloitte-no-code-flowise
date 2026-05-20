@@ -1,0 +1,12 @@
+exception_id,row_id,control_id,severity,field,observed_value,expected_rule,evidence_ref
+EXC_DUPLICATE_EMPLOYEE_PERIOD,ROW-0001,CTRL-001,High,matricule_salarie|periode_declaration,MAT-0001|2025-01,Same employee and declaration period appears more than once,EVD-CTRL-001-ROW-0001
+EXC_DUPLICATE_EMPLOYEE_PERIOD,ROW-0002,CTRL-001,High,matricule_salarie|periode_declaration,MAT-0001|2025-01,Same employee and declaration period appears more than once,EVD-CTRL-001-ROW-0002
+EXC_MISSING_NIR,ROW-0003,CTRL-002,Medium,nir_fictif,,NIR fictif is required or must be explicitly justified missing,EVD-CTRL-002-ROW-0003
+EXC_INVALID_NIR_FORMAT,ROW-0004,CTRL-003,Medium,nir_fictif,ABC123,NIR fictif must contain 13 to 15 digits,EVD-CTRL-003-ROW-0004
+EXC_NON_POSITIVE_GROSS_SALARY,ROW-0005,CTRL-004,High,salaire_brut,-100.00,Gross salary must be positive for active paid rows,EVD-CTRL-004-ROW-0005
+EXC_URSSAF_BASE_INCONSISTENT,ROW-0006,CTRL-005,High,base_urssaf,1000.00,URSSAF base must stay within 5 percent of gross salary in this training dataset,EVD-CTRL-005-ROW-0006
+EXC_URSSAF_RATE_OUT_OF_RANGE,ROW-0007,CTRL-006,High,taux_urssaf,0.45,URSSAF rate must be between 0.01 and 0.30,EVD-CTRL-006-ROW-0007
+EXC_URSSAF_AMOUNT_INCONSISTENT,ROW-0008,CTRL-007,High,montant_urssaf,100.00,URSSAF amount must equal base_urssaf times taux_urssaf within 0.02,EVD-CTRL-007-ROW-0008
+EXC_EXITED_EMPLOYEE_ACTIVE,ROW-0009,CTRL-008,Medium,statut_paie,ACTIF,Employee with exit date must not remain active,EVD-CTRL-008-ROW-0009
+EXC_EXIT_BEFORE_ENTRY,ROW-0010,CTRL-009,High,date_sortie,2025-01-15,Exit date must not be before entry date,EVD-CTRL-009-ROW-0010
+EXC_MISSING_RETIREMENT_CONTRIBUTION,ROW-0011,CTRL-010,Medium,montant_retraite,,Retirement contribution amount is required when retirement base is positive,EVD-CTRL-010-ROW-0011
