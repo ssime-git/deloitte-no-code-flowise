@@ -4,8 +4,12 @@ API_URL := http://localhost:$(PORT)/api/v1
 J1_QUESTION := Bonjour, qui es-tu ?
 J2_QUESTION := Quels sont les seuils decart pour les controles URSSAF ?
 J2_NIR_QUESTION := Que faire avec un NIR fictif dans un audit ?
+J4_QUESTION_CALC := Calcule le montant de la CSG sur un salaire brut de 3200 euros. Le taux de CSG deductible est 6.8%.
+J4_QUESTION_DATE := Nous sommes en quelle periode de declaration DSN ?
+J5_QUESTION_RAG := Quels sont les seuils URSSAF a verifier dans un audit paie ? Cite tes sources.
+J5_QUESTION_COMBO := Un salarie a un brut de 3500 euros. Quelles anomalies dois-je verifier selon le corpus, et calcule le montant de la cotisation patronale maladie a 13%.
 
-.PHONY: up down reset force-reset status logs-flowise logs-init api-key ping psql wait-init test-j1 test-j2 test-j2-nir smoke-j2 reset-smoke-j2 from-scratch-j2 docs help
+.PHONY: up down reset force-reset status logs-flowise logs-init api-key ping psql wait-init test-j1 test-j2 test-j2-nir smoke-j2 reset-smoke-j2 from-scratch-j2 test-j4 test-j4-date smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5 test-j5-combo smoke-j5 reset-smoke-j5 from-scratch-j5 docs help
 
 help:
 	@echo "Usage: make <target>"
@@ -32,6 +36,16 @@ help:
 	@echo "  smoke-j2  Run the main J2 smoke tests"
 	@echo "  reset-smoke-j2  Force reset the stack, then run J2 smoke tests"
 	@echo "  from-scratch-j2  Alias simple de reset-smoke-j2"
+	@echo "  test-j4   Test J4 - Agent Simple (calcul CSG)"
+	@echo "  test-j4-date  Test J4 - Agent Simple (date DSN)"
+	@echo "  smoke-j4  Run the main J4 smoke tests"
+	@echo "  reset-smoke-j4  Force reset the stack, then run J4 smoke tests"
+	@echo "  from-scratch-j4  Alias de reset-smoke-j4"
+	@echo "  test-j5   Test J5 - Agent RAG (recherche corpus)"
+	@echo "  test-j5-combo  Test J5 - Agent RAG (recherche + calcul)"
+	@echo "  smoke-j5  Run the main J5 smoke tests"
+	@echo "  reset-smoke-j5  Force reset the stack, then run J5 smoke tests"
+	@echo "  from-scratch-j5  Alias de reset-smoke-j5"
 	@echo ""
 	@echo "Docs:"
 	@echo "  docs      List available training docs"
@@ -72,7 +86,7 @@ wait-init:
 			API_KEY=$$(docker compose logs init --tail 120 2>/dev/null | awk "/API key:/ {print \$$NF}" | tail -1); \
 			if [ -n "$$API_KEY" ]; then \
 				FLOW_COUNT=$$(curl -sf -H "Authorization: Bearer $$API_KEY" $(API_URL)/chatflows 2>/dev/null | jq -r "if type==\"array\" then length else 0 end" 2>/dev/null || echo 0); \
-				if [ "$$FLOW_COUNT" -ge 2 ]; then \
+				if [ "$$FLOW_COUNT" -ge 4 ]; then \
 					echo "Init ready: API key found, $$FLOW_COUNT flows imported."; \
 					exit 0; \
 				fi; \
@@ -116,6 +130,58 @@ reset-smoke-j2:
 	$(MAKE) smoke-j2
 
 from-scratch-j2: reset-smoke-j2
+
+test-j4: wait-init
+	@API_KEY=$$(docker compose logs init --tail 120 2>/dev/null | awk '/API key:/ {print $$NF}' | tail -1); \
+	J4_ID=$$(curl -sf -H "Authorization: Bearer $$API_KEY" $(API_URL)/chatflows | jq -r '.[] | select(.name | contains("Agent Simple")) | .id' | head -n1); \
+	[ -z "$$J4_ID" ] && echo "J4 not found" || { \
+		printf '\n[J4-CALC] %s\n' "$(J4_QUESTION_CALC)"; \
+		curl -sf -X POST "$(API_URL)/prediction/$$J4_ID" -H "Authorization: Bearer $$API_KEY" -H "Content-Type: application/json" -d "{\"question\":\"$(J4_QUESTION_CALC)\"}" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('text','').strip())"; \
+		printf '\n'; \
+	}
+
+test-j4-date: wait-init
+	@API_KEY=$$(docker compose logs init --tail 120 2>/dev/null | awk '/API key:/ {print $$NF}' | tail -1); \
+	J4_ID=$$(curl -sf -H "Authorization: Bearer $$API_KEY" $(API_URL)/chatflows | jq -r '.[] | select(.name | contains("Agent Simple")) | .id' | head -n1); \
+	[ -z "$$J4_ID" ] && echo "J4 not found" || { \
+		printf '\n[J4-DATE] %s\n' "$(J4_QUESTION_DATE)"; \
+		curl -sf -X POST "$(API_URL)/prediction/$$J4_ID" -H "Authorization: Bearer $$API_KEY" -H "Content-Type: application/json" -d "{\"question\":\"$(J4_QUESTION_DATE)\"}" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('text','').strip())"; \
+		printf '\n'; \
+	}
+
+smoke-j4: ping test-j4 test-j4-date
+
+reset-smoke-j4:
+	./reset.sh -f
+	$(MAKE) smoke-j4
+
+from-scratch-j4: reset-smoke-j4
+
+test-j5: wait-init
+	@API_KEY=$$(docker compose logs init --tail 120 2>/dev/null | awk '/API key:/ {print $$NF}' | tail -1); \
+	J5_ID=$$(curl -sf -H "Authorization: Bearer $$API_KEY" $(API_URL)/chatflows | jq -r '.[] | select(.name | contains("Agent RAG")) | .id' | head -n1); \
+	[ -z "$$J5_ID" ] && echo "J5 not found" || { \
+		printf '\n[J5-RAG] %s\n' "$(J5_QUESTION_RAG)"; \
+		curl -sf -X POST "$(API_URL)/prediction/$$J5_ID" -H "Authorization: Bearer $$API_KEY" -H "Content-Type: application/json" -d "{\"question\":\"$(J5_QUESTION_RAG)\"}" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('text','').strip())"; \
+		printf '\n'; \
+	}
+
+test-j5-combo: wait-init
+	@API_KEY=$$(docker compose logs init --tail 120 2>/dev/null | awk '/API key:/ {print $$NF}' | tail -1); \
+	J5_ID=$$(curl -sf -H "Authorization: Bearer $$API_KEY" $(API_URL)/chatflows | jq -r '.[] | select(.name | contains("Agent RAG")) | .id' | head -n1); \
+	[ -z "$$J5_ID" ] && echo "J5 not found" || { \
+		printf '\n[J5-COMBO] %s\n' "$(J5_QUESTION_COMBO)"; \
+		curl -sf -X POST "$(API_URL)/prediction/$$J5_ID" -H "Authorization: Bearer $$API_KEY" -H "Content-Type: application/json" -d "{\"question\":\"$(J5_QUESTION_COMBO)\"}" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('text','').strip())"; \
+		printf '\n'; \
+	}
+
+smoke-j5: ping test-j5 test-j5-combo
+
+reset-smoke-j5:
+	./reset.sh -f
+	$(MAKE) smoke-j5
+
+from-scratch-j5: reset-smoke-j5
 
 docs:
 	@ls docs/*.md | sed 's/^/  - /'

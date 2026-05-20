@@ -183,6 +183,29 @@ Key node versions and their input structure:
 - anchors: `model` (BaseChatModel), `memory` (BaseMemory, optional)
 - params: `systemMessagePrompt` (string)
 
+#### toolAgent (v2)
+- anchors: `tools` (Tool, list), `memory` (BaseChatMemory, optional), `model` (BaseChatModel), `chatPromptTemplate` (ChatPromptTemplate, optional), `inputModeration` (Moderation, optional, list)
+- params: `systemMessage` (string, additionalParams), `maxIterations` (number, optional, additionalParams), `enableDetailedStreaming` (boolean, optional, additionalParams)
+- baseClasses: `AgentExecutor`, `BaseChain`, `Runnable`
+- requires a model with function/tool calling support (ChatOpenAI, ChatAnthropic, etc.)
+
+#### calculator (v1)
+- anchors: none
+- params: none
+- baseClasses: `Calculator`, `Tool`, `StructuredTool`, `Runnable`
+
+#### currentDateTime (v1)
+- anchors: none
+- params: none
+- baseClasses: `CurrentDateTime`, `Tool`
+
+#### retrieverTool (v3)
+- anchors: `retriever` (BaseRetriever)
+- params: `name` (string), `description` (string), `returnSourceDocuments` (boolean, optional), `retrieverToolMetadataFilter` (json, optional, additionalParams)
+- baseClasses: `RetrieverTool`, `DynamicTool`, `Tool`, `StructuredTool`, `Runnable`
+- the `name` and `description` fields are exposed to the LLM — clear descriptions are critical for correct tool selection
+- `returnSourceDocuments: true` adds source metadata to the prediction response under `sourceDocuments`
+
 ### Version mismatch issue
 
 When a node's `version` in flowData doesn't match the installed component version, Flowise shows "Node version X outdated Update to latest version Y" in the UI. More critically, this can cause:
@@ -241,6 +264,16 @@ For J2 with **In-Memory Vector Store**:
 | `smoke-j2` | Run the main J2 smoke tests on a running stack |
 | `reset-smoke-j2` | Force reset, reimport everything, then run J2 smoke tests |
 | `from-scratch-j2` | Simple alias for `reset-smoke-j2` |
+| `test-j4` | Test J4 prediction — agent calls calculator (CSG question) |
+| `test-j4-date` | Test J4 prediction — agent calls CurrentDateTime (DSN period question) |
+| `smoke-j4` | Run the main J4 smoke tests on a running stack |
+| `reset-smoke-j4` | Force reset, reimport everything, then run J4 smoke tests |
+| `from-scratch-j4` | Simple alias for `reset-smoke-j4` |
+| `test-j5` | Test J5 prediction — agent searches corpus (URSSAF seuils question) |
+| `test-j5-combo` | Test J5 prediction — agent combines corpus search + calculator |
+| `smoke-j5` | Run the main J5 smoke tests on a running stack |
+| `reset-smoke-j5` | Force reset, reimport everything, then run J5 smoke tests |
+| `from-scratch-j5` | Simple alias for `reset-smoke-j5` |
 | `docs` | List training docs |
 
 ### Recommended operator path
