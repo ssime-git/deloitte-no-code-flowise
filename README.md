@@ -36,6 +36,12 @@ docker logs deloitte-no-code-flowise-init-1 | grep "API key:"
 | Email | admin@local.dev |
 | Mot de passe | changeme_admin_password |
 
+## Prompts de test
+
+**J1 - Simple Chat** : *"Que peux-tu faire ?"*
+
+**J2 - RAG Chat** : *"Quels sont les points de contrôle URSSAF et leurs seuils de tolérance ?"*
+
 ## Reset
 
 ```bash
