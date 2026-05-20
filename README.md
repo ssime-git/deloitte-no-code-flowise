@@ -12,10 +12,16 @@ Stack pédagogique Flowise 3.1.2 + PostgreSQL pour la formation Liora.
 ```bash
 git clone https://github.com/ssime-git/deloitte-no-code-flowise.git
 cd deloitte-no-code-flowise
-docker compose up -d
+make from-scratch-j2
 ```
 
-Une seule commande. Le conteneur `init` bootstrappe automatiquement l'utilisateur admin, l'API key et les flows J1/J2.
+Une seule commande. Elle remet la stack à zéro, redémarre PostgreSQL + Flowise, bootstrappe automatiquement l'utilisateur admin, l'API key et les flows J1/J2, puis exécute les smoke tests principaux du flow J2.
+
+Pour un simple démarrage sans reset complet :
+
+```bash
+make up
+```
 
 Vérifier :
 ```bash
@@ -26,6 +32,16 @@ curl http://localhost:3000/api/v1/ping
 L'API key générée est visible dans les logs :
 ```bash
 docker logs deloitte-no-code-flowise-init-1 | grep "API key:"
+```
+
+## Commandes utiles
+
+```bash
+make from-scratch-j2   # reset complet + import + smoke tests J2
+make smoke-j2          # smoke tests J2 sur stack déjà lancée
+make test-j2           # question URSSAF
+make test-j2-nir       # question NIR fictif
+make api-key           # affiche l'API key bootstrappee
 ```
 
 ## Connexion
@@ -45,8 +61,10 @@ docker logs deloitte-no-code-flowise-init-1 | grep "API key:"
 ## Reset
 
 ```bash
-./reset.sh         # avec confirmation
-./reset.sh -f      # force
+make reset         # avec confirmation
+make force-reset   # force
+./reset.sh         # équivalent shell
+./reset.sh -f      # équivalent shell
 ```
 
 Arrête la stack, supprime les volumes PG et Flowise, nettoie `project/`, redémarre.

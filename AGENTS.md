@@ -170,6 +170,11 @@ Key node versions and their input structure:
 - anchors: `textSplitter` (TextSplitter) — do NOT include in inputParams
 - params: `folderPath`, `recursive`, `pdfUsage`, `pointerName`, `metadata`, `omitMetadataKeys`
 
+#### fileLoader (v2.0)
+- anchors: `textSplitter` (TextSplitter) — do NOT include in inputParams
+- params: `file`, `usage`, `legacyBuild`, `pointerName`, `metadata`, `omitMetadataKeys`
+- runtime caveat: `inputs.file` must exist in `flowData` even before the first upload. Use `""` as default value when importing flows via DB insert, otherwise Flowise can crash at runtime with `TypeError: Cannot read properties of undefined (reading 'startsWith')` in `File_DocumentLoaders.init`
+
 #### bufferMemory (v2)
 - anchors: none
 - params: `sessionId`, `memoryKey`
@@ -199,6 +204,22 @@ The upsert endpoint (`POST /api/v1/vector/upsert/:chatflowId`) runs the componen
 - But upsert is still required by the init script to verify the document loader works
 - For persistent vector stores (Chroma, Pinecone, etc.), upsert is essential
 
+### Chat uploads in Flowise
+
+Flowise supports two file upload modes in chatflows:
+- **RAG file uploads**: uploaded files are upserted to a compatible vector store
+- **Full file uploads**: uploaded files are parsed by `fileLoader` and injected directly into the chat flow
+
+For **Full file uploads** on Flowise 3.1.2:
+- `chatbotConfig` must contain `fullFileUpload.status = true`
+- the chatflow must include a `fileLoader` node
+- if both full uploads and RAG uploads are enabled, full uploads take precedence
+
+For J2 with **In-Memory Vector Store**:
+- a `fileLoader` node can be connected to `memoryVectorStore.document` for learner testing
+- `folderFiles` and `fileLoader` can coexist on the same `document` input
+- after import, verify both startup upsert and normal prediction, because `fileLoader` can break both paths if its `inputs.file` default is missing
+
 ## Makefile targets
 
 | Target | Description |
@@ -213,9 +234,29 @@ The upsert endpoint (`POST /api/v1/vector/upsert/:chatflowId`) runs the componen
 | `api-key` | Get generated API key |
 | `ping` | Healthcheck |
 | `psql` | Open PostgreSQL shell |
+| `wait-init` | Wait until init finished bootstrap and flows are visible via API |
 | `test-j1` | Test J1 prediction |
 | `test-j2` | Test J2 prediction |
+| `test-j2-nir` | Test J2 with the fictitious NIR question |
+| `smoke-j2` | Run the main J2 smoke tests on a running stack |
+| `reset-smoke-j2` | Force reset, reimport everything, then run J2 smoke tests |
+| `from-scratch-j2` | Simple alias for `reset-smoke-j2` |
 | `docs` | List training docs |
+
+### Recommended operator path
+
+For a full reproducible setup from scratch, prefer:
+
+```bash
+make from-scratch-j2
+```
+
+This target:
+1. resets the stack and volumes
+2. restarts Flowise + PostgreSQL
+3. waits for init bootstrap completion
+4. verifies imported chatflows through the API
+5. runs the main J2 smoke tests
 
 ## Stack layout
 

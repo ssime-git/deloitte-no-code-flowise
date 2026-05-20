@@ -34,7 +34,8 @@
 
 | Bloc | Rôle |
 |------|------|
-| **Folder with Files** (bleu) | Charge vos documents depuis le dossier `/corpus/pedagogical/` |
+| **Folder with Files** (bleu) | Charge les documents du corpus (dossier `/corpus/pedagogical/`) |
+| **File Loader** (bleu) | Charge un fichier uploadé directement depuis le chat |
 | **OpenAI Embedding** (bleu ciel) | Transforme le texte en "empreinte numérique" (vecteur) |
 | **In-Memory Vector Store** (violet) | Stocke les empreintes et cherche les plus proches |
 | **OpenAI** | Le cerveau qui génère la réponse |
@@ -109,7 +110,25 @@ Une fois un nouveau document ajouté au dossier, il faut le **recharger** dans l
 
 ---
 
-## 7. Comparer J1 (sans RAG) et J2 (avec RAG)
+## 7. Uploader un fichier directement depuis le chat
+
+Le flow J2 inclut un bloc **File Loader** (bleu) qui permet d'uploader un fichier directement dans la conversation pour tester le RAG en live.
+
+**À faire :**
+
+1. Ouvrir le Chat
+2. Cliquer sur le bouton **+** ou l'icône de fichier jointe (à gauche du champ de saisie)
+3. Sélectionner un fichier depuis votre poste (PDF, DOCX, TXT, CSV, Markdown...)
+4. Poser une question sur le contenu du fichier uploadé
+5. Le chatbot répond à partir de VOTRE document, pas seulement du corpus
+
+> **Exemple** : uploader une note de frais PDF, puis demander *"Quel est le montant total ?"* ou *"Cette note est-elle conforme ?"*
+
+Le File Loader est connecté au même **In-Memory Vector Store** que le dossier corpus. Les documents uploadés s'ajoutent à ceux déjà chargés pour la session en cours.
+
+---
+
+## 8. Comparer J1 (sans RAG) et J2 (avec RAG)
 
 1. Menu de gauche → **Chatflows** → ouvrir **J1 - Simple Chat**
 2. Cliquer sur **Chat**
@@ -120,11 +139,12 @@ Une fois un nouveau document ajouté au dossier, il faut le **recharger** dans l
 
 ---
 
-## 8. Résumé
+## 9. Résumé
 
 Vous avez appris à :
-- ✅ Explorer un flow RAG avec 5 blocs
+- ✅ Explorer un flow RAG avec 6 blocs
 - ✅ Comprendre le rôle de chaque bloc (documents, embeddings, vector store)
 - ✅ Modifier le paramètre topK pour contrôler la précision
 - ✅ Déclencher l'upsert depuis l'interface pour charger de nouveaux documents
+- ✅ Uploader un fichier dans le chat et tester le RAG en live
 - ✅ Comparer un chat simple vs un chat RAG
