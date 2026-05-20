@@ -1,1 +1,261 @@
-{"name":"J1 - Simple Chat","type":"CHATFLOW","flowData":{"nodes": [{"id": "chatOpenAI_0", "type": "customNode", "position": {"x": 0, "y": 0}, "data": {"id": "chatOpenAI_0", "label": "OpenAI", "name": "chatOpenAI", "version": 8.3, "category": "Chat Models", "baseClasses": ["ChatOpenAI", "BaseChatOpenAI", "BaseChatModel", "BaseLanguageModel", "Runnable"], "inputs": {"modelName": "gpt-4.1-nano", "temperature": 0.9, "streaming": true, "basepath": "https://ai-gateway.liora.tech/v1"}, "inputAnchors": [], "inputParams": [], "outputAnchors": [{"id": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable", "name": "chatOpenAI", "label": "ChatOpenAI", "description": "Wrapper around OpenAI large language models that use the Chat endpoint", "type": "ChatOpenAI | BaseChatOpenAI | BaseChatModel | BaseLanguageModel | Runnable"}], "outputs": {}, "selected": false, "credential": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238"}}, {"id": "bufferMemory_0", "type": "customNode", "position": {"x": 0, "y": 0}, "data": {"id": "bufferMemory_0", "label": "Buffer Memory", "name": "bufferMemory", "version": 2, "category": "Memory", "baseClasses": ["BufferMemory", "BaseChatMemory", "BaseMemory"], "inputs": {"memoryKey": "chat_history"}, "inputAnchors": [], "inputParams": [{"id": "bufferMemory_0-input-sessionId-string", "label": "Session Id", "name": "sessionId", "type": "string", "default": "", "optional": true, "additionalParams": true}, {"id": "bufferMemory_0-input-memoryKey-string", "label": "Memory Key", "name": "memoryKey", "type": "string", "default": "chat_history", "additionalParams": true}], "outputAnchors": [{"id": "bufferMemory_0-output-bufferMemory_0-BufferMemory|BaseChatMemory|BaseMemory", "name": "bufferMemory", "label": "BufferMemory", "description": "Retrieve chat messages stored in database", "type": "BufferMemory | BaseChatMemory | BaseMemory"}], "outputs": {}, "selected": false}}, {"id": "conversationChain_0", "type": "customNode", "position": {"x": 0, "y": 0}, "data": {"id": "conversationChain_0", "label": "Conversation Chain", "name": "conversationChain", "version": 3, "category": "Chains", "baseClasses": ["ConversationChain", "LLMChain", "BaseChain", "Runnable"], "inputs": {"model": "{{chatOpenAI_0.data.instance}}", "memory": "{{bufferMemory_0.data.instance}}", "systemMessagePrompt": "You are a helpful AI assistant. Answer the user's questions concisely and accurately."}, "inputAnchors": [{"id": "conversationChain_0-input-model-BaseChatModel", "label": "Chat Model", "name": "model", "type": "BaseChatModel"}, {"id": "conversationChain_0-input-memory-BaseMemory", "label": "Memory", "name": "memory", "type": "BaseMemory"}], "inputParams": [{"id": "conversationChain_0-input-systemMessagePrompt-string", "label": "System Message", "name": "systemMessagePrompt", "type": "string", "rows": 4, "default": "The following is a friendly conversation between a human and an AI...", "optional": true, "additionalParams": true}], "outputAnchors": [{"id": "conversationChain_0-output-conversationChain_0-ConversationChain|LLMChain|BaseChain|Runnable", "name": "conversationChain", "label": "ConversationChain", "description": "Chat models specific conversational chain with memory", "type": "ConversationChain | LLMChain | BaseChain | Runnable"}], "outputs": {}, "selected": false}}], "edges": [{"id": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable-conversationChain_0-model-BaseChatModel", "source": "chatOpenAI_0", "sourceHandle": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable", "target": "conversationChain_0", "targetHandle": "conversationChain_0-input-model-BaseChatModel", "type": "buttonedge"}, {"id": "bufferMemory_0-output-bufferMemory_0-BufferMemory|BaseChatMemory|BaseMemory-conversationChain_0-memory-BaseMemory", "source": "bufferMemory_0", "sourceHandle": "bufferMemory_0-output-bufferMemory_0-BufferMemory|BaseChatMemory|BaseMemory", "target": "conversationChain_0", "targetHandle": "conversationChain_0-input-memory-BaseMemory", "type": "buttonedge"}]}}
+{
+  "name": "J1 - Simple Chat",
+  "type": "CHATFLOW",
+  "flowData": {
+    "nodes": [
+      {
+        "id": "chatOpenAI_0",
+        "type": "customNode",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "id": "chatOpenAI_0",
+          "label": "OpenAI",
+          "name": "chatOpenAI",
+          "version": 8.3,
+          "category": "Chat Models",
+          "baseClasses": [
+            "ChatOpenAI",
+            "BaseChatOpenAI",
+            "BaseChatModel",
+            "BaseLanguageModel",
+            "Runnable"
+          ],
+          "inputs": {
+            "modelName": "gpt-4.1-nano",
+            "temperature": 0.9,
+            "streaming": true,
+            "basepath": "https://ai-gateway.liora.tech/v1"
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            {
+              "label": "Model Name",
+              "name": "modelName",
+              "type": "asyncOptions",
+              "loadMethod": "listModels",
+              "default": "gpt-4o-mini"
+            },
+            {
+              "label": "Temperature",
+              "name": "temperature",
+              "type": "number",
+              "step": 0.1,
+              "default": 0.9,
+              "optional": true
+            },
+            {
+              "label": "Streaming",
+              "name": "streaming",
+              "type": "boolean",
+              "default": true,
+              "optional": true,
+              "additionalParams": true
+            },
+            {
+              "label": "Allow Image Uploads",
+              "name": "allowImageUploads",
+              "type": "boolean",
+              "default": false,
+              "optional": true
+            },
+            {
+              "label": "Reasoning",
+              "name": "reasoning",
+              "type": "boolean",
+              "default": false,
+              "optional": true,
+              "additionalParams": true
+            },
+            {
+              "label": "Max Tokens",
+              "name": "maxTokens",
+              "type": "number",
+              "step": 1,
+              "optional": true,
+              "additionalParams": true
+            },
+            {
+              "label": "Top Probability",
+              "name": "topP",
+              "type": "number",
+              "step": 0.1,
+              "optional": true,
+              "additionalParams": true
+            },
+            {
+              "label": "Frequency Penalty",
+              "name": "frequencyPenalty",
+              "type": "number",
+              "step": 0.1,
+              "optional": true,
+              "additionalParams": true
+            },
+            {
+              "label": "Presence Penalty",
+              "name": "presencePenalty",
+              "type": "number",
+              "step": 0.1,
+              "optional": true,
+              "additionalParams": true
+            },
+            {
+              "label": "Timeout",
+              "name": "timeout",
+              "type": "number",
+              "step": 1,
+              "optional": true,
+              "additionalParams": true
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+              "name": "chatOpenAI",
+              "label": "ChatOpenAI",
+              "description": "Wrapper around OpenAI large language models that use the Chat endpoint",
+              "type": "ChatOpenAI | BaseChatOpenAI | BaseChatModel | BaseLanguageModel | Runnable"
+            }
+          ],
+          "outputs": {},
+          "selected": false,
+          "credential": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238"
+        }
+      },
+      {
+        "id": "bufferMemory_0",
+        "type": "customNode",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "id": "bufferMemory_0",
+          "label": "Buffer Memory",
+          "name": "bufferMemory",
+          "version": 2,
+          "category": "Memory",
+          "baseClasses": [
+            "BufferMemory",
+            "BaseChatMemory",
+            "BaseMemory"
+          ],
+          "inputs": {
+            "memoryKey": "chat_history"
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            {
+              "label": "Session Id",
+              "name": "sessionId",
+              "type": "string",
+              "default": "",
+              "optional": true,
+              "additionalParams": true
+            },
+            {
+              "label": "Memory Key",
+              "name": "memoryKey",
+              "type": "string",
+              "default": "chat_history",
+              "additionalParams": true
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "bufferMemory_0-output-bufferMemory_0-BufferMemory|BaseChatMemory|BaseMemory",
+              "name": "bufferMemory",
+              "label": "BufferMemory",
+              "description": "Retrieve chat messages stored in database",
+              "type": "BufferMemory | BaseChatMemory | BaseMemory"
+            }
+          ],
+          "outputs": {},
+          "selected": false
+        }
+      },
+      {
+        "id": "conversationChain_0",
+        "type": "customNode",
+        "position": {
+          "x": 0,
+          "y": 0
+        },
+        "data": {
+          "id": "conversationChain_0",
+          "label": "Conversation Chain",
+          "name": "conversationChain",
+          "version": 3,
+          "category": "Chains",
+          "baseClasses": [
+            "ConversationChain",
+            "LLMChain",
+            "BaseChain",
+            "Runnable"
+          ],
+          "inputs": {
+            "model": "{{chatOpenAI_0.data.instance}}",
+            "memory": "{{bufferMemory_0.data.instance}}",
+            "systemMessagePrompt": "You are a helpful AI assistant. Answer the user's questions concisely and accurately."
+          },
+          "inputAnchors": [
+            {
+              "id": "conversationChain_0-input-model-BaseChatModel",
+              "label": "Chat Model",
+              "name": "model",
+              "type": "BaseChatModel"
+            },
+            {
+              "id": "conversationChain_0-input-memory-BaseMemory",
+              "label": "Memory",
+              "name": "memory",
+              "type": "BaseMemory",
+              "optional": true
+            }
+          ],
+          "inputParams": [
+            {
+              "label": "System Message",
+              "name": "systemMessagePrompt",
+              "type": "string",
+              "rows": 4,
+              "optional": true,
+              "additionalParams": true
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "conversationChain_0-output-conversationChain_0-ConversationChain|LLMChain|BaseChain|Runnable",
+              "name": "conversationChain",
+              "label": "ConversationChain",
+              "description": "Chat models specific conversational chain with memory",
+              "type": "ConversationChain | LLMChain | BaseChain | Runnable"
+            }
+          ],
+          "outputs": {},
+          "selected": false
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable-conversationChain_0-model-BaseChatModel",
+        "source": "chatOpenAI_0",
+        "sourceHandle": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+        "target": "conversationChain_0",
+        "targetHandle": "conversationChain_0-input-model-BaseChatModel",
+        "type": "buttonedge"
+      },
+      {
+        "id": "bufferMemory_0-output-bufferMemory_0-BufferMemory|BaseChatMemory|BaseMemory-conversationChain_0-memory-BaseMemory",
+        "source": "bufferMemory_0",
+        "sourceHandle": "bufferMemory_0-output-bufferMemory_0-BufferMemory|BaseChatMemory|BaseMemory",
+        "target": "conversationChain_0",
+        "targetHandle": "conversationChain_0-input-memory-BaseMemory",
+        "type": "buttonedge"
+      }
+    ]
+  }
+}
