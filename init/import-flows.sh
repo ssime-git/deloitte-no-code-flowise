@@ -222,7 +222,8 @@ for fname in sorted(os.listdir(flows_dir)):
         print(f"[import-flows] SKIP: flow '{flow_name}' already exists ({fname})")
         continue
 
-    flow_data = data.get('flowData', json.dumps(data))
+    raw_flow_data = data.get('flowData', data)
+    flow_data = json.dumps(raw_flow_data) if not isinstance(raw_flow_data, str) else raw_flow_data
     flow_id = str(uuid.uuid4())
 
     # Use random delimiter for dollar-quoting to avoid clashes with JSON content
