@@ -226,11 +226,10 @@ for fname in sorted(os.listdir(flows_dir)):
     flow_data = json.dumps(raw_flow_data) if not isinstance(raw_flow_data, str) else raw_flow_data
     flow_id = str(uuid.uuid4())
 
-    # Use random delimiter for dollar-quoting to avoid clashes with JSON content
     delim = f"FLOWDATA_{uuid.uuid4().hex[:12]}"
     sql = f"""INSERT INTO chat_flow (id, name, "flowData", type, "workspaceId", "createdDate", "updatedDate")
 VALUES ('{flow_id}', '{flow_name.replace(chr(39), chr(39)+chr(39))}',
-        ${delim}${flow_data}$${delim}$,
+        ${delim}${flow_data}${delim}$,
         'CHATFLOW', '{ws_id}', NOW(), NOW())"""
     psql(sql)
     print(f"[import-flows] OK: flow '{flow_name}' imported ({fname})")
