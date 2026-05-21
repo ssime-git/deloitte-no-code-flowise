@@ -29,7 +29,7 @@
               { "key": "instruction", "value": "" },
               { "key": "final_report", "value": "" }
             ],
-            "startPersistState": true
+            "startPersistState": false
           },
           "inputAnchors": [],
           "inputParams": [
@@ -158,20 +158,20 @@
             "llmMessages": [
               {
                 "role": "system",
-                "content": "Tu es le superviseur d'une mini-equipe d'audit paie / DSN dans Flowise.\n\nTu pilotes trois workers specialises :\n- DOC : recherche documentaire et justification reglementaire via des outils gouvernes\n- CALC : controles quantitatifs, calculs et verification de montants\n- REPORT : redaction de la restitution d'audit a partir des elements deja produits\n\nRegles de supervision :\n- Choisis toujours exactement un prochain worker parmi DOC, CALC ou REPORT.\n- Si la demande parle de regles, d'exception DSN, de justification ou de source, commence ou repasse par DOC.\n- Si la demande implique pourcentage, ecart, montant, variation ou recalcul, passe par CALC avant REPORT.\n- N'envoie REPORT qu'une fois que les elements utiles ont ete collectes. Pour une demande mixte documentaire + quantitatif, vise DOC puis CALC puis REPORT.\n- Si un humain rejette la synthese avec un feedback, tiens compte de ce feedback dans la prochaine instruction.\n- Tu n'ecris jamais la restitution finale toi-meme : tu delegues au worker REPORT.\n- Sois parcimonieux : pas de boucle inutile, pas de worker redondant."
+                "content": "Tu es le superviseur d'une mini-equipe d'audit paie / DSN dans Flowise.\n\nTu pilotes trois workers specialises :\n- DOC : recherche documentaire et justification reglementaire via des outils gouvernes\n- CALC : controles quantitatifs, calculs et verification de montants\n- REPORT : redaction de la restitution d'audit a partir des elements deja produits\n\nRegles de supervision :\n- Choisis toujours exactement un prochain etat parmi DOC, CALC, REPORT ou FINISH.\n- Si la demande parle de regles, d'exception DSN, de justification ou de source, commence ou repasse par DOC.\n- Si la demande implique pourcentage, ecart, montant, variation ou recalcul, passe par CALC avant REPORT.\n- N'envoie REPORT qu'une fois que les elements utiles ont ete collectes. Pour une demande mixte documentaire + quantitatif, vise DOC puis CALC puis REPORT.\n- Si un humain rejette la synthese avec un feedback, tiens compte de ce feedback dans la prochaine instruction et relance le worker utile.\n- Si la synthese finale est deja prete dans $flow.state.final_report et qu'aucune action supplementaire n'est necessaire, choisis FINISH.\n- Une fois FINISH choisi, ne demande plus aucune validation et n'envoie plus aucun worker.\n- Tu n'ecris jamais la restitution finale toi-meme : tu delegues au worker REPORT.\n- Sois parcimonieux : pas de boucle inutile, pas de worker redondant."
               }
             ],
             "llmEnableMemory": true,
             "llmMemoryType": "allMessages",
             "llmMemoryWindowSize": "20",
             "llmMemoryMaxTokenLimit": "2000",
-            "llmUserMessage": "Choisis le prochain worker et donne-lui une instruction courte, exploitable et specifique. Valeurs autorisees pour next : DOC, CALC, REPORT.",
+            "llmUserMessage": "Choisis le prochain etat et donne une instruction courte et exploitable si un worker doit agir. Valeurs autorisees pour next : DOC, CALC, REPORT, FINISH.",
             "llmReturnResponseAs": "userMessage",
             "llmStructuredOutput": [
               {
                 "key": "next",
                 "type": "enum",
-                "enumValues": "DOC, CALC, REPORT",
+                "enumValues": "DOC, CALC, REPORT, FINISH",
                 "description": "Nom du prochain worker a activer"
               },
               {
@@ -375,7 +375,9 @@
           "inputs": {
             "conditions": [
               { "type": "string", "value1": "{{ $flow.state.next }}", "operation": "equal", "value2": "DOC" },
-              { "type": "string", "value1": "{{ $flow.state.next }}", "operation": "equal", "value2": "CALC" }
+              { "type": "string", "value1": "{{ $flow.state.next }}", "operation": "equal", "value2": "CALC" },
+              { "type": "string", "value1": "{{ $flow.state.next }}", "operation": "equal", "value2": "REPORT" },
+              { "type": "string", "value1": "{{ $flow.state.next }}", "operation": "equal", "value2": "FINISH" }
             ]
           },
           "inputAnchors": [],
@@ -385,13 +387,138 @@
               "name": "conditions",
               "type": "array",
               "description": "Values to compare",
-              "acceptVariable": true
+              "acceptVariable": true,
+              "default": [
+                {
+                  "type": "string",
+                  "value1": "",
+                  "operation": "equal",
+                  "value2": ""
+                }
+              ],
+              "array": [
+                {
+                  "label": "Type",
+                  "name": "type",
+                  "type": "options",
+                  "options": [
+                    { "label": "String", "name": "string" },
+                    { "label": "Number", "name": "number" },
+                    { "label": "Boolean", "name": "boolean" }
+                  ],
+                  "default": "string"
+                },
+                {
+                  "label": "Value 1",
+                  "name": "value1",
+                  "type": "string",
+                  "default": "",
+                  "description": "First value to be compared with",
+                  "acceptVariable": true,
+                  "show": { "conditions[$index].type": "string" }
+                },
+                {
+                  "label": "Operation",
+                  "name": "operation",
+                  "type": "options",
+                  "options": [
+                    { "label": "Contains", "name": "contains" },
+                    { "label": "Ends With", "name": "endsWith" },
+                    { "label": "Equal", "name": "equal" },
+                    { "label": "Not Contains", "name": "notContains" },
+                    { "label": "Not Equal", "name": "notEqual" },
+                    { "label": "Regex", "name": "regex" },
+                    { "label": "Starts With", "name": "startsWith" },
+                    { "label": "Is Empty", "name": "isEmpty" },
+                    { "label": "Not Empty", "name": "notEmpty" }
+                  ],
+                  "default": "equal",
+                  "description": "Type of operation",
+                  "show": { "conditions[$index].type": "string" }
+                },
+                {
+                  "label": "Value 2",
+                  "name": "value2",
+                  "type": "string",
+                  "default": "",
+                  "description": "Second value to be compared with",
+                  "acceptVariable": true,
+                  "show": { "conditions[$index].type": "string" },
+                  "hide": { "conditions[$index].operation": ["isEmpty", "notEmpty"] }
+                },
+                {
+                  "label": "Value 1",
+                  "name": "value1",
+                  "type": "number",
+                  "default": "",
+                  "description": "First value to be compared with",
+                  "acceptVariable": true,
+                  "show": { "conditions[$index].type": "number" }
+                },
+                {
+                  "label": "Operation",
+                  "name": "operation",
+                  "type": "options",
+                  "options": [
+                    { "label": "Smaller", "name": "smaller" },
+                    { "label": "Smaller Equal", "name": "smallerEqual" },
+                    { "label": "Equal", "name": "equal" },
+                    { "label": "Not Equal", "name": "notEqual" },
+                    { "label": "Larger", "name": "larger" },
+                    { "label": "Larger Equal", "name": "largerEqual" },
+                    { "label": "Is Empty", "name": "isEmpty" },
+                    { "label": "Not Empty", "name": "notEmpty" }
+                  ],
+                  "default": "equal",
+                  "description": "Type of operation",
+                  "show": { "conditions[$index].type": "number" }
+                },
+                {
+                  "label": "Value 2",
+                  "name": "value2",
+                  "type": "number",
+                  "default": 0,
+                  "description": "Second value to be compared with",
+                  "acceptVariable": true,
+                  "show": { "conditions[$index].type": "number" }
+                },
+                {
+                  "label": "Value 1",
+                  "name": "value1",
+                  "type": "boolean",
+                  "default": false,
+                  "description": "First value to be compared with",
+                  "show": { "conditions[$index].type": "boolean" }
+                },
+                {
+                  "label": "Operation",
+                  "name": "operation",
+                  "type": "options",
+                  "options": [
+                    { "label": "Equal", "name": "equal" },
+                    { "label": "Not Equal", "name": "notEqual" }
+                  ],
+                  "default": "equal",
+                  "description": "Type of operation",
+                  "show": { "conditions[$index].type": "boolean" }
+                },
+                {
+                  "label": "Value 2",
+                  "name": "value2",
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Second value to be compared with",
+                  "show": { "conditions[$index].type": "boolean" }
+                }
+              ]
             }
           ],
           "outputAnchors": [
             { "id": "conditionAgentflow_0-output-0", "label": 0, "name": 0, "description": "Condition 0" },
             { "id": "conditionAgentflow_0-output-1", "label": 1, "name": 1, "description": "Condition 1" },
-            { "id": "conditionAgentflow_0-output-2", "label": 2, "name": 2, "description": "Else" }
+            { "id": "conditionAgentflow_0-output-2", "label": 2, "name": 2, "description": "Condition 2" },
+            { "id": "conditionAgentflow_0-output-3", "label": 3, "name": 3, "description": "Condition 3" },
+            { "id": "conditionAgentflow_0-output-4", "label": 4, "name": 4, "description": "Else" }
           ],
           "outputs": { "conditionAgentflow": "" },
           "selected": false
@@ -1300,6 +1427,15 @@
         "data": { "sourceColor": "#FFB938", "targetColor": "#4DD0E1", "edgeLabel": "REPORT", "isHumanInput": false },
         "type": "agentFlow",
         "id": "edge-condition-report"
+      },
+      {
+        "source": "conditionAgentflow_0",
+        "sourceHandle": "conditionAgentflow_0-output-3",
+        "target": "directReplyAgentflow_0",
+        "targetHandle": "directReplyAgentflow_0",
+        "data": { "sourceColor": "#FFB938", "targetColor": "#4DDBBB", "edgeLabel": "FINISH", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-condition-finish"
       },
       {
         "source": "agentAgentflow_0",
