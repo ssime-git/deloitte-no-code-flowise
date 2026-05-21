@@ -1,0 +1,1351 @@
+{
+  "name": "J6 - Multi-Agent Supervised",
+  "type": "AGENTFLOW",
+  "flowData": {
+    "nodes": [
+      {
+        "id": "startAgentflow_0",
+        "type": "agentFlow",
+        "position": { "x": -780, "y": 220 },
+        "data": {
+          "id": "startAgentflow_0",
+          "label": "Start",
+          "version": 1.1,
+          "name": "startAgentflow",
+          "type": "Start",
+          "color": "#7EE787",
+          "hideInput": true,
+          "baseClasses": ["Start"],
+          "category": "Agent Flows",
+          "description": "Starting point of the agentflow",
+          "inputs": {
+            "startInputType": "chatInput",
+            "formTitle": "",
+            "formDescription": "",
+            "formInputTypes": "",
+            "startEphemeralMemory": false,
+            "startState": [
+              { "key": "next", "value": "" },
+              { "key": "instruction", "value": "" },
+              { "key": "final_report", "value": "" }
+            ],
+            "startPersistState": true
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            {
+              "label": "Input Type",
+              "name": "startInputType",
+              "type": "options",
+              "options": [
+                { "label": "Chat Input", "name": "chatInput", "description": "Start the conversation with chat input" },
+                { "label": "Form Input", "name": "formInput", "description": "Start the workflow with form inputs" }
+              ],
+              "default": "chatInput"
+            },
+            {
+              "label": "Form Title",
+              "name": "formTitle",
+              "type": "string",
+              "placeholder": "Please Fill Out The Form",
+              "show": { "startInputType": "formInput" }
+            },
+            {
+              "label": "Form Description",
+              "name": "formDescription",
+              "type": "string",
+              "placeholder": "Complete all fields below to continue",
+              "show": { "startInputType": "formInput" }
+            },
+            {
+              "label": "Form Input Types",
+              "name": "formInputTypes",
+              "description": "Specify the type of form input",
+              "type": "array",
+              "show": { "startInputType": "formInput" },
+              "array": [
+                {
+                  "label": "Type",
+                  "name": "type",
+                  "type": "options",
+                  "options": [
+                    { "label": "String", "name": "string" },
+                    { "label": "Number", "name": "number" },
+                    { "label": "Boolean", "name": "boolean" },
+                    { "label": "Options", "name": "options" }
+                  ],
+                  "default": "string"
+                },
+                {
+                  "label": "Label",
+                  "name": "label",
+                  "type": "string",
+                  "placeholder": "Label for the input"
+                },
+                {
+                  "label": "Variable Name",
+                  "name": "name",
+                  "type": "string",
+                  "placeholder": "Variable name for the input (must be camel case)",
+                  "description": "Variable name must be camel case. For example: firstName, lastName, etc."
+                },
+                {
+                  "label": "Add Options",
+                  "name": "addOptions",
+                  "type": "array",
+                  "show": { "formInputTypes[$index].type": "options" },
+                  "array": [
+                    { "label": "Option", "name": "option", "type": "string" }
+                  ]
+                }
+              ]
+            },
+            {
+              "label": "Ephemeral Memory",
+              "name": "startEphemeralMemory",
+              "type": "boolean",
+              "description": "Start fresh for every execution without past chat history",
+              "optional": true
+            },
+            {
+              "label": "Flow State",
+              "name": "startState",
+              "description": "Runtime state during the execution of the workflow",
+              "type": "array",
+              "optional": true,
+              "array": [
+                { "label": "Key", "name": "key", "type": "string", "placeholder": "Foo" },
+                { "label": "Value", "name": "value", "type": "string", "placeholder": "Bar", "optional": true }
+              ]
+            },
+            {
+              "label": "Persist State",
+              "name": "startPersistState",
+              "type": "boolean",
+              "description": "Persist the state in the same session",
+              "optional": true
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "startAgentflow_0-output-startAgentflow",
+              "label": "Start",
+              "name": "startAgentflow"
+            }
+          ],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 103,
+        "height": 66
+      },
+      {
+        "id": "llmAgentflow_0",
+        "type": "agentFlow",
+        "position": { "x": -520, "y": 200 },
+        "data": {
+          "id": "llmAgentflow_0",
+          "label": "Supervisor",
+          "version": 1.1,
+          "name": "llmAgentflow",
+          "type": "LLM",
+          "color": "#64B5F6",
+          "baseClasses": ["LLM"],
+          "category": "Agent Flows",
+          "description": "Large language models to analyze user-provided inputs and generate responses",
+          "inputs": {
+            "llmModel": "chatOpenAI",
+            "llmMessages": [
+              {
+                "role": "system",
+                "content": "Tu es le superviseur d'une mini-equipe d'audit paie / DSN dans Flowise.\n\nTu pilotes trois workers specialises :\n- DOC : recherche documentaire et justification reglementaire via des outils gouvernes\n- CALC : controles quantitatifs, calculs et verification de montants\n- REPORT : redaction de la restitution d'audit a partir des elements deja produits\n\nRegles de supervision :\n- Choisis toujours exactement un prochain worker parmi DOC, CALC ou REPORT.\n- Si la demande parle de regles, d'exception DSN, de justification ou de source, commence ou repasse par DOC.\n- Si la demande implique pourcentage, ecart, montant, variation ou recalcul, passe par CALC avant REPORT.\n- N'envoie REPORT qu'une fois que les elements utiles ont ete collectes. Pour une demande mixte documentaire + quantitatif, vise DOC puis CALC puis REPORT.\n- Si un humain rejette la synthese avec un feedback, tiens compte de ce feedback dans la prochaine instruction.\n- Tu n'ecris jamais la restitution finale toi-meme : tu delegues au worker REPORT.\n- Sois parcimonieux : pas de boucle inutile, pas de worker redondant."
+              }
+            ],
+            "llmEnableMemory": true,
+            "llmMemoryType": "allMessages",
+            "llmMemoryWindowSize": "20",
+            "llmMemoryMaxTokenLimit": "2000",
+            "llmUserMessage": "Choisis le prochain worker et donne-lui une instruction courte, exploitable et specifique. Valeurs autorisees pour next : DOC, CALC, REPORT.",
+            "llmReturnResponseAs": "userMessage",
+            "llmStructuredOutput": [
+              {
+                "key": "next",
+                "type": "enum",
+                "enumValues": "DOC, CALC, REPORT",
+                "description": "Nom du prochain worker a activer"
+              },
+              {
+                "key": "instructions",
+                "type": "string",
+                "description": "Sous-tache precise a accomplir par ce worker"
+              },
+              {
+                "key": "reasoning",
+                "type": "string",
+                "description": "Justification breve du choix"
+              }
+            ],
+            "llmUpdateState": [
+              { "key": "next", "value": "{{ output.next }}" },
+              { "key": "instruction", "value": "{{ output.instructions }}" }
+            ],
+            "llmModelConfig": {
+              "llmModel": "chatOpenAI",
+              "FLOWISE_CREDENTIAL_ID": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238",
+              "modelName": "gpt-4o-mini",
+              "temperature": 0.1,
+              "streaming": true,
+              "basepath": "https://ai-gateway.liora.tech/v1",
+              "allowImageUploads": false
+            }
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            { "label": "Model", "name": "llmModel", "type": "asyncOptions", "loadMethod": "listModels", "loadConfig": true },
+            {
+              "label": "Messages",
+              "name": "llmMessages",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                {
+                  "label": "Role",
+                  "name": "role",
+                  "type": "options",
+                  "options": [
+                    { "label": "System", "name": "system" },
+                    { "label": "Assistant", "name": "assistant" },
+                    { "label": "Developer", "name": "developer" },
+                    { "label": "User", "name": "user" }
+                  ]
+                },
+                {
+                  "label": "Content",
+                  "name": "content",
+                  "type": "string",
+                  "acceptVariable": true,
+                  "generateInstruction": true,
+                  "rows": 4
+                }
+              ]
+            },
+            {
+              "label": "Enable Memory",
+              "name": "llmEnableMemory",
+              "type": "boolean",
+              "description": "Enable memory for the conversation thread",
+              "default": true,
+              "optional": true
+            },
+            {
+              "label": "Memory Type",
+              "name": "llmMemoryType",
+              "type": "options",
+              "options": [
+                { "label": "All Messages", "name": "allMessages", "description": "Retrieve all messages from the conversation" },
+                { "label": "Window Size", "name": "windowSize", "description": "Uses a fixed window size to surface the last N messages" },
+                { "label": "Conversation Summary", "name": "conversationSummary", "description": "Summarizes the whole conversation" },
+                { "label": "Conversation Summary Buffer", "name": "conversationSummaryBuffer", "description": "Summarize conversations once token limit is reached. Default to 2000" }
+              ],
+              "optional": true,
+              "default": "allMessages",
+              "show": { "llmEnableMemory": true }
+            },
+            {
+              "label": "Window Size",
+              "name": "llmMemoryWindowSize",
+              "type": "number",
+              "default": "20",
+              "description": "Uses a fixed window size to surface the last N messages",
+              "show": { "llmMemoryType": "windowSize" }
+            },
+            {
+              "label": "Max Token Limit",
+              "name": "llmMemoryMaxTokenLimit",
+              "type": "number",
+              "default": "2000",
+              "description": "Summarize conversations once token limit is reached. Default to 2000",
+              "show": { "llmMemoryType": "conversationSummaryBuffer" }
+            },
+            {
+              "label": "Input Message",
+              "name": "llmUserMessage",
+              "type": "string",
+              "description": "Add an input message as user message at the end of the conversation",
+              "rows": 4,
+              "optional": true,
+              "acceptVariable": true,
+              "show": { "llmEnableMemory": true }
+            },
+            {
+              "label": "Return Response As",
+              "name": "llmReturnResponseAs",
+              "type": "options",
+              "options": [
+                { "label": "User Message", "name": "userMessage" },
+                { "label": "Assistant Message", "name": "assistantMessage" }
+              ],
+              "default": "userMessage"
+            },
+            {
+              "label": "JSON Structured Output",
+              "name": "llmStructuredOutput",
+              "description": "Instruct the LLM to give output in a JSON structured schema",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                { "label": "Key", "name": "key", "type": "string" },
+                {
+                  "label": "Type",
+                  "name": "type",
+                  "type": "options",
+                  "options": [
+                    { "label": "String", "name": "string" },
+                    { "label": "String Array", "name": "stringArray" },
+                    { "label": "Number", "name": "number" },
+                    { "label": "Boolean", "name": "boolean" },
+                    { "label": "Enum", "name": "enum" },
+                    { "label": "JSON Array", "name": "jsonArray" }
+                  ]
+                },
+                {
+                  "label": "Enum Values",
+                  "name": "enumValues",
+                  "type": "string",
+                  "placeholder": "value1, value2, value3",
+                  "description": "Enum values. Separated by comma",
+                  "optional": true,
+                  "show": { "llmStructuredOutput[$index].type": "enum" }
+                },
+                {
+                  "label": "JSON Schema",
+                  "name": "jsonSchema",
+                  "type": "code",
+                  "placeholder": "{\n    \"answer\": {\n        \"type\": \"string\",\n        \"description\": \"Value of the answer\"\n    }\n}",
+                  "description": "JSON schema for the structured output",
+                  "optional": true,
+                  "hideCodeExecute": true,
+                  "show": { "llmStructuredOutput[$index].type": "jsonArray" }
+                },
+                { "label": "Description", "name": "description", "type": "string", "placeholder": "Description of the key" }
+              ]
+            },
+            {
+              "label": "Update Flow State",
+              "name": "llmUpdateState",
+              "description": "Update runtime state during the execution of the workflow",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                { "label": "Key", "name": "key", "type": "asyncOptions", "loadMethod": "listRuntimeStateKeys" },
+                { "label": "Value", "name": "value", "type": "string", "acceptVariable": true, "acceptNodeOutputAsVariable": true }
+              ]
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "llmAgentflow_0-output-llmAgentflow",
+              "label": "LLM",
+              "name": "llmAgentflow"
+            }
+          ],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 157,
+        "height": 72
+      },
+      {
+        "id": "conditionAgentflow_0",
+        "type": "agentFlow",
+        "position": { "x": -230, "y": 190 },
+        "data": {
+          "id": "conditionAgentflow_0",
+          "label": "Dispatch Worker",
+          "version": 1.0,
+          "name": "conditionAgentflow",
+          "type": "Condition",
+          "color": "#FFB938",
+          "baseClasses": ["Condition"],
+          "category": "Agent Flows",
+          "description": "Split flows based on If Else conditions",
+          "inputs": {
+            "conditions": [
+              { "type": "string", "value1": "{{ $flow.state.next }}", "operation": "equal", "value2": "DOC" },
+              { "type": "string", "value1": "{{ $flow.state.next }}", "operation": "equal", "value2": "CALC" }
+            ]
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            {
+              "label": "Conditions",
+              "name": "conditions",
+              "type": "array",
+              "description": "Values to compare",
+              "acceptVariable": true
+            }
+          ],
+          "outputAnchors": [
+            { "id": "conditionAgentflow_0-output-0", "label": 0, "name": 0, "description": "Condition 0" },
+            { "id": "conditionAgentflow_0-output-1", "label": 1, "name": 1, "description": "Condition 1" },
+            { "id": "conditionAgentflow_0-output-2", "label": 2, "name": 2, "description": "Else" }
+          ],
+          "outputs": { "conditionAgentflow": "" },
+          "selected": false
+        },
+        "width": 194,
+        "height": 100
+      },
+      {
+        "id": "agentAgentflow_0",
+        "type": "agentFlow",
+        "position": { "x": 90, "y": 10 },
+        "data": {
+          "id": "agentAgentflow_0",
+          "label": "Worker - Doc",
+          "version": 3.2,
+          "name": "agentAgentflow",
+          "type": "Agent",
+          "color": "#4DD0E1",
+          "baseClasses": ["Agent"],
+          "category": "Agent Flows",
+          "description": "Dynamically choose and utilize tools during runtime, enabling multi-step reasoning",
+          "inputs": {
+            "agentModel": "chatOpenAI",
+            "agentMessages": [
+              {
+                "role": "system",
+                "content": "Tu es le worker DOC d'une equipe d'audit DSN.\n\nMission : rechercher la justification documentaire, la regle DSN, le perimetre gouverne ou le dossier d'exception utile a la question.\n\nContraintes :\n- utilise les outils gouvernes exposes, jamais de donnees brutes inventees\n- ne fais pas de calculs libres si ce n'est pas necessaire\n- restitue des faits courts et sourcables\n- si la source n'existe pas dans les outils, dis-le explicitement"
+              }
+            ],
+            "agentTools": [
+              {
+                "agentSelectedTool": "customMCP",
+                "agentSelectedToolConfig": {
+                  "mcpServerConfig": "{\n  \"url\": \"http://mcp-server:8000/mcp\"\n}",
+                  "mcpActions": [
+                    "search_documentary_sources",
+                    "get_exception_investigation_case",
+                    "get_audit_scope"
+                  ]
+                }
+              }
+            ],
+            "agentEnableMemory": true,
+            "agentMemoryType": "allMessages",
+            "agentUserMessage": "{{ $flow.state.instruction }}",
+            "agentReturnResponseAs": "assistantMessage",
+            "agentModelConfig": {
+              "agentModel": "chatOpenAI",
+              "FLOWISE_CREDENTIAL_ID": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238",
+              "modelName": "gpt-4o-mini",
+              "temperature": 0.1,
+              "streaming": true,
+              "basepath": "https://ai-gateway.liora.tech/v1",
+              "allowImageUploads": false
+            }
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            { "label": "Model", "name": "agentModel", "type": "asyncOptions", "loadMethod": "listModels", "loadConfig": true },
+            {
+              "label": "Messages",
+              "name": "agentMessages",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                {
+                  "label": "Role",
+                  "name": "role",
+                  "type": "options",
+                  "options": [
+                    { "label": "System", "name": "system" },
+                    { "label": "Assistant", "name": "assistant" },
+                    { "label": "Developer", "name": "developer" },
+                    { "label": "User", "name": "user" }
+                  ]
+                },
+                {
+                  "label": "Content",
+                  "name": "content",
+                  "type": "string",
+                  "acceptVariable": true,
+                  "generateInstruction": true,
+                  "rows": 4
+                }
+              ]
+            },
+            {
+              "label": "Tools",
+              "name": "agentTools",
+              "type": "array",
+              "optional": true,
+              "array": [
+                {
+                  "label": "Tool",
+                  "name": "agentSelectedTool",
+                  "type": "asyncOptions",
+                  "loadMethod": "listTools",
+                  "loadConfig": true
+                },
+                {
+                  "label": "Require Human Input",
+                  "name": "agentSelectedToolRequiresHumanInput",
+                  "type": "boolean",
+                  "optional": true
+                }
+              ]
+            },
+            {
+              "label": "Enable Memory",
+              "name": "agentEnableMemory",
+              "type": "boolean",
+              "description": "Enable memory for the conversation thread",
+              "default": true,
+              "optional": true
+            },
+            {
+              "label": "Memory Type",
+              "name": "agentMemoryType",
+              "type": "options",
+              "options": [
+                { "label": "All Messages", "name": "allMessages", "description": "Retrieve all messages from the conversation" },
+                { "label": "Window Size", "name": "windowSize", "description": "Uses a fixed window size to surface the last N messages" },
+                { "label": "Conversation Summary", "name": "conversationSummary", "description": "Summarizes the whole conversation" },
+                { "label": "Conversation Summary Buffer", "name": "conversationSummaryBuffer", "description": "Summarize conversations once token limit is reached. Default to 2000" }
+              ],
+              "optional": true,
+              "default": "allMessages",
+              "show": { "agentEnableMemory": true }
+            },
+            {
+              "label": "Window Size",
+              "name": "agentMemoryWindowSize",
+              "type": "number",
+              "default": "20",
+              "description": "Uses a fixed window size to surface the last N messages",
+              "show": { "agentMemoryType": "windowSize" }
+            },
+            {
+              "label": "Max Token Limit",
+              "name": "agentMemoryMaxTokenLimit",
+              "type": "number",
+              "default": "2000",
+              "description": "Summarize conversations once token limit is reached. Default to 2000",
+              "show": { "agentMemoryType": "conversationSummaryBuffer" }
+            },
+            {
+              "label": "Input Message",
+              "name": "agentUserMessage",
+              "type": "string",
+              "description": "Add an input message as user message at the end of the conversation",
+              "rows": 4,
+              "optional": true,
+              "acceptVariable": true,
+              "show": { "agentEnableMemory": true }
+            },
+            {
+              "label": "Return Response As",
+              "name": "agentReturnResponseAs",
+              "type": "options",
+              "options": [
+                { "label": "User Message", "name": "userMessage" },
+                { "label": "Assistant Message", "name": "assistantMessage" }
+              ],
+              "default": "userMessage"
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "agentAgentflow_0-output-agentAgentflow",
+              "label": "Agent",
+              "name": "agentAgentflow"
+            }
+          ],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 157,
+        "height": 72
+      },
+      {
+        "id": "agentAgentflow_1",
+        "type": "agentFlow",
+        "position": { "x": 90, "y": 210 },
+        "data": {
+          "id": "agentAgentflow_1",
+          "label": "Worker - Calc",
+          "version": 3.2,
+          "name": "agentAgentflow",
+          "type": "Agent",
+          "color": "#4DD0E1",
+          "baseClasses": ["Agent"],
+          "category": "Agent Flows",
+          "description": "Dynamically choose and utilize tools during runtime, enabling multi-step reasoning",
+          "inputs": {
+            "agentModel": "chatOpenAI",
+            "agentMessages": [
+              {
+                "role": "system",
+                "content": "Tu es le worker CALC d'une equipe d'audit DSN.\n\nMission : verifier les ecarts, calculer des montants, qualifier une variation suspecte et controler la coherence quantitative.\n\nContraintes :\n- utilise calculator pour les calculs\n- n'utilise l'outil MCP que pour recuperer une vue numerique ciblee ou un dossier d'exception utile au calcul\n- reste factuel et chiffre\n- ne redige pas la conclusion finale"
+              }
+            ],
+            "agentTools": [
+              {
+                "agentSelectedTool": "calculator",
+                "agentSelectedToolConfig": {}
+              },
+              {
+                "agentSelectedTool": "customMCP",
+                "agentSelectedToolConfig": {
+                  "mcpServerConfig": "{\n  \"url\": \"http://mcp-server:8000/mcp\"\n}",
+                  "mcpActions": [
+                    "aggregate_preprocessed_dsn_like",
+                    "get_exception_investigation_case",
+                    "get_audit_scope"
+                  ]
+                }
+              }
+            ],
+            "agentEnableMemory": true,
+            "agentMemoryType": "allMessages",
+            "agentUserMessage": "{{ $flow.state.instruction }}",
+            "agentReturnResponseAs": "assistantMessage",
+            "agentModelConfig": {
+              "agentModel": "chatOpenAI",
+              "FLOWISE_CREDENTIAL_ID": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238",
+              "modelName": "gpt-4o-mini",
+              "temperature": 0.1,
+              "streaming": true,
+              "basepath": "https://ai-gateway.liora.tech/v1",
+              "allowImageUploads": false
+            }
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            { "label": "Model", "name": "agentModel", "type": "asyncOptions", "loadMethod": "listModels", "loadConfig": true },
+            {
+              "label": "Messages",
+              "name": "agentMessages",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                {
+                  "label": "Role",
+                  "name": "role",
+                  "type": "options",
+                  "options": [
+                    { "label": "System", "name": "system" },
+                    { "label": "Assistant", "name": "assistant" },
+                    { "label": "Developer", "name": "developer" },
+                    { "label": "User", "name": "user" }
+                  ]
+                },
+                {
+                  "label": "Content",
+                  "name": "content",
+                  "type": "string",
+                  "acceptVariable": true,
+                  "generateInstruction": true,
+                  "rows": 4
+                }
+              ]
+            },
+            {
+              "label": "Tools",
+              "name": "agentTools",
+              "type": "array",
+              "optional": true,
+              "array": [
+                {
+                  "label": "Tool",
+                  "name": "agentSelectedTool",
+                  "type": "asyncOptions",
+                  "loadMethod": "listTools",
+                  "loadConfig": true
+                },
+                {
+                  "label": "Require Human Input",
+                  "name": "agentSelectedToolRequiresHumanInput",
+                  "type": "boolean",
+                  "optional": true
+                }
+              ]
+            },
+            {
+              "label": "Enable Memory",
+              "name": "agentEnableMemory",
+              "type": "boolean",
+              "description": "Enable memory for the conversation thread",
+              "default": true,
+              "optional": true
+            },
+            {
+              "label": "Memory Type",
+              "name": "agentMemoryType",
+              "type": "options",
+              "options": [
+                { "label": "All Messages", "name": "allMessages", "description": "Retrieve all messages from the conversation" },
+                { "label": "Window Size", "name": "windowSize", "description": "Uses a fixed window size to surface the last N messages" },
+                { "label": "Conversation Summary", "name": "conversationSummary", "description": "Summarizes the whole conversation" },
+                { "label": "Conversation Summary Buffer", "name": "conversationSummaryBuffer", "description": "Summarize conversations once token limit is reached. Default to 2000" }
+              ],
+              "optional": true,
+              "default": "allMessages",
+              "show": { "agentEnableMemory": true }
+            },
+            {
+              "label": "Window Size",
+              "name": "agentMemoryWindowSize",
+              "type": "number",
+              "default": "20",
+              "description": "Uses a fixed window size to surface the last N messages",
+              "show": { "agentMemoryType": "windowSize" }
+            },
+            {
+              "label": "Max Token Limit",
+              "name": "agentMemoryMaxTokenLimit",
+              "type": "number",
+              "default": "2000",
+              "description": "Summarize conversations once token limit is reached. Default to 2000",
+              "show": { "agentMemoryType": "conversationSummaryBuffer" }
+            },
+            {
+              "label": "Input Message",
+              "name": "agentUserMessage",
+              "type": "string",
+              "description": "Add an input message as user message at the end of the conversation",
+              "rows": 4,
+              "optional": true,
+              "acceptVariable": true,
+              "show": { "agentEnableMemory": true }
+            },
+            {
+              "label": "Return Response As",
+              "name": "agentReturnResponseAs",
+              "type": "options",
+              "options": [
+                { "label": "User Message", "name": "userMessage" },
+                { "label": "Assistant Message", "name": "assistantMessage" }
+              ],
+              "default": "userMessage"
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "agentAgentflow_1-output-agentAgentflow",
+              "label": "Agent",
+              "name": "agentAgentflow"
+            }
+          ],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 157,
+        "height": 72
+      },
+      {
+        "id": "agentAgentflow_2",
+        "type": "agentFlow",
+        "position": { "x": 90, "y": 410 },
+        "data": {
+          "id": "agentAgentflow_2",
+          "label": "Worker - Report",
+          "version": 3.2,
+          "name": "agentAgentflow",
+          "type": "Agent",
+          "color": "#4DD0E1",
+          "baseClasses": ["Agent"],
+          "category": "Agent Flows",
+          "description": "Dynamically choose and utilize tools during runtime, enabling multi-step reasoning",
+          "inputs": {
+            "agentModel": "chatOpenAI",
+            "agentMessages": [
+              {
+                "role": "system",
+                "content": "Tu es le worker REPORT d'une equipe d'audit DSN.\n\nMission : rediger une synthese d'audit exploitable par un humain a partir des messages precedents.\n\nContraintes :\n- n'invente aucune nouvelle source ni aucun nouveau calcul\n- appuie-toi uniquement sur les elements deja produits dans la conversation\n- structure la restitution avec : anomalie, constats, justification, source principale, actions recommandees, besoin de validation humaine\n- ton objectif est de produire une synthese courte, relisible et tracable"
+              }
+            ],
+            "agentTools": [],
+            "agentEnableMemory": true,
+            "agentMemoryType": "allMessages",
+            "agentUserMessage": "{{ $flow.state.instruction }}",
+            "agentReturnResponseAs": "assistantMessage",
+            "agentStructuredOutput": [
+              {
+                "key": "final_report",
+                "type": "string",
+                "description": "Synthese finale prete a etre revue par l auditeur"
+              },
+              {
+                "key": "validation_rationale",
+                "type": "string",
+                "description": "Pourquoi cette synthese doit etre relue ou validee"
+              }
+            ],
+            "agentUpdateState": [
+              { "key": "final_report", "value": "{{ output.final_report }}" }
+            ],
+            "agentModelConfig": {
+              "agentModel": "chatOpenAI",
+              "FLOWISE_CREDENTIAL_ID": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238",
+              "modelName": "gpt-4o-mini",
+              "temperature": 0.1,
+              "streaming": true,
+              "basepath": "https://ai-gateway.liora.tech/v1",
+              "allowImageUploads": false
+            }
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            { "label": "Model", "name": "agentModel", "type": "asyncOptions", "loadMethod": "listModels", "loadConfig": true },
+            {
+              "label": "Messages",
+              "name": "agentMessages",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                {
+                  "label": "Role",
+                  "name": "role",
+                  "type": "options",
+                  "options": [
+                    { "label": "System", "name": "system" },
+                    { "label": "Assistant", "name": "assistant" },
+                    { "label": "Developer", "name": "developer" },
+                    { "label": "User", "name": "user" }
+                  ]
+                },
+                {
+                  "label": "Content",
+                  "name": "content",
+                  "type": "string",
+                  "acceptVariable": true,
+                  "generateInstruction": true,
+                  "rows": 4
+                }
+              ]
+            },
+            {
+              "label": "Tools",
+              "name": "agentTools",
+              "type": "array",
+              "optional": true,
+              "array": [
+                {
+                  "label": "Tool",
+                  "name": "agentSelectedTool",
+                  "type": "asyncOptions",
+                  "loadMethod": "listTools",
+                  "loadConfig": true
+                },
+                {
+                  "label": "Require Human Input",
+                  "name": "agentSelectedToolRequiresHumanInput",
+                  "type": "boolean",
+                  "optional": true
+                }
+              ]
+            },
+            {
+              "label": "Enable Memory",
+              "name": "agentEnableMemory",
+              "type": "boolean",
+              "description": "Enable memory for the conversation thread",
+              "default": true,
+              "optional": true
+            },
+            {
+              "label": "Memory Type",
+              "name": "agentMemoryType",
+              "type": "options",
+              "options": [
+                { "label": "All Messages", "name": "allMessages", "description": "Retrieve all messages from the conversation" },
+                { "label": "Window Size", "name": "windowSize", "description": "Uses a fixed window size to surface the last N messages" },
+                { "label": "Conversation Summary", "name": "conversationSummary", "description": "Summarizes the whole conversation" },
+                { "label": "Conversation Summary Buffer", "name": "conversationSummaryBuffer", "description": "Summarize conversations once token limit is reached. Default to 2000" }
+              ],
+              "optional": true,
+              "default": "allMessages",
+              "show": { "agentEnableMemory": true }
+            },
+            {
+              "label": "Window Size",
+              "name": "agentMemoryWindowSize",
+              "type": "number",
+              "default": "20",
+              "description": "Uses a fixed window size to surface the last N messages",
+              "show": { "agentMemoryType": "windowSize" }
+            },
+            {
+              "label": "Max Token Limit",
+              "name": "agentMemoryMaxTokenLimit",
+              "type": "number",
+              "default": "2000",
+              "description": "Summarize conversations once token limit is reached. Default to 2000",
+              "show": { "agentMemoryType": "conversationSummaryBuffer" }
+            },
+            {
+              "label": "Input Message",
+              "name": "agentUserMessage",
+              "type": "string",
+              "description": "Add an input message as user message at the end of the conversation",
+              "rows": 4,
+              "optional": true,
+              "acceptVariable": true,
+              "show": { "agentEnableMemory": true }
+            },
+            {
+              "label": "Return Response As",
+              "name": "agentReturnResponseAs",
+              "type": "options",
+              "options": [
+                { "label": "User Message", "name": "userMessage" },
+                { "label": "Assistant Message", "name": "assistantMessage" }
+              ],
+              "default": "userMessage"
+            },
+            {
+              "label": "JSON Structured Output",
+              "name": "agentStructuredOutput",
+              "description": "Instruct the Agent to give output in a JSON structured schema",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                { "label": "Key", "name": "key", "type": "string" },
+                {
+                  "label": "Type",
+                  "name": "type",
+                  "type": "options",
+                  "options": [
+                    { "label": "String", "name": "string" },
+                    { "label": "String Array", "name": "stringArray" },
+                    { "label": "Number", "name": "number" },
+                    { "label": "Boolean", "name": "boolean" },
+                    { "label": "Enum", "name": "enum" },
+                    { "label": "JSON Array", "name": "jsonArray" }
+                  ]
+                },
+                {
+                  "label": "Enum Values",
+                  "name": "enumValues",
+                  "type": "string",
+                  "placeholder": "value1, value2, value3",
+                  "description": "Enum values. Separated by comma",
+                  "optional": true,
+                  "show": { "agentStructuredOutput[$index].type": "enum" }
+                },
+                {
+                  "label": "JSON Schema",
+                  "name": "jsonSchema",
+                  "type": "code",
+                  "placeholder": "{\n    \"answer\": {\n        \"type\": \"string\",\n        \"description\": \"Value of the answer\"\n    }\n}",
+                  "description": "JSON schema for the structured output",
+                  "optional": true,
+                  "hideCodeExecute": true,
+                  "show": { "agentStructuredOutput[$index].type": "jsonArray" }
+                },
+                { "label": "Description", "name": "description", "type": "string", "placeholder": "Description of the key" }
+              ]
+            },
+            {
+              "label": "Update Flow State",
+              "name": "agentUpdateState",
+              "description": "Update runtime state during the execution of the workflow",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                { "label": "Key", "name": "key", "type": "asyncOptions", "loadMethod": "listRuntimeStateKeys" },
+                { "label": "Value", "name": "value", "type": "string", "acceptVariable": true, "acceptNodeOutputAsVariable": true }
+              ]
+            }
+          ],
+          "outputAnchors": [
+            {
+              "id": "agentAgentflow_2-output-agentAgentflow",
+              "label": "Agent",
+              "name": "agentAgentflow"
+            }
+          ],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 157,
+        "height": 72
+      },
+      {
+        "id": "loopAgentflow_0",
+        "type": "agentFlow",
+        "position": { "x": 360, "y": 25 },
+        "data": {
+          "id": "loopAgentflow_0",
+          "label": "Loop to Supervisor",
+          "version": 1.2,
+          "name": "loopAgentflow",
+          "type": "Loop",
+          "color": "#FFA07A",
+          "hideOutput": true,
+          "baseClasses": ["Loop"],
+          "category": "Agent Flows",
+          "description": "Loop back to a previous node",
+          "inputs": {
+            "loopBackToNode": "llmAgentflow_0-Supervisor",
+            "maxLoopCount": 5,
+            "fallbackMessage": "",
+            "loopUpdateState": []
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            { "label": "Loop Back To", "name": "loopBackToNode", "type": "asyncOptions", "loadMethod": "listPreviousNodes", "freeSolo": true },
+            { "label": "Max Loop Count", "name": "maxLoopCount", "type": "number", "default": 5 },
+            {
+              "label": "Fallback Message",
+              "name": "fallbackMessage",
+              "type": "string",
+              "description": "Message to display if the loop count is exceeded",
+              "placeholder": "Enter your fallback message here",
+              "rows": 4,
+              "acceptVariable": true,
+              "optional": true
+            },
+            {
+              "label": "Update Flow State",
+              "name": "loopUpdateState",
+              "description": "Update runtime state during the execution of the workflow",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                { "label": "Key", "name": "key", "type": "asyncOptions", "loadMethod": "listRuntimeStateKeys" },
+                { "label": "Value", "name": "value", "type": "string", "acceptVariable": true, "acceptNodeOutputAsVariable": true }
+              ]
+            }
+          ],
+          "outputAnchors": [],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 195,
+        "height": 66
+      },
+      {
+        "id": "loopAgentflow_1",
+        "type": "agentFlow",
+        "position": { "x": 360, "y": 225 },
+        "data": {
+          "id": "loopAgentflow_1",
+          "label": "Loop to Supervisor",
+          "version": 1.2,
+          "name": "loopAgentflow",
+          "type": "Loop",
+          "color": "#FFA07A",
+          "hideOutput": true,
+          "baseClasses": ["Loop"],
+          "category": "Agent Flows",
+          "description": "Loop back to a previous node",
+          "inputs": {
+            "loopBackToNode": "llmAgentflow_0-Supervisor",
+            "maxLoopCount": 5,
+            "fallbackMessage": "",
+            "loopUpdateState": []
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            { "label": "Loop Back To", "name": "loopBackToNode", "type": "asyncOptions", "loadMethod": "listPreviousNodes", "freeSolo": true },
+            { "label": "Max Loop Count", "name": "maxLoopCount", "type": "number", "default": 5 },
+            {
+              "label": "Fallback Message",
+              "name": "fallbackMessage",
+              "type": "string",
+              "description": "Message to display if the loop count is exceeded",
+              "placeholder": "Enter your fallback message here",
+              "rows": 4,
+              "acceptVariable": true,
+              "optional": true
+            },
+            {
+              "label": "Update Flow State",
+              "name": "loopUpdateState",
+              "description": "Update runtime state during the execution of the workflow",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                { "label": "Key", "name": "key", "type": "asyncOptions", "loadMethod": "listRuntimeStateKeys" },
+                { "label": "Value", "name": "value", "type": "string", "acceptVariable": true, "acceptNodeOutputAsVariable": true }
+              ]
+            }
+          ],
+          "outputAnchors": [],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 195,
+        "height": 66
+      },
+      {
+        "id": "humanInputAgentflow_0",
+        "type": "agentFlow",
+        "position": { "x": 380, "y": 430 },
+        "data": {
+          "id": "humanInputAgentflow_0",
+          "label": "Human Input",
+          "version": 1.0,
+          "name": "humanInputAgentflow",
+          "type": "HumanInput",
+          "color": "#6E6EFD",
+          "baseClasses": ["HumanInput"],
+          "category": "Agent Flows",
+          "description": "Request human input, approval or rejection during execution",
+          "inputs": {
+            "humanInputDescriptionType": "fixed",
+            "humanInputDescription": "Validez-vous cette alerte d'audit et sa restitution ? En cas de rejet, donnez un feedback precis sur ce qui manque ou doit etre corrige.",
+            "humanInputModel": "chatOpenAI",
+            "humanInputModelPrompt": "",
+            "humanInputEnableFeedback": true
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            {
+              "label": "Description Type",
+              "name": "humanInputDescriptionType",
+              "type": "options",
+              "options": [
+                { "label": "Fixed", "name": "fixed" },
+                { "label": "Dynamic", "name": "dynamic" }
+              ]
+            },
+            {
+              "label": "Description",
+              "name": "humanInputDescription",
+              "type": "string",
+              "placeholder": "Are you sure you want to proceed?",
+              "rows": 4,
+              "acceptVariable": true,
+              "show": {
+                "humanInputDescriptionType": "fixed"
+              }
+            },
+            {
+              "label": "Model",
+              "name": "humanInputModel",
+              "type": "asyncOptions",
+              "loadMethod": "listModels",
+              "loadConfig": true,
+              "show": {
+                "humanInputDescriptionType": "dynamic"
+              }
+            },
+            {
+              "label": "Prompt",
+              "name": "humanInputModelPrompt",
+              "type": "string",
+              "acceptVariable": true,
+              "generateInstruction": true,
+              "rows": 4,
+              "show": {
+                "humanInputDescriptionType": "dynamic"
+              }
+            },
+            { "label": "Enable Feedback", "name": "humanInputEnableFeedback", "type": "boolean", "default": true }
+          ],
+          "outputAnchors": [
+            { "id": "humanInputAgentflow_0-output-proceed", "label": "Proceed", "name": "proceed" },
+            { "id": "humanInputAgentflow_0-output-reject", "label": "Reject", "name": "reject" }
+          ],
+          "outputs": {
+            "proceed": "Proceed",
+            "reject": "Reject"
+          },
+          "selected": false
+        },
+        "width": 192,
+        "height": 128
+      },
+      {
+        "id": "loopAgentflow_2",
+        "type": "agentFlow",
+        "position": { "x": 680, "y": 520 },
+        "data": {
+          "id": "loopAgentflow_2",
+          "label": "Loop to Supervisor",
+          "version": 1.2,
+          "name": "loopAgentflow",
+          "type": "Loop",
+          "color": "#FFA07A",
+          "hideOutput": true,
+          "baseClasses": ["Loop"],
+          "category": "Agent Flows",
+          "description": "Loop back to a previous node",
+          "inputs": {
+            "loopBackToNode": "llmAgentflow_0-Supervisor",
+            "maxLoopCount": 5,
+            "fallbackMessage": "",
+            "loopUpdateState": []
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            { "label": "Loop Back To", "name": "loopBackToNode", "type": "asyncOptions", "loadMethod": "listPreviousNodes", "freeSolo": true },
+            { "label": "Max Loop Count", "name": "maxLoopCount", "type": "number", "default": 5 },
+            {
+              "label": "Fallback Message",
+              "name": "fallbackMessage",
+              "type": "string",
+              "description": "Message to display if the loop count is exceeded",
+              "placeholder": "Enter your fallback message here",
+              "rows": 4,
+              "acceptVariable": true,
+              "optional": true
+            },
+            {
+              "label": "Update Flow State",
+              "name": "loopUpdateState",
+              "description": "Update runtime state during the execution of the workflow",
+              "type": "array",
+              "optional": true,
+              "acceptVariable": true,
+              "array": [
+                { "label": "Key", "name": "key", "type": "asyncOptions", "loadMethod": "listRuntimeStateKeys" },
+                { "label": "Value", "name": "value", "type": "string", "acceptVariable": true, "acceptNodeOutputAsVariable": true }
+              ]
+            }
+          ],
+          "outputAnchors": [],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 195,
+        "height": 66
+      },
+      {
+        "id": "directReplyAgentflow_0",
+        "type": "agentFlow",
+        "position": { "x": 690, "y": 360 },
+        "data": {
+          "id": "directReplyAgentflow_0",
+          "label": "Direct Reply",
+          "version": 1,
+          "name": "directReplyAgentflow",
+          "type": "DirectReply",
+          "color": "#4DDBBB",
+          "hideOutput": true,
+          "baseClasses": ["DirectReply"],
+          "category": "Agent Flows",
+          "description": "Directly reply to the user with a message",
+          "inputs": {
+            "directReplyMessage": "{{ $flow.state.final_report }}"
+          },
+          "inputAnchors": [],
+          "inputParams": [
+            { "label": "Message", "name": "directReplyMessage", "type": "string", "rows": 4, "acceptVariable": true }
+          ],
+          "outputAnchors": [],
+          "outputs": {},
+          "selected": false
+        },
+        "width": 143,
+        "height": 66
+      }
+    ],
+    "edges": [
+      {
+        "source": "startAgentflow_0",
+        "sourceHandle": "startAgentflow_0-output-startAgentflow",
+        "target": "llmAgentflow_0",
+        "targetHandle": "llmAgentflow_0",
+        "data": { "sourceColor": "#7EE787", "targetColor": "#64B5F6", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-start-supervisor"
+      },
+      {
+        "source": "llmAgentflow_0",
+        "sourceHandle": "llmAgentflow_0-output-llmAgentflow",
+        "target": "conditionAgentflow_0",
+        "targetHandle": "conditionAgentflow_0",
+        "data": { "sourceColor": "#64B5F6", "targetColor": "#FFB938", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-supervisor-condition"
+      },
+      {
+        "source": "conditionAgentflow_0",
+        "sourceHandle": "conditionAgentflow_0-output-0",
+        "target": "agentAgentflow_0",
+        "targetHandle": "agentAgentflow_0",
+        "data": { "sourceColor": "#FFB938", "targetColor": "#4DD0E1", "edgeLabel": "DOC", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-condition-doc"
+      },
+      {
+        "source": "conditionAgentflow_0",
+        "sourceHandle": "conditionAgentflow_0-output-1",
+        "target": "agentAgentflow_1",
+        "targetHandle": "agentAgentflow_1",
+        "data": { "sourceColor": "#FFB938", "targetColor": "#4DD0E1", "edgeLabel": "CALC", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-condition-calc"
+      },
+      {
+        "source": "conditionAgentflow_0",
+        "sourceHandle": "conditionAgentflow_0-output-2",
+        "target": "agentAgentflow_2",
+        "targetHandle": "agentAgentflow_2",
+        "data": { "sourceColor": "#FFB938", "targetColor": "#4DD0E1", "edgeLabel": "REPORT", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-condition-report"
+      },
+      {
+        "source": "agentAgentflow_0",
+        "sourceHandle": "agentAgentflow_0-output-agentAgentflow",
+        "target": "loopAgentflow_0",
+        "targetHandle": "loopAgentflow_0",
+        "data": { "sourceColor": "#4DD0E1", "targetColor": "#FFA07A", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-doc-loop"
+      },
+      {
+        "source": "agentAgentflow_1",
+        "sourceHandle": "agentAgentflow_1-output-agentAgentflow",
+        "target": "loopAgentflow_1",
+        "targetHandle": "loopAgentflow_1",
+        "data": { "sourceColor": "#4DD0E1", "targetColor": "#FFA07A", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-calc-loop"
+      },
+      {
+        "source": "agentAgentflow_2",
+        "sourceHandle": "agentAgentflow_2-output-agentAgentflow",
+        "target": "humanInputAgentflow_0",
+        "targetHandle": "humanInputAgentflow_0",
+        "data": { "sourceColor": "#4DD0E1", "targetColor": "#6E6EFD", "isHumanInput": false },
+        "type": "agentFlow",
+        "id": "edge-report-human"
+      },
+      {
+        "source": "humanInputAgentflow_0",
+        "sourceHandle": "humanInputAgentflow_0-output-proceed",
+        "target": "directReplyAgentflow_0",
+        "targetHandle": "directReplyAgentflow_0",
+        "data": { "sourceColor": "#6E6EFD", "targetColor": "#4DDBBB", "edgeLabel": "Proceed", "isHumanInput": true },
+        "type": "agentFlow",
+        "id": "edge-human-proceed"
+      },
+      {
+        "source": "humanInputAgentflow_0",
+        "sourceHandle": "humanInputAgentflow_0-output-reject",
+        "target": "loopAgentflow_2",
+        "targetHandle": "loopAgentflow_2",
+        "data": { "sourceColor": "#6E6EFD", "targetColor": "#FFA07A", "edgeLabel": "Reject", "isHumanInput": true },
+        "type": "agentFlow",
+        "id": "edge-human-reject"
+      }
+    ]
+  }
+}

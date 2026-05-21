@@ -180,7 +180,7 @@ Posez ces questions et notez le comportement :
 3. `Donne-moi le taux de cotisation retraite AGIRC-ARRCO exact pour 2024.` — hallucination ou refus ?
 4. `Calcule le net à payer d'un salarié avec un brut de 2800€ en tenant compte de toutes les cotisations.` — l'agent reconnaît-il ses limites (données manquantes) ?
 
-**Conclusion :** quelles questions l'agent gère-t-il bien seul ? Quand lui manque-t-il des données (→ besoin du RAG, J5) ?
+**Conclusion :** quelles questions l'agent gère-t-il bien seul ? Quand lui manque-t-il des données (→ besoin du RAG agentique, deuxième flow de J4) ?
 
 ---
 
@@ -191,16 +191,16 @@ Posez ces questions et notez le comportement :
 | Boucle agentique | Les intermediate steps montrent Thought / Action / Observation |
 | Séparation raisonnement / outil | L'outil calcule, le LLM interprète et reformule |
 | Prompt système agentique | Modifier le prompt change les décisions de l'agent |
-| Limites du savoir paramétrique | Sans RAG, l'agent invente ou refuse — prépare J5 |
+| Limites du savoir paramétrique | Sans RAG, l'agent invente ou refuse — prépare le flow `J4 - Agent RAG` |
 | Function calling | Le modèle choisit l'outil, l'invoque et traite le résultat |
 
 ---
 
-## Transition vers le Flow 5 (J5 - Agent RAG)
+## Transition vers le Flow 4 (J4 - Agent RAG)
 
 Le flow J4 a une limite claire : l'agent ne connaît pas vos documents. S'il pose une question sur un taux URSSAF spécifique, il répond depuis son entraînement (potentiellement obsolète) ou refuse.
 
-**Flow 5** ajoutera un outil `retrieverTool` connecté au vector store J2. L'agent pourra alors :
+**Le flow J4 - Agent RAG** ajoutera un outil `retrieverTool` connecté au vector store J2. L'agent pourra alors :
 1. Chercher dans les documents DSN si nécessaire
 2. Combiner une recherche documentaire + un calcul
 3. Citer ses sources

@@ -14,12 +14,12 @@ Adopter **Flowise** comme outil unique couvrant l'intégralité du programme 7 j
 L'architecture précédente nécessitait deux outils (Open WebUI pour le chat/RAG, n8n pour les workflows/agents/MCP). Cela imposait un changement d'interface à J3 et complexifiait la progression pédagogique.
 
 Flowise couvre seul :
-- Chat LLM (J1)
-- Pipeline RAG visuel (J2)
-- Workflow automation (J3) — via HTTP, Iteration, Condition, Custom Function
-- Contrôles déterministes (J4) — via Condition + Code + LLM
-- Agents + HITL (J5)
-- Multi-agents + MCP (J6)
+- Chat LLM et prompting (J1)
+- Comparaison de modèles et réglages (J2)
+- Pipeline RAG visuel et fiabilité (J3)
+- Agents et agent RAG (J4)
+- MCP et accès contrôlé aux données (J5)
+- Multi-agents + HITL (J6)
 - Projet final (J7)
 
 ## Contraintes
@@ -167,17 +167,45 @@ Le MCP Server (`./mcp-server/server.py`) utilise `mcp.sse_app()` (transport SSE 
 
 Corrigé avant intégration J6.
 
-## Couverture jour par jour
+## Planning final jour par jour
 
 | Jour | Sujet | Dans Flowise |
 |------|-------|-------------|
-| J1 | Prompting, réglages LLM | Interface chat intégrée, multi-modèles (OpenAI/Claude/Gemini/Ollama), température/tokens, output parser, system prompt |
-| J2 | RAG, fiabilité, citations | Pipeline visuel : Document Loader → Text Splitter → Embeddings → Vector Store. Agent + Knowledge Base. `sourceDocuments` dans la réponse. Comparaison avec/sans RAG |
-| J3 | Premier workflow | Read File/CSV → HTTP → LLM → Condition → Code. Sortie structurée JSON. Trigger manuel ou webhook |
-| J4 | Contrôles déterministes | Condition node, Custom Function (JS), LLM node, Iteration. Boucle sur lignes CSV, détection d'anomalies |
-| J5 | Agents + HITL | Agent node (ReAct, Tool, OpenAI Assistant), System prompt, tools personnalisés, Human Input node |
-| J6 | MCP, données | MCP Stdio + Streamable HTTP nodes. SQL Agent PostgreSQL. Requêtes ciblées vs extraction brute |
-| J7 | Projet final | AgentFlow V2 : assemblage de tous les nodes en un flux unique, multi-agents, validation humaine, rapport |
+| J1 | Introduction à l'IA et prompting de base | Interface chat intégrée. Prompt simple, rôle/contexte/tâche/format, premières limites, premiers cas audit |
+| J2 | Psychologie des modèles et prompting avancé | Multi-modèles (OpenAI/Claude/Gemini/Ollama), température/tokens, prompt système, few-shot, comparaison de réponses, confidentialité appliquée |
+| J3 | RAG, fiabilité, citations | Pipeline visuel : Document Loader → Text Splitter → Embeddings → Vector Store. Comparaison avec/sans RAG. `sourceDocuments`, double check, cas limites |
+| J4 | Agents avec Flowise | Agent node, system prompt agentique, tools, mémoire, différence chat vs agent. Construction d'un agent simple puis d'un agent RAG |
+| J5 | MCP et accès contrôlé aux données | MCP Stdio + Streamable HTTP nodes. SQL Agent PostgreSQL. Requêtes ciblées, filtrage, agrégation, exposition d'outils plutôt qu'envoi brut |
+| J6 | Systèmes multi-agents et validation humaine | AgentFlow V2, Supervisor, outils partagés, Human Input node, distribution des rôles, point d'arrêt de validation |
+| J7 | Projet final | Assemblage complet : ingestion, contrôle, assistance documentaire, validation humaine, rapport, grille de fiabilité |
+
+## Roadmap des flows pédagogiques
+
+L'objectif est de faire progresser les apprenants dans Flowise sans changer d'outil ni de paradigme visuel. Chaque flow sert de support de démo, de manipulation et de reconstruction partielle ou complète.
+
+| Flow | Jour | Rôle pédagogique | Contenu attendu |
+|---|---|---|---|
+| Flow 1 | J1-J2 | Chat d'acculturation et prompting | Chat simple, changement de modèle, température, prompt system, few-shot, tests de confidentialité |
+| Flow 2 | J3 | Assistant documentaire RAG | Corpus DSN, ingestion dossier + upload manuel, embeddings, vector store, retrieval, réponse sourcée, tests de fiabilité |
+| Flow 3 | J4 | Introduction aux agents | Agent simple avec prompt agentique, outils ciblés, mémoire, explication du cycle agentique |
+| Flow 4 | J4 | Agent RAG | Agent branché sur la base documentaire J3 pour comparer QA chain vs agent RAG |
+| Flow 5 | J5 | Agent connecté via MCP | Appels outillés vers vues de données, filtres, agrégations, requêtes contrôlées |
+| Flow 6 | J6 | Multi-agent supervisé | Plusieurs agents spécialisés, orchestration, validation humaine, restitution consolidée |
+| Flow 7 | J7 | Prototype final | Flow complet assemblant les briques utiles au cas d'usage d'audit |
+
+## Progression pédagogique retenue
+
+La progression finale suit une logique de maturité d'usage plutôt qu'une logique d'inventaire des concepts :
+
+1. parler correctement à un modèle
+2. comprendre que tous les modèles ne répondent pas pareil
+3. fiabiliser les réponses avec une base documentaire
+4. passer du chat à l'agent
+5. connecter l'agent à des outils et données de façon contrôlée
+6. faire collaborer plusieurs agents sous supervision humaine
+7. assembler un prototype métier cohérent
+
+Cette progression rend le passage au `Flow 3` plus naturel : les apprenants ont déjà vu le prompt, les réglages de modèle et le RAG avant d'aborder la logique agentique.
 
 ## Constats
 

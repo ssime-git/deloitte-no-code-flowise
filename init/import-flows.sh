@@ -223,6 +223,11 @@ for fname in sorted(os.listdir(flows_dir)):
         continue
 
     raw_flow_data = data.get('flowData', data)
+    flow_type = data.get('type', 'CHATFLOW')
+    if flow_type not in {'CHATFLOW', 'AGENTFLOW', 'MULTIAGENT', 'ASSISTANT'}:
+        print(f"[import-flows] ERROR: Unsupported flow type '{flow_type}' in {fname}. Skipping.")
+        has_error = True
+        continue
     flow_data = json.dumps(raw_flow_data) if not isinstance(raw_flow_data, str) else raw_flow_data
     chatbot_config = data.get('chatbotConfig', '')
     flow_id = str(uuid.uuid4())
@@ -233,12 +238,12 @@ for fname in sorted(os.listdir(flows_dir)):
 VALUES ('{flow_id}', '{flow_name.replace(chr(39), chr(39)+chr(39))}',
         ${delim}${flow_data}${delim}$,
         '{chatbot_config.replace(chr(39), chr(39)+chr(39))}',
-        'CHATFLOW', '{ws_id}', NOW(), NOW())"""
+        '{flow_type}', '{ws_id}', NOW(), NOW())"""
     else:
         sql = f"""INSERT INTO chat_flow (id, name, "flowData", type, "workspaceId", "createdDate", "updatedDate")
 VALUES ('{flow_id}', '{flow_name.replace(chr(39), chr(39)+chr(39))}',
         ${delim}${flow_data}${delim}$,
-        'CHATFLOW', '{ws_id}', NOW(), NOW())"""
+        '{flow_type}', '{ws_id}', NOW(), NOW())"""
     psql(sql)
     print(f"[import-flows] OK: flow '{flow_name}' imported ({fname})")
 

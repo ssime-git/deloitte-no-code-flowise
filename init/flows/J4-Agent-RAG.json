@@ -1,5 +1,5 @@
 {
-  "name": "J5 - Agent RAG",
+  "name": "J4 - Agent RAG",
   "type": "CHATFLOW",
   "flowData": {
     "nodes": [
@@ -21,7 +21,7 @@
             "Runnable"
           ],
           "inputs": {
-            "modelName": "gpt-4.1-nano",
+            "modelName": "gpt-4o-mini",
             "temperature": 0.3,
             "streaming": true,
             "basepath": "https://ai-gateway.liora.tech/v1"

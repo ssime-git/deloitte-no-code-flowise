@@ -47,6 +47,8 @@ services:
       APIKEY_PATH: /root/.flowise/apikeys
       SECRETKEY_PATH: /root/.flowise
       PATH_TRAVERSAL_SAFETY: "false"
+      HTTP_SECURITY_CHECK: "false"
+      CUSTOM_MCP_SECURITY_CHECK: "false"
       GENERIC_TIMEZONE: ${TIMEZONE:-Europe/Paris}
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/v1/ping"]

@@ -1,4 +1,4 @@
-# TP J5 — Agent RAG : raisonnement documenté, calcul et production de fiches d'exception
+# TP J4 — Agent RAG : raisonnement documenté, calcul et production de fiches d'exception
 
 **Public** : Utilisateurs métier — pas de code, pas de terminal.
 
@@ -10,14 +10,14 @@
 
 ## Positionnement pédagogique
 
-Le flow J5 est l'aboutissement du parcours J1→J5 :
+Le flow J4 - Agent RAG est l'aboutissement de la journée Agents :
 
 | Flow | Ce que l'agent peut faire |
 |------|--------------------------|
 | J1 | Répondre à des questions générales depuis sa mémoire |
 | J2 | Rechercher dans un corpus et citer des passages |
 | J4 | Utiliser des outils (calculatrice, date) à la demande |
-| **J5** | **Combiner recherche documentaire + calcul + raisonnement pour produire des fiches d'audit structurées** |
+| **J4 - Agent RAG** | **Combiner recherche documentaire + calcul + raisonnement pour produire des fiches d'audit structurées** |
 
 Le corpus pédagogique contient 6 notes de référence couvrant :
 - Les règles de contrôle URSSAF (`URSSAF-CTRL-001`, `URSSAF-CTRL-002`)
@@ -32,11 +32,11 @@ Le corpus pédagogique contient 6 notes de référence couvrant :
 
 1. Ouvrir **http://localhost:3000**
 2. Se connecter : `admin@local.dev` / `changeme_admin_password`
-3. Ouvrir **J5 - Agent RAG**
+3. Ouvrir **J4 - Agent RAG**
 
 ---
 
-## Le flow J5 en une minute
+## Le flow J4 - Agent RAG en une minute
 
 | Bloc | Rôle |
 |------|------|
@@ -47,10 +47,10 @@ Le corpus pédagogique contient 6 notes de référence couvrant :
 | **Calculator** | Calcule des expressions mathématiques |
 | **CurrentDateTime** | Retourne la date et l'heure actuelles |
 | **Buffer Memory** | Mémorise l'historique de la conversation |
-| **OpenAI** | Modèle LLM (gpt-4.1-nano, temp 0.3) |
+| **OpenAI** | Modèle LLM (gpt-4o-mini, temp 0.3) |
 | **Tool Agent** | Orchestre les 3 outils selon le besoin |
 
-**La différence avec J2 :** en J2, l'agent *répond toujours depuis le corpus*. En J5, l'agent *choisit* quand chercher, quand calculer, quand combiner les deux — et il peut refuser si les données sont insuffisantes.
+**La différence avec J2 :** en J2, l'agent *répond toujours depuis le corpus*. En J4 - Agent RAG, l'agent *choisit* quand chercher, quand calculer, quand combiner les deux — et il peut refuser si les données sont insuffisantes.
 
 ---
 
@@ -413,11 +413,15 @@ Un agent bien configuré doit obtenir 4/4 sur les challenges 1 à 6. Les challen
 
 ---
 
-## Transition vers le Flow 6 (J6 - Multi-agents)
+## Transition vers le Flow 5 (J5 - Agent MCP)
 
-Le flow J5 montre qu'un seul agent peut combiner plusieurs capacités. La limite devient visible quand :
-- La tâche d'audit devient trop longue pour un seul contexte
-- On veut des agents spécialisés (un agent vérificateur, un agent rédacteur de rapport)
-- On veut une validation humaine entre deux étapes
+Le flow J4 - Agent RAG montre qu'un seul agent peut combiner plusieurs capacités. La limite suivante apparaît quand :
+- on ne veut plus exposer directement un corpus ou des fichiers au modèle
+- on veut donner à l'agent uniquement des vues filtrées, agrégées ou déjà gouvernées
+- on veut contrôler précisément quelles données peuvent sortir d'un outil
 
-Le Flow 6 introduira un **superviseur** qui délègue à plusieurs agents workers spécialisés, avec une étape optionnelle de validation humaine (human-in-the-loop).
+Le flow `J5 - Agent MCP` introduira un agent connecté à des **outils MCP**. Il pourra :
+- interroger un périmètre d'audit contrôlé
+- récupérer des agrégations plutôt que des lignes brutes
+- ouvrir un dossier d'exception déjà assaini
+- rechercher une source documentaire ciblée sans exposer tout le jeu de données

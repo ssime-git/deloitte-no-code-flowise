@@ -7,6 +7,14 @@ if [ -f .env ]; then
   set +a
 fi
 
+COMPOSE_FLAGS=()
+if [ -n "${COMPOSE_PROFILE:-}" ] && [ -z "${COMPOSE_PROFILES:-}" ]; then
+  export COMPOSE_PROFILES="$COMPOSE_PROFILE"
+fi
+if [ -n "${COMPOSE_PROFILES:-}" ]; then
+  COMPOSE_FLAGS+=(--profile "$COMPOSE_PROFILES")
+fi
+
 case "${1:-}" in
   --help)
     cat <<EOF
@@ -39,7 +47,7 @@ if [ "$FORCE" = false ]; then
 fi
 
 echo "Stopping stack and removing volumes..."
-docker compose down -v
+docker compose "${COMPOSE_FLAGS[@]}" down -v
 
 echo "Cleaning student project files..."
 shopt -s dotglob nullglob
@@ -47,7 +55,7 @@ rm -rf project/*
 shopt -u dotglob nullglob
 
 echo "Starting stack..."
-docker compose up -d
+docker compose "${COMPOSE_FLAGS[@]}" up -d
 
 echo "Waiting for Flowise..."
 FLOWISE_PORT="${FLOWISE_PORT:-3000}"

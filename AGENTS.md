@@ -206,6 +206,16 @@ Key node versions and their input structure:
 - the `name` and `description` fields are exposed to the LLM — clear descriptions are critical for correct tool selection
 - `returnSourceDocuments: true` adds source metadata to the prediction response under `sourceDocuments`
 
+#### customMCP (v1.1)
+- anchors: none
+- params: `mcpServerConfig` (code), `mcpActions` (asyncMultiOptions, refresh=true)
+- baseClasses: `Tool`
+- for remote MCP over HTTP, use a config object with no `command`, for example:
+  - `{"url": "http://mcp-server:8000/mcp"}`
+- when `command` is absent, Flowise treats the MCP server as remote HTTP transport
+- selected actions are stored in `inputs.mcpActions` and must be present in imported flow JSON
+- for FastMCP streamable HTTP, the canonical endpoint path is `/mcp`, not `/health`
+
 ### Version mismatch issue
 
 When a node's `version` in flowData doesn't match the installed component version, Flowise shows "Node version X outdated Update to latest version Y" in the UI. More critically, this can cause:
@@ -243,6 +253,26 @@ For J2 with **In-Memory Vector Store**:
 - `folderFiles` and `fileLoader` can coexist on the same `document` input
 - after import, verify both startup upsert and normal prediction, because `fileLoader` can break both paths if its `inputs.file` default is missing
 
+### MCP tools in J5
+
+For `J5 - Agent MCP`:
+- start the stack with profile `mcp`
+- in the local training stack, Flowise must run with:
+  - `HTTP_SECURITY_CHECK=false`
+  - `CUSTOM_MCP_SECURITY_CHECK=false`
+  otherwise `Custom MCP` cannot reach the private Docker network host `mcp-server`
+- the Flowise `Custom MCP` node should point to `http://mcp-server:8000/mcp`
+- use governed actions only:
+  - `get_audit_scope`
+  - `aggregate_preprocessed_dsn_like`
+  - `get_exception_investigation_case`
+  - `search_documentary_sources`
+- the pedagogical goal is not raw data access, but controlled exposure:
+  - scope
+  - aggregation
+  - sanitized exception dossier
+  - targeted documentary lookup
+
 ## Makefile targets
 
 | Target | Description |
@@ -256,6 +286,7 @@ For J2 with **In-Memory Vector Store**:
 | `logs-init` | Show init bootstrap logs |
 | `api-key` | Get generated API key |
 | `ping` | Healthcheck |
+| `mcp-health` | Healthcheck for the MCP server on port 8001 |
 | `psql` | Open PostgreSQL shell |
 | `wait-init` | Wait until init finished bootstrap and flows are visible via API |
 | `test-j1` | Test J1 prediction |
@@ -266,13 +297,16 @@ For J2 with **In-Memory Vector Store**:
 | `from-scratch-j2` | Simple alias for `reset-smoke-j2` |
 | `test-j4` | Test J4 prediction — agent calls calculator (CSG question) |
 | `test-j4-date` | Test J4 prediction — agent calls CurrentDateTime (DSN period question) |
-| `smoke-j4` | Run the main J4 smoke tests on a running stack |
+| `test-j4-rag` | Test J4 prediction — agent RAG searches the corpus |
+| `test-j4-rag-combo` | Test J4 prediction — agent RAG combines retrieval + calculation |
+| `smoke-j4` | Run the main J4 smoke tests on a running stack (agent simple + agent RAG) |
 | `reset-smoke-j4` | Force reset, reimport everything, then run J4 smoke tests |
 | `from-scratch-j4` | Simple alias for `reset-smoke-j4` |
-| `test-j5` | Test J5 prediction — agent searches corpus (URSSAF seuils question) |
-| `test-j5-combo` | Test J5 prediction — agent combines corpus search + calculator |
-| `smoke-j5` | Run the main J5 smoke tests on a running stack |
-| `reset-smoke-j5` | Force reset, reimport everything, then run J5 smoke tests |
+| `test-j5-scope` | Test J5 prediction — MCP scope and governed perimeter |
+| `test-j5-aggregate` | Test J5 prediction — MCP aggregated DSN-like view |
+| `test-j5-case` | Test J5 prediction — MCP exception investigation dossier |
+| `smoke-j5` | Run the main J5 smoke tests on a running stack with MCP |
+| `reset-smoke-j5` | Force reset with profile `mcp`, reimport everything, then run J5 smoke tests |
 | `from-scratch-j5` | Simple alias for `reset-smoke-j5` |
 | `docs` | List training docs |
 
@@ -284,12 +318,83 @@ For a full reproducible setup from scratch, prefer:
 make from-scratch-j2
 ```
 
+For the MCP day, prefer:
+
+```bash
+make from-scratch-j5
+```
+
 This target:
 1. resets the stack and volumes
 2. restarts Flowise + PostgreSQL
 3. waits for init bootstrap completion
 4. verifies imported chatflows through the API
 5. runs the main J2 smoke tests
+
+`from-scratch-j5` does the same, but starts the stack with `COMPOSE_PROFILE=mcp` so that the `mcp-server` container is available for the `Custom MCP` tool.
+
+## AgentFlow V2 pitfalls
+
+### Importable is not enough
+
+For Flowise `AgentFlow V2`, a flow JSON can be:
+- importable
+- executable
+
+while still being **wrong for the UI**.
+
+Typical symptoms:
+- `Node version ... outdated`
+- missing or partially empty config panel
+- node parameters not editable in the right sidebar
+
+This already happened in this repo on `J6 - Multi-Agent Supervised`.
+
+### Rule for manual AgentFlow edits
+
+Do not consider an `AGENTFLOW` node correct just because the flow runs.
+
+When editing `AgentFlow V2` JSON manually:
+- verify the **exact installed node version**
+- mirror the **full native `inputParams` schema**
+- preserve the real UI metadata, especially:
+  - `array`
+  - `show`
+  - `hide`
+  - `optional`
+  - `acceptVariable`
+  - `acceptNodeOutputAsVariable`
+  - `loadMethod`
+  - `loadConfig`
+  - `placeholder`
+  - `default`
+- preserve companion `inputs` values expected by those params
+
+For `CHATFLOW`, reduced schemas can sometimes work.
+
+For `AGENTFLOW`, prefer the **full native node schema**.
+
+### AgentFlow versions validated against Flowise 3.1.2
+
+Observed node versions:
+- `startAgentflow` = `1.1`
+- `llmAgentflow` = `1.1`
+- `conditionAgentflow` = `1.0`
+- `agentAgentflow` = `3.2`
+- `loopAgentflow` = `1.2`
+- `humanInputAgentflow` = `1.0`
+- `directReplyAgentflow` = `1.0`
+
+If these are mismatched in imported JSON, expect `outdated` warnings.
+
+### Success criteria for AgentFlow work
+
+Do not claim an AgentFlow is fully correct unless all three are true:
+1. the flow imports
+2. the flow runs
+3. the nodes remain editable in the Flowise UI without `outdated` warnings
+
+If `3` fails, the JSON still needs alignment.
 
 ## Stack layout
 
