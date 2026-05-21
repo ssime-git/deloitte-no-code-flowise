@@ -88,7 +88,23 @@ make api-key           # affiche l'API key bootstrappee
 
 **J6 - Multi-Agent Supervised** : *"Un salarie presente une variation de brut de 18 pourcent et lexception EXC_URSSAF_AMOUNT_INCONSISTENT. Prepare une alerte daudit DSN exploitable par un auditeur."*
 
-## Reset
+## Arrêter et relancer from scratch
+
+Arrêter proprement la stack en cours :
+
+```bash
+make down
+```
+
+Repartir de zéro avec une stack entièrement recréée :
+
+```bash
+make from-scratch-j2   # stack standard + reset complet + import + smoke tests J2
+make from-scratch-j5   # idem avec profil MCP
+make from-scratch-j6   # idem avec profil MCP + smoke test J6
+```
+
+Si tu veux uniquement réinitialiser sans lancer un scénario pédagogique précis :
 
 ```bash
 make reset         # avec confirmation
@@ -97,7 +113,7 @@ make force-reset   # force
 ./reset.sh -f      # équivalent shell
 ```
 
-Arrête la stack, supprime les volumes PG et Flowise, nettoie `project/`, redémarre.
+Ces commandes arrêtent la stack, suppriment les volumes PostgreSQL et Flowise, nettoient `project/`, puis redémarrent l’environnement proprement.
 
 ## Structure
 
@@ -145,7 +161,13 @@ curl http://localhost:8001/health
 - `J5 - Agent MCP`
 - `J6 - Multi-Agent Supervised`
 
-## Limite connue
+## Limite moteur Flowise 3.1.2 — J6
 
-- `J6 - Multi-Agent Supervised` s'importe, reste éditable et atteint bien le point de validation humaine, mais la sortie finale après `Proceed/Reject` n'est pas encore stabilisée : des boucles de reprise peuvent encore apparaître dans l'UI Flowise.
-- En conséquence, `make smoke-j6` valide uniquement l'arrivée au `Human Input`, pas la clôture complète de la boucle interactive.
+`buildAgentflow.js` réinitialise `loopCounts = new Map()` à chaque reprise après `HumanInput`. Le compteur `maxLoopCount` repart donc à zéro après chaque Proceed/Reject : il ne bloque jamais une boucle infinie au niveau moteur.
+
+**Contournement appliqué dans le flow JSON :**
+- `startPersistState: true` → l'état (`final_report`, `next`) survit à la pause `HumanInput` ; DirectReply affiche le bon rapport après Proceed.
+- `loopAgentflow_2.loopUpdateState` remet `next = ""` et `final_report = ""` après chaque rejet → le Superviseur ne choisit pas FINISH avec l'ancien rapport rejeté.
+- Prompt Superviseur durci : interdit FINISH si un rejet humain récent est présent dans la conversation.
+
+`make smoke-j6` valide l'arrivée au `Human Input`. La clôture complète (Proceed → rapport final affiché) est désormais stable.

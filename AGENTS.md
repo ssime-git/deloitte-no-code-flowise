@@ -333,6 +333,37 @@ This target:
 
 `from-scratch-j5` does the same, but starts the stack with `COMPOSE_PROFILE=mcp` so that the `mcp-server` container is available for the `Custom MCP` tool.
 
+## AgentFlow V2 execution/resume pitfalls
+
+### Human Input resume and persistent state
+
+For `AgentFlow V2`, `Human Input` resumes are tied to the previous execution in the same session.
+
+Important runtime behavior observed on Flowise 3.1.2:
+- `startPersistState: true` on `startAgentflow` is required if the flow must preserve `$flow.state` across a `Human Input` pause/resume.
+- Without it, values such as `final_report` can be lost on resume, causing empty direct replies or an unintended restart path.
+- On resume, Flowise reloads the last stored state from the previous execution data, then continues from the stopped node.
+
+### Loop count limitation across Human Input resumes
+
+In Flowise 3.1.2, `buildAgentflow.js` recreates `loopCounts = new Map()` when an execution is resumed after `Human Input`.
+
+Consequence:
+- `maxLoopCount` only protects loops within a single uninterrupted execution.
+- It does **not** reliably protect a loop that goes through repeated `Human Input` proceed/reject resumes, because the counter restarts after each resume.
+
+For guarded review/revision flows like J6:
+- do not rely on `maxLoopCount` alone for cross-resume protection
+- prefer an explicit persistent state field such as `revision_count`
+- update that state in `loopUpdateState` or worker outputs, and make the supervisor prompt respect it
+
+### Updating AGENTFLOW JSON through the API
+
+For `PUT /api/v1/chatflows/:id` on Flowise 3.1.2:
+- `flowData` must be sent as a **JSON string**, not as an object
+- reusing the payload shape returned by `GET /api/v1/chatflows/:id` is safest
+- sending `flowData` as an object can trigger `500` with `"[object Object]" is not valid JSON`
+
 ## AgentFlow V2 pitfalls
 
 ### Importable is not enough
