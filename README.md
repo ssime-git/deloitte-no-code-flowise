@@ -4,42 +4,66 @@ Stack pédagogique Flowise 3.1.2 + PostgreSQL pour la formation Liora.
 
 ## Prérequis
 
-- Docker + Docker Compose v2
 - Git
+- VM Ubuntu 22.04+ ou Debian 12+ avec accès internet
+- Accès `sudo` (l'installation de Docker et des paquets le nécessite)
 
-## Quick start
+---
+
+## 1. Première installation (VM vierge)
 
 ```bash
+# 1. Cloner le dépôt
 git clone https://github.com/ssime-git/deloitte-no-code-flowise.git
 cd deloitte-no-code-flowise
-make from-scratch-j2
-```
 
-Une seule commande. Elle remet la stack à zéro, redémarre PostgreSQL + Flowise, bootstrappe automatiquement l'utilisateur admin, l'API key et les flows J1/J2, puis exécute les smoke tests principaux du flow J2.
+# 2. Rendre le script exécutable et installer les dépendances
+chmod +x setup.sh
+./setup.sh
 
-Pour les journées agents :
+# 3. Configurer la clé API OpenAI
+#    Éditer le fichier .env et renseigner OPENAI_GATEWAY_API_KEY
+nano .env
 
-```bash
-make from-scratch-j4   # agent simple + agent RAG
-make from-scratch-j5   # agent MCP (avec profil mcp)
-make from-scratch-j6   # multi-agent supervisé (avec profil mcp)
-```
-
-Pour un simple démarrage sans reset complet :
-
-```bash
+# 4. Démarrer la stack
 make up
 ```
 
-Vérifier :
+> ⏳ Le premier démarrage dure 1-2 minutes (téléchargement des images Docker, bootstrap de l'utilisateur et import des flows).
+
+### Vérifier que tout fonctionne
+
 ```bash
-curl http://localhost:3000/api/v1/ping
-# → pong
+make ping          # → pong (Flowise est en ligne)
+make api-key       # affiche la clé API générée automatiquement
 ```
 
-L'API key générée est visible dans les logs :
+### Lancer les tests
+
 ```bash
-docker logs deloitte-no-code-flowise-init-1 | grep "API key:"
+make test-j1       # test de base : "Bonjour, qui es-tu ?"
+make test-j2       # test RAG : questions URSSAF
+```
+
+---
+
+## 2. Utilisation courante (stack déjà déployée)
+
+```bash
+make from-scratch-j2   # reset complet + import + smoke tests J2
+make from-scratch-j4   # reset complet + import + smoke tests J4
+make from-scratch-j5   # reset complet + import + smoke tests J5 (profil MCP)
+make from-scratch-j6   # reset complet + import + smoke test J6 (profil MCP)
+
+make up                # simple démarrage sans reset
+make down              # arrêt propre
+make status            # état des conteneurs
+```
+
+Si la stack est déjà déployée et que tu veux juste revérifier :
+
+```bash
+make smoke-j2          # smoke tests J2 complets
 ```
 
 ## Commandes utiles

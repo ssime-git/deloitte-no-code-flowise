@@ -13,10 +13,14 @@ J5_QUESTION_AGGREGATE := Donne-moi une vue agregée par etablissement des donnee
 J5_QUESTION_CASE := Analyse lexception EXC_URSSAF_AMOUNT_INCONSISTENT et dis-moi quelles preuves daudit et documentaires sont disponibles.
 J6_QUESTION := Un salarie presente une variation de brut de 18 pourcent et lexception EXC_URSSAF_AMOUNT_INCONSISTENT. Prepare une alerte daudit DSN exploitable par un auditeur.
 
-.PHONY: up down reset force-reset status logs-flowise logs-init api-key ping mcp-health psql wait-init test-j1 test-j2 test-j2-nir smoke-j2 reset-smoke-j2 from-scratch-j2 test-j4 test-j4-date test-j4-rag test-j4-rag-combo smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5-scope test-j5-aggregate test-j5-case smoke-j5 reset-smoke-j5 from-scratch-j5 test-j6 smoke-j6 reset-smoke-j6 from-scratch-j6 docs help
+.PHONY: setup install-deps up down reset force-reset status logs-flowise logs-init api-key ping mcp-health psql wait-init test-j1 test-j2 test-j2-nir smoke-j2 reset-smoke-j2 from-scratch-j2 test-j4 test-j4-date test-j4-rag test-j4-rag-combo smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5-scope test-j5-aggregate test-j5-case smoke-j5 reset-smoke-j5 from-scratch-j5 test-j6 smoke-j6 reset-smoke-j6 from-scratch-j6 docs help
 
 help:
 	@echo "Usage: make <target>"
+	@echo ""
+	@echo "First-time setup (run once on a fresh VM):"
+	@echo "  setup        Bootstrap dependencies: make, docker, curl, jq, python3 (via setup.sh)"
+	@echo "  install-deps Verify that docker, curl, jq and python3 are available"
 	@echo ""
 	@echo "Stack management:"
 	@echo "  up           Start all services (postgres, flowise, init)"
@@ -62,7 +66,33 @@ help:
 	@echo "Docs:"
 	@echo "  docs      List available training docs"
 
-up:
+setup:
+	./setup.sh
+
+REQUIRED_CMDS := curl jq python3
+
+install-deps:
+	@echo "Checking prerequisites..."
+	@for cmd in $(REQUIRED_CMDS); do \
+		if ! command -v $$cmd >/dev/null 2>&1; then \
+			echo "ERROR: '$$cmd' is not installed."; \
+			echo "Run 'make setup' or './setup.sh' to install all dependencies."; \
+			exit 1; \
+		fi; \
+	done
+	@if ! command -v docker >/dev/null 2>&1; then \
+		echo "ERROR: 'docker' is not installed."; \
+		echo "Run 'make setup' or './setup.sh' to install Docker."; \
+		exit 1; \
+	fi
+	@if ! docker compose version >/dev/null 2>&1; then \
+		echo "ERROR: 'docker compose' plugin is not installed."; \
+		echo "Run 'sudo apt-get install -y docker-compose-plugin' or './setup.sh'."; \
+		exit 1; \
+	fi
+	@echo "All prerequisites met."
+
+up: install-deps
 	docker compose up -d
 
 down:
