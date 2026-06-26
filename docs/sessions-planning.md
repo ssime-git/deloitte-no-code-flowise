@@ -14,7 +14,6 @@ IA avancée et systèmes agentiques no-code appliqués à l'audit et à l'analys
 - exploiter le RAG (Retrieval Augmented Generation) sur des documents RH et DSN
 - orchestrer des workflows d'audit intelligents sans ligne de code
 - comprendre et configurer le MCP (Model Context Protocol) pour connecter des sources de données
-- appréhender les bases du fine-tuning de modèles pour des besoins métier spécifiques
 - analyser et auditer des fichiers DSN (structure, rémunérations, cotisations)
 
 ## Jour 1 - Introduction à l'IA et au prompt engineering
@@ -344,6 +343,14 @@ Points de vigilance :
 ## Jour 7 - Projet final : Product Build
 
 **Objectif** : Cadrer, prototyper et présenter un outil d'audit actionnable, 100% no-code, construit dans Flowise.
+
+## Contraintes de cadrage (à annoncer en ouverture de J7)
+
+- Périmètre technique : Flowise no-code uniquement, pas d'architecture enterprise
+- Durée de prototypage : 3h maximum, un seul cas d'usage DSN précis par groupe
+- Livrable : un flow Flowise fonctionnel + présentation de 10 min
+- Hors scope : connecteurs ERP, SSO, RBAC, audit trail enterprise, fine-tuning
+- La grille d'évaluation porte sur : fiabilité des réponses, conformité RGPD, limites identifiées
 
 ### Matin
 

@@ -14,8 +14,8 @@ Le flow J4 - Agent RAG est l'aboutissement de la journée Agents :
 
 | Flow | Ce que l'agent peut faire |
 |------|--------------------------|
-| J1 | Répondre à des questions générales depuis sa mémoire |
-| J2 | Rechercher dans un corpus et citer des passages |
+| J2 | Répondre à des questions générales depuis sa mémoire |
+| J3 | Rechercher dans un corpus et citer des passages |
 | J4 | Utiliser des outils (calculatrice, date) à la demande |
 | **J4 - Agent RAG** | **Combiner recherche documentaire + calcul + raisonnement pour produire des fiches d'audit structurées** |
 
@@ -50,7 +50,23 @@ Le corpus pédagogique contient 6 notes de référence couvrant :
 | **OpenAI** | Modèle LLM (gpt-4o-mini, temp 0.3) |
 | **Tool Agent** | Orchestre les 3 outils selon le besoin |
 
-**La différence avec J2 :** en J2, l'agent *répond toujours depuis le corpus*. En J4 - Agent RAG, l'agent *choisit* quand chercher, quand calculer, quand combiner les deux — et il peut refuser si les données sont insuffisantes.
+**La différence avec J3 :** en J3, l'agent *répond toujours depuis le corpus*. En J4 - Agent RAG, l'agent *choisit* quand chercher, quand calculer, quand combiner les deux — et il peut refuser si les données sont insuffisantes.
+
+---
+
+## Note animateur — Quand l'agent sort du corpus
+
+Le corpus contient 6 notes pédagogiques sur un périmètre DSN volontairement limité.
+Les participants vont naturellement poser des questions hors corpus (cas réels de mission, règles non documentées).
+
+**Comportement attendu de l'agent :** refus ou réponse dégradée ("je n'ai pas cette information dans mes sources").
+
+**Ce n'est pas un bug — c'est un point pédagogique intentionnel.**
+
+Exploiter ce moment pour discuter :
+- la différence entre mémoire paramétrique (ce que le modèle sait) et corpus RAG (ce qu'on lui donne)
+- pourquoi un RAG de production nécessite un corpus complet et maintenu
+- la responsabilité de l'auditeur sur la qualité du référentiel documentaire
 
 ---
 
@@ -325,7 +341,7 @@ Selon le corpus, quel est le taux de cotisation patronale maladie en vigueur en 
 
 **Leçon :** la formule "selon le corpus" dans une réponse d'agent n'est pas une garantie de traçabilité. La vérification humaine reste nécessaire pour les informations réglementaires critiques. Seules les réponses qui citent un ID de règle précis (`URSSAF-CTRL-001`, etc.) peuvent être considérées comme vraiment sourcées.
 
-**Discussion :** comparer cette réponse à celle de J2 sur la même question. J2 invente-t-il une source ?
+**Discussion :** comparer cette réponse à celle de J3 sur la même question. J3 invente-t-il une source ?
 
 ---
 

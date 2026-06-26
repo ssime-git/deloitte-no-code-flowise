@@ -53,8 +53,8 @@ Le flow J4 permet de pratiquer :
 | **CurrentDateTime** | Outil : retourne la date et l'heure actuelles |
 | **Tool Agent** | Orchestre le raisonnement + les appels d'outils |
 
-**Ce qui change par rapport à J1 :**
-- J1 : question → modèle → réponse directe
+**Ce qui change par rapport à J2 :**
+- J2 : question → modèle → réponse directe
 - J4 : question → modèle **réfléchit** → décide si un outil est utile → appelle l'outil → observe le résultat → produit la réponse
 
 ---
@@ -64,7 +64,7 @@ Le flow J4 permet de pratiquer :
 ### Matin
 
 - comprendre la boucle agentique
-- comparer J1 et J4 sur des questions identiques
+- comparer J2 et J4 sur des questions identiques
 - lire le flow J4 bloc par bloc
 - observer les intermediate steps (si activés)
 
@@ -79,9 +79,9 @@ Le flow J4 permet de pratiquer :
 
 ## Exercice 1 — Observer la différence agent / chat
 
-### Étape 1 : poser la même question dans J1 et J4
+### Étape 1 : poser la même question dans J2 et J4
 
-Dans **J1 - Simple Chat**, posez :
+Dans **J2 - Simple Chat**, posez :
 ```
 Combien font 3200 × 6.8% ?
 ```
@@ -89,7 +89,7 @@ Combien font 3200 × 6.8% ?
 Dans **J4 - Agent Simple**, posez la même question.
 
 **Comparez :**
-- J1 donne-t-il un résultat ? Est-il exact ?
+- J2 donne-t-il un résultat ? Est-il exact ?
 - J4 utilise-t-il la calculatrice ? Comment le sait-on ?
 
 ---
@@ -200,7 +200,7 @@ Posez ces questions et notez le comportement :
 
 Le flow J4 a une limite claire : l'agent ne connaît pas vos documents. S'il pose une question sur un taux URSSAF spécifique, il répond depuis son entraînement (potentiellement obsolète) ou refuse.
 
-**Le flow J4 - Agent RAG** ajoutera un outil `retrieverTool` connecté au vector store J2. L'agent pourra alors :
+**Le flow J4 - Agent RAG** ajoutera un outil `retrieverTool` connecté au vector store J3. L'agent pourra alors :
 1. Chercher dans les documents DSN si nécessaire
 2. Combiner une recherche documentaire + un calcul
 3. Citer ses sources

@@ -41,8 +41,8 @@ make api-key       # affiche la clé API générée automatiquement
 ### Lancer les tests
 
 ```bash
-make test-j1       # test de base : "Bonjour, qui es-tu ?"
-make test-j2       # test RAG : questions URSSAF
+make test-j2       # test de base : "Bonjour, qui es-tu ?"
+make test-j3       # test RAG : questions URSSAF
 ```
 
 ---
@@ -50,7 +50,7 @@ make test-j2       # test RAG : questions URSSAF
 ## 2. Utilisation courante (stack déjà déployée)
 
 ```bash
-make from-scratch-j2   # reset complet + import + smoke tests J2
+make from-scratch-j3   # reset complet + import + smoke tests J3
 make from-scratch-j4   # reset complet + import + smoke tests J4
 make from-scratch-j5   # reset complet + import + smoke tests J5 (profil MCP)
 make from-scratch-j6   # reset complet + import + smoke test J6 (profil MCP)
@@ -63,22 +63,22 @@ make status            # état des conteneurs
 Si la stack est déjà déployée et que tu veux juste revérifier :
 
 ```bash
-make smoke-j2          # smoke tests J2 complets
+make smoke-j3          # smoke tests J3 complets
 ```
 
 ## Commandes utiles
 
 ```bash
-make from-scratch-j2   # reset complet + import + smoke tests J2
+make from-scratch-j3   # reset complet + import + smoke tests J3
 make from-scratch-j4   # reset complet + import + smoke tests J4
 make from-scratch-j5   # reset complet + import + smoke tests J5 (profil mcp)
 make from-scratch-j6   # reset complet + import + smoke tests J6 (profil mcp)
-make smoke-j2          # smoke tests J2 sur stack déjà lancée
+make smoke-j3          # smoke tests J3 sur stack déjà lancée
 make smoke-j4          # smoke tests J4
 make smoke-j5          # smoke tests J5
 make smoke-j6          # smoke test J6 jusqu'au point de validation humaine
-make test-j2           # question URSSAF
-make test-j2-nir       # question NIR fictif
+make test-j3           # question URSSAF
+make test-j3-nir       # question NIR fictif
 make test-j4           # agent simple - calcul
 make test-j4-date      # agent simple - date
 make test-j4-rag       # agent RAG - recherche
@@ -100,9 +100,9 @@ make api-key           # affiche l'API key bootstrappee
 
 ## Prompts de test
 
-**J1 - Simple Chat** : *"Que peux-tu faire ?"*
+**J2 - Simple Chat** : *"Que peux-tu faire ?"*
 
-**J2 - RAG Chat** : *"Quels sont les points de contrôle URSSAF et leurs seuils de tolérance ?"*
+**J3 - RAG Chat** : *"Quels sont les points de contrôle URSSAF et leurs seuils de tolérance ?"*
 
 **J4 - Agent Simple** : *"Calcule le montant de la CSG sur un salaire brut de 3200 euros. Le taux de CSG deductible est 6.8%."*
 
@@ -123,7 +123,7 @@ make down
 Repartir de zéro avec une stack entièrement recréée :
 
 ```bash
-make from-scratch-j2   # stack standard + reset complet + import + smoke tests J2
+make from-scratch-j3   # stack standard + reset complet + import + smoke tests J3
 make from-scratch-j5   # idem avec profil MCP
 make from-scratch-j6   # idem avec profil MCP + smoke test J6
 ```
@@ -146,7 +146,7 @@ Ces commandes arrêtent la stack, suppriment les volumes PostgreSQL et Flowise, 
 ├── .env                  # Variables d'environnement
 ├── init/
 │   ├── import-flows.sh   # Bootstrap user + API key + import flows
-│   └── flows/            # Flows J1/J2/J4/J5/J6
+│   └── flows/            # Flows J2/J3/J4/J5/J6
 ├── data/                 # Données montées (RAG corpus)
 ├── corpus/               # Corpus de documents
 ├── project/              # Projets étudiants
@@ -178,8 +178,8 @@ curl http://localhost:8001/health
 
 ## Flows disponibles
 
-- `J1 - Simple Chat`
-- `J2 - RAG Chat`
+- `J2 - Simple Chat`
+- `J3 - RAG Chat`
 - `J4 - Agent Simple`
 - `J4 - Agent RAG`
 - `J5 - Agent MCP`

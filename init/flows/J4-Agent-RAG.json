@@ -6,7 +6,10 @@
       {
         "id": "chatOpenAI_0",
         "type": "customNode",
-        "position": { "x": 650, "y": 350 },
+        "position": {
+          "x": 650,
+          "y": 350
+        },
         "data": {
           "id": "chatOpenAI_0",
           "label": "OpenAI",
@@ -124,7 +127,10 @@
       {
         "id": "bufferMemory_0",
         "type": "customNode",
-        "position": { "x": 650, "y": 600 },
+        "position": {
+          "x": 650,
+          "y": 600
+        },
         "data": {
           "id": "bufferMemory_0",
           "label": "Buffer Memory",
@@ -173,7 +179,10 @@
       {
         "id": "calculator_0",
         "type": "customNode",
-        "position": { "x": 0, "y": 100 },
+        "position": {
+          "x": 0,
+          "y": 100
+        },
         "data": {
           "id": "calculator_0",
           "label": "Calculator",
@@ -205,7 +214,10 @@
       {
         "id": "currentDateTime_0",
         "type": "customNode",
-        "position": { "x": 0, "y": 280 },
+        "position": {
+          "x": 0,
+          "y": 280
+        },
         "data": {
           "id": "currentDateTime_0",
           "label": "CurrentDateTime",
@@ -235,7 +247,10 @@
       {
         "id": "openAIEmbeddings_0",
         "type": "customNode",
-        "position": { "x": 0, "y": 450 },
+        "position": {
+          "x": 0,
+          "y": 450
+        },
         "data": {
           "id": "openAIEmbeddings_0",
           "label": "OpenAI Embedding",
@@ -297,7 +312,10 @@
       {
         "id": "folderFiles_0",
         "type": "customNode",
-        "position": { "x": 0, "y": 650 },
+        "position": {
+          "x": 0,
+          "y": 650
+        },
         "data": {
           "id": "folderFiles_0",
           "label": "Folder with Files",
@@ -337,8 +355,14 @@
               "name": "pdfUsage",
               "type": "options",
               "options": [
-                { "label": "One document per page", "name": "perPage" },
-                { "label": "One document per file", "name": "perFile" }
+                {
+                  "label": "One document per page",
+                  "name": "perPage"
+                },
+                {
+                  "label": "One document per file",
+                  "name": "perFile"
+                }
               ],
               "default": "perPage",
               "optional": true,
@@ -391,7 +415,10 @@
       {
         "id": "memoryVectorStore_0",
         "type": "customNode",
-        "position": { "x": 330, "y": 550 },
+        "position": {
+          "x": 330,
+          "y": 550
+        },
         "data": {
           "id": "memoryVectorStore_0",
           "label": "In-Memory Vector Store",
@@ -464,7 +491,10 @@
       {
         "id": "retrieverTool_0",
         "type": "customNode",
-        "position": { "x": 330, "y": 300 },
+        "position": {
+          "x": 330,
+          "y": 300
+        },
         "data": {
           "id": "retrieverTool_0",
           "label": "Retriever Tool",
@@ -537,7 +567,10 @@
       {
         "id": "toolAgent_0",
         "type": "customNode",
-        "position": { "x": 1050, "y": 400 },
+        "position": {
+          "x": 1050,
+          "y": 400
+        },
         "data": {
           "id": "toolAgent_0",
           "label": "Tool Agent",

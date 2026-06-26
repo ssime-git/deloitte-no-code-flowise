@@ -248,7 +248,7 @@ For **Full file uploads** on Flowise 3.1.2:
 - the chatflow must include a `fileLoader` node
 - if both full uploads and RAG uploads are enabled, full uploads take precedence
 
-For J2 with **In-Memory Vector Store**:
+For J3 with **In-Memory Vector Store**:
 - a `fileLoader` node can be connected to `memoryVectorStore.document` for learner testing
 - `folderFiles` and `fileLoader` can coexist on the same `document` input
 - after import, verify both startup upsert and normal prediction, because `fileLoader` can break both paths if its `inputs.file` default is missing
@@ -289,12 +289,12 @@ For `J5 - Agent MCP`:
 | `mcp-health` | Healthcheck for the MCP server on port 8001 |
 | `psql` | Open PostgreSQL shell |
 | `wait-init` | Wait until init finished bootstrap and flows are visible via API |
-| `test-j1` | Test J1 prediction |
-| `test-j2` | Test J2 prediction |
-| `test-j2-nir` | Test J2 with the fictitious NIR question |
-| `smoke-j2` | Run the main J2 smoke tests on a running stack |
-| `reset-smoke-j2` | Force reset, reimport everything, then run J2 smoke tests |
-| `from-scratch-j2` | Simple alias for `reset-smoke-j2` |
+| `test-j2` | Test J2 - Simple Chat prediction |
+| `test-j3` | Test J3 - RAG Chat prediction |
+| `test-j3-nir` | Test J3 with the fictitious NIR question |
+| `smoke-j3` | Run the main J3 smoke tests on a running stack |
+| `reset-smoke-j3` | Force reset, reimport everything, then run J3 smoke tests |
+| `from-scratch-j3` | Simple alias for `reset-smoke-j3` |
 | `test-j4` | Test J4 prediction — agent calls calculator (CSG question) |
 | `test-j4-date` | Test J4 prediction — agent calls CurrentDateTime (DSN period question) |
 | `test-j4-rag` | Test J4 prediction — agent RAG searches the corpus |
@@ -315,7 +315,7 @@ For `J5 - Agent MCP`:
 For a full reproducible setup from scratch, prefer:
 
 ```bash
-make from-scratch-j2
+make from-scratch-j3
 ```
 
 For the MCP day, prefer:
@@ -329,7 +329,7 @@ This target:
 2. restarts Flowise + PostgreSQL
 3. waits for init bootstrap completion
 4. verifies imported chatflows through the API
-5. runs the main J2 smoke tests
+5. runs the main J3 smoke tests
 
 `from-scratch-j5` does the same, but starts the stack with `COMPOSE_PROFILE=mcp` so that the `mcp-server` container is available for the `Custom MCP` tool.
 
@@ -441,7 +441,7 @@ init/import-flows.sh:
   2. Bootstrap: user + org + workspace + API key
   3. Create OpenAI credential via API
   4. Import flows via INSERT INTO chat_flow
-  5. Upsert J2 vector store
+  5. Upsert J3 vector store
 
 Volume mounts:
   ./data → /data (read-only)

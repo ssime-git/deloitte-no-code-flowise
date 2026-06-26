@@ -6,7 +6,10 @@
       {
         "id": "chatOpenAI_0",
         "type": "customNode",
-        "position": { "x": 150, "y": 450 },
+        "position": {
+          "x": 150,
+          "y": 450
+        },
         "data": {
           "id": "chatOpenAI_0",
           "label": "OpenAI",
@@ -124,7 +127,10 @@
       {
         "id": "bufferMemory_0",
         "type": "customNode",
-        "position": { "x": 150, "y": 700 },
+        "position": {
+          "x": 150,
+          "y": 700
+        },
         "data": {
           "id": "bufferMemory_0",
           "label": "Buffer Memory",
@@ -173,7 +179,10 @@
       {
         "id": "calculator_0",
         "type": "customNode",
-        "position": { "x": 150, "y": 100 },
+        "position": {
+          "x": 150,
+          "y": 100
+        },
         "data": {
           "id": "calculator_0",
           "label": "Calculator",
@@ -205,7 +214,10 @@
       {
         "id": "customMCP_0",
         "type": "customNode",
-        "position": { "x": 150, "y": 280 },
+        "position": {
+          "x": 150,
+          "y": 280
+        },
         "data": {
           "id": "customMCP_0",
           "label": "Custom MCP",
@@ -257,7 +269,10 @@
       {
         "id": "toolAgent_0",
         "type": "customNode",
-        "position": { "x": 700, "y": 400 },
+        "position": {
+          "x": 700,
+          "y": 400
+        },
         "data": {
           "id": "toolAgent_0",
           "label": "Tool Agent",

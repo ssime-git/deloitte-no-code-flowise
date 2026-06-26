@@ -42,6 +42,7 @@ services:
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD}
       FLOWISE_USERNAME: ${FLOWISE_USERNAME:-admin}
       FLOWISE_PASSWORD: ${FLOWISE_PASSWORD}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
       DEBUG: ${DEBUG:-false}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       APIKEY_PATH: /root/.flowise/apikeys
@@ -101,6 +102,7 @@ services:
       ADMIN_EMAIL: admin@local.dev
       ADMIN_PASSWORD: ${FLOWISE_PASSWORD:-changeme_admin_password}
       OPENAI_API_KEY: ${OPENAI_GATEWAY_API_KEY}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     command:
       - sh
       - -c

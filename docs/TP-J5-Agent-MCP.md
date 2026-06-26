@@ -71,6 +71,21 @@ Le serveur MCP expose 4 actions gouvernées :
 
 ---
 
+## Note animateur — Quand l'agent sort du corpus
+
+Nous avons volontairement fait le choix de limiter le corpus à 6 notes pédagogiques couvrant un périmètre DSN restreint. Vous allez naturellement poser des questions qui sortent de ce corpus : cas réels de mission, règles non documentées, situations complexes rencontrées sur le terrain.
+
+**Lorsque cela arrive, l'agent doit refuser ou répondre de manière dégradée** : "je n'ai pas cette information dans mes sources", "le corpus ne couvre pas ce sujet".
+
+**Ce comportement est normal et pédagogiquement intentionnel.** Il illustre une limite fondamentale du RAG : l'agent ne peut répondre de manière fiable que sur ce qu'on lui a donné.
+
+Profitez de ces moments pour réfléchir ensemble à :
+- la différence entre ce que le modèle sait déjà (mémoire paramétrique) et ce qu'on lui fournit (corpus RAG)
+- pourquoi un RAG de production nécessite un corpus exhaustif, à jour et maintenu
+- votre responsabilité en tant qu'auditeur sur la qualité et la complétude du référentiel documentaire que vous alimentez
+
+---
+
 ## Partie 1 — Comprendre le périmètre disponible
 
 ### Challenge 1 — Demander ce que l'agent est autorisé à voir

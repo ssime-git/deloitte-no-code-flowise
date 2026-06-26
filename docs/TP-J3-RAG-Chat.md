@@ -1,10 +1,10 @@
-# TP J2 — RAG, fiabilité et reconstruction d'un assistant documentaire
+# TP J3 — RAG, fiabilité et reconstruction d'un assistant documentaire
 
 **Public** : Utilisateurs métier — pas de code, pas de terminal.
 
 **Durée** : 1 journée (2 sessions de 4h)
 
-**Objectif** : Comprendre le fonctionnement d'un assistant RAG, apprendre à le fiabiliser, puis reconstruire le flow J2 à partir des notions vues pendant la journée.
+**Objectif** : Comprendre le fonctionnement d'un assistant RAG, apprendre à le fiabiliser, puis reconstruire le flow J3 à partir des notions vues pendant la journée.
 
 ---
 
@@ -33,11 +33,11 @@ On ne cherche pas juste à "cliquer dans Flowise", mais à faire pratiquer :
    - **Email** : `admin@local.dev`
    - **Mot de passe** : `changeme_admin_password`
 3. Ouvrir **Chatflows**
-4. Ouvrir **J2 - RAG Chat**
+4. Ouvrir **J3 - RAG Chat**
 
 ---
 
-## Le flow J2 en une minute
+## Le flow J3 en une minute
 
 | Bloc | Rôle |
 |------|------|
@@ -55,8 +55,8 @@ On ne cherche pas juste à "cliquer dans Flowise", mais à faire pratiquer :
 ### Matin
 
 - comprendre le principe du RAG
-- comparer J1 et J2
-- lire le flow J2
+- comparer J2 et J3
+- lire le flow J3
 - faire les premiers tests métier
 
 ### Après-midi
@@ -90,19 +90,19 @@ Vous voulez démontrer à un participant pourquoi un assistant documentaire appo
 
 ### Votre mission
 
-1. ouvrir **J1 - Simple Chat**
+1. ouvrir **J2 - Simple Chat**
 2. poser :
    - *"Quels sont les seuils d'écart pour les contrôles URSSAF ?"*
 3. noter la réponse
-4. ouvrir **J2 - RAG Chat**
+4. ouvrir **J3 - RAG Chat**
 5. poser la même question
 6. comparer
 
 ### Ce qu'on cherche
 
 Le groupe doit voir que :
-- J1 répond plus généralement
-- J2 restitue des règles plus précises
+- J2 répond plus généralement
+- J3 restitue des règles plus précises
 
 ### Débrief
 
@@ -118,7 +118,7 @@ Le groupe doit voir que :
 
 ### Situation métier
 
-On veut tester la robustesse du flow J2 sur plusieurs règles du corpus.
+On veut tester la robustesse du flow J3 sur plusieurs règles du corpus.
 
 ### Questions à tester
 
@@ -333,7 +333,7 @@ Vous voulez analyser rapidement un document ponctuel sans modifier le corpus glo
 
 ### Votre mission
 
-1. ouvrir le chat J2
+1. ouvrir le chat J3
 2. cliquer sur l'icône d'upload
 3. envoyer un document
 4. poser une question ciblée
@@ -382,7 +382,7 @@ Pour chaque question :
 
 ---
 
-## Challenge 10 — Challenge final : reconstruire le flow J2
+## Challenge 10 — Challenge final : reconstruire le flow J3
 
 **Statut** : Obligatoire  
 **Durée indicative** : 60 à 90 min
@@ -393,7 +393,7 @@ Pour chaque question :
 
 ### Votre mission
 
-Sur un canvas vide, reconstruire un flow inspiré de **J2 - RAG Chat**.
+Sur un canvas vide, reconstruire un flow inspiré de **J3 - RAG Chat**.
 
 ### Contraintes
 
@@ -466,7 +466,7 @@ Le participant doit être capable d'expliquer :
 ## Ce qui doit être acquis à la fin du jour 2
 
 - ✅ expliquer simplement le RAG
-- ✅ comparer J1 et J2
+- ✅ comparer J2 et J3
 - ✅ régler `topK`, température et modèle
 - ✅ tester un cas limite avec reformulation
 - ✅ faire un double check

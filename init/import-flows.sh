@@ -139,15 +139,39 @@ if [ -n "$API_KEY" ]; then
     log "API key: $API_KEY"
 fi
 
-# ---- Create credential ----
+# ---- Create credentials ----
+if [ -n "${ANTHROPIC_API_KEY:-}" ] && [ -n "$API_KEY" ] && [ -n "$WORKSPACE_ID" ]; then
+    log "Creating Anthropic credential..."
+    CRED_BODY=$(python3 -c "
+import json
+print(json.dumps({
+    'name': 'Anthropic',
+    'credentialName': 'anthropicApi',
+    'plainDataObj': {'anthropicApiKey': '${ANTHROPIC_API_KEY}'},
+    'id': 'b2c3d4e5-f6a7-8901-bcde-f12345678901'
+}))
+")
+    CRED_RESP=$(curl -sf -X POST "${FLOWISE_URL}/api/v1/credentials" \
+        -H "Authorization: Bearer ${API_KEY}" \
+        -H "Content-Type: application/json" \
+        -d "$CRED_BODY" 2>/dev/null || echo "")
+    if echo "$CRED_RESP" | python3 -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if d.get('id') else 1)" 2>/dev/null; then
+        log "Anthropic credential created."
+    else
+        log "Anthropic credential already exists or creation failed."
+    fi
+else
+    log "Skipping Anthropic credential creation (missing ANTHROPIC_API_KEY)."
+fi
+
 if [ -n "${OPENAI_API_KEY:-}" ] && [ -n "$API_KEY" ] && [ -n "$WORKSPACE_ID" ]; then
-    log "Creating OpenAI credential..."
+    log "Creating OpenAI Gateway credential..."
     CRED_BODY=$(python3 -c "
 import json
 print(json.dumps({
     'name': 'OpenAI Gateway',
     'credentialName': 'openAIApi',
-    'plainDataObj': {'openAIApiKey': '$OPENAI_API_KEY'},
+    'plainDataObj': {'openAIApiKey': '${OPENAI_API_KEY}'},
     'id': '3bf22f9c-6bdc-4e55-9839-c4b9f0300238'
 }))
 ")
@@ -156,12 +180,10 @@ print(json.dumps({
         -H "Content-Type: application/json" \
         -d "$CRED_BODY" 2>/dev/null || echo "")
     if echo "$CRED_RESP" | python3 -c "import json,sys; d=json.load(sys.stdin); sys.exit(0 if d.get('id') else 1)" 2>/dev/null; then
-        log "Credential created."
+        log "OpenAI Gateway credential created."
     else
-        log "Credential already exists or creation failed."
+        log "OpenAI Gateway credential already exists or creation failed."
     fi
-else
-    log "Skipping credential creation (missing OPENAI_API_KEY)."
 fi
 
 # ---- Import flows ----
@@ -251,7 +273,7 @@ if has_error:
     sys.exit(1)
 PYEOF
 
-# ---- Upsert flows with vector stores (J2, J5) ----
+# ---- Upsert flows with vector stores (J3, J5) ----
 if [ -n "$API_KEY" ]; then
     RAG_IDS=$(curl -s -H "Authorization: Bearer $API_KEY" "$FLOWISE_URL/api/v1/chatflows" | python3 -c "
 import json,sys

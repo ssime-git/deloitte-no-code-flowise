@@ -1,4 +1,4 @@
-# TP J1 — Prompting métier, sécurité et psychologie des modèles
+# TP J2 — Prompting métier, sécurité et psychologie des modèles
 
 **Public** : Utilisateurs métier — pas de code, pas de terminal.
 
@@ -21,7 +21,7 @@ Le but est de faire pratiquer :
 5. les réflexes de **confidentialité**
 6. la comparaison entre **modèles** et **réglages**
 
-Le flow J1 sert donc de laboratoire de prompting.
+Le flow J2 sert donc de laboratoire de prompting.
 
 ---
 
@@ -32,11 +32,11 @@ Le flow J1 sert donc de laboratoire de prompting.
    - **Email** : `admin@local.dev`
    - **Mot de passe** : `changeme_admin_password`
 3. Ouvrir **Chatflows**
-4. Cliquer sur **J1 - Simple Chat**
+4. Cliquer sur **J2 - Simple Chat**
 
 ---
 
-## Le flow J1 en une minute
+## Le flow J2 en une minute
 
 | Bloc | Rôle |
 |------|------|
