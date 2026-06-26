@@ -4,25 +4,33 @@
   "flowData": {
     "nodes": [
       {
-        "id": "chatOpenAI_0",
+        "id": "chatAnthropic_0",
         "type": "customNode",
         "position": {
           "x": 0,
           "y": 100
         },
         "data": {
-          "id": "chatOpenAI_0",
-          "label": "OpenAI",
-          "name": "chatOpenAI",
-          "version": 8.3,
+          "id": "chatAnthropic_0",
+          "label": "Anthropic Claude",
+          "name": "chatAnthropic",
+          "version": 8.0,
           "category": "Chat Models",
           "baseClasses": [
-            "ChatOpenAI",
-            "BaseChatOpenAI",
+            "ChatAnthropic",
+            "ChatAnthropicMessages",
             "BaseChatModel",
             "BaseLanguageModel",
-            "Runnable"
+            "BaseLangChain",
+            "Runnable",
+            "Serializable"
           ],
+          "credential": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+          "inputs": {
+            "modelName": "claude-haiku-4-5",
+            "temperature": 0.9,
+            "streaming": true
+          },
           "inputAnchors": [],
           "inputParams": [
             {
@@ -30,7 +38,7 @@
               "name": "modelName",
               "type": "asyncOptions",
               "loadMethod": "listModels",
-              "default": "gpt-4o-mini"
+              "default": "claude-haiku-4-5"
             },
             {
               "label": "Temperature",
@@ -47,80 +55,19 @@
               "default": true,
               "optional": true,
               "additionalParams": true
-            },
-            {
-              "label": "Allow Image Uploads",
-              "name": "allowImageUploads",
-              "type": "boolean",
-              "default": false,
-              "optional": true
-            },
-            {
-              "label": "Reasoning",
-              "name": "reasoning",
-              "type": "boolean",
-              "default": false,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Max Tokens",
-              "name": "maxTokens",
-              "type": "number",
-              "step": 1,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Top Probability",
-              "name": "topP",
-              "type": "number",
-              "step": 0.1,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Frequency Penalty",
-              "name": "frequencyPenalty",
-              "type": "number",
-              "step": 0.1,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Presence Penalty",
-              "name": "presencePenalty",
-              "type": "number",
-              "step": 0.1,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Timeout",
-              "name": "timeout",
-              "type": "number",
-              "step": 1,
-              "optional": true,
-              "additionalParams": true
             }
           ],
-          "inputs": {
-            "modelName": "gpt-4o-mini",
-            "temperature": 0.1,
-            "streaming": true,
-            "basepath": "https://ai-gateway.liora.tech/v1"
-          },
           "outputAnchors": [
             {
-              "id": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
-              "name": "chatOpenAI",
-              "label": "ChatOpenAI",
-              "type": "ChatOpenAI | BaseChatOpenAI | BaseChatModel | BaseLanguageModel | Runnable"
+              "id": "chatAnthropic_0-output-chatAnthropic_0-ChatAnthropic|ChatAnthropicMessages|BaseChatModel|BaseLanguageModel|BaseLangChain|Runnable|Serializable",
+              "name": "chatAnthropic",
+              "label": "ChatAnthropic",
+              "description": "Wrapper around ChatAnthropic large language models that use the Chat endpoint",
+              "type": "ChatAnthropic | ChatAnthropicMessages | BaseChatModel | BaseLanguageModel | BaseLangChain | Runnable | Serializable"
             }
           ],
           "outputs": {},
-          "selected": false,
-          "credential": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238"
+          "selected": false
         }
       },
       {
@@ -321,7 +268,7 @@
             }
           ],
           "inputs": {
-            "model": "{{chatOpenAI_0.data.instance}}",
+            "model": "{{chatAnthropic_0.data.instance}}",
             "vectorStoreRetriever": "{{memoryVectorStore_0.data.instance}}",
             "returnSourceDocuments": true,
             "responsePrompt": "I want you to act as a document that I am having a conversation with. Your name is \"AI Assistant\". Using the provided context, answer the user's question to the best of your ability using the resources provided.\nAnswer in French.\nIf the context contains relevant information, answer concretely from that context.\nIf the question asks what to do, explain the operational action implied by the rule in the context.\nIf several relevant rules are present, give the main operational rule first, then secondary validation details.\nIf the context mentions a masking rule, a validation rule, or a threshold, state it explicitly.\nWhen you mention sources, distinguish between:\n- Source principale: the single most useful document or rule for the answer\n- Sources secondaires: only the additional documents that genuinely add something useful\nIf one source is enough, mention only the main source and do not invent secondary sources.\nDo not imply that every retrieved document was equally important.\nIf there is nothing in the context relevant to the question at hand, just say \"Hmm, I'm not sure\" and stop after that.\nRefuse to answer any question not about the info. Never break character.\n------------\n{context}\n------------\nREMEMBER: If there is no relevant information within the context, just say \"Hmm, I'm not sure\". Don't try to make up an answer. Never invent a source, a rule ID, or a threshold that is not present in the context. Never break character."
@@ -548,8 +495,8 @@
     "edges": [
       {
         "id": "edge-model",
-        "source": "chatOpenAI_0",
-        "sourceHandle": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+        "source": "chatAnthropic_0",
+        "sourceHandle": "chatAnthropic_0-output-chatAnthropic_0-ChatAnthropic|ChatAnthropicMessages|BaseChatModel|BaseLanguageModel|BaseLangChain|Runnable|Serializable",
         "target": "conversationalRetrievalQAChain_0",
         "targetHandle": "conversationalRetrievalQAChain_0-input-model-BaseChatModel",
         "type": "buttonedge"

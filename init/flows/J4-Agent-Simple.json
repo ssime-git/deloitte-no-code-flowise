@@ -4,30 +4,32 @@
   "flowData": {
     "nodes": [
       {
-        "id": "chatOpenAI_0",
+        "id": "chatAnthropic_0",
         "type": "customNode",
         "position": {
           "x": 150,
           "y": 450
         },
         "data": {
-          "id": "chatOpenAI_0",
-          "label": "OpenAI",
-          "name": "chatOpenAI",
-          "version": 8.3,
+          "id": "chatAnthropic_0",
+          "label": "Anthropic Claude",
+          "name": "chatAnthropic",
+          "version": 8.0,
           "category": "Chat Models",
           "baseClasses": [
-            "ChatOpenAI",
-            "BaseChatOpenAI",
+            "ChatAnthropic",
+            "ChatAnthropicMessages",
             "BaseChatModel",
             "BaseLanguageModel",
-            "Runnable"
+            "BaseLangChain",
+            "Runnable",
+            "Serializable"
           ],
+          "credential": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
           "inputs": {
-            "modelName": "gpt-4.1-nano",
-            "temperature": 0.7,
-            "streaming": true,
-            "basepath": "https://ai-gateway.liora.tech/v1"
+            "modelName": "claude-sonnet-4-6",
+            "temperature": 0.9,
+            "streaming": true
           },
           "inputAnchors": [],
           "inputParams": [
@@ -36,7 +38,7 @@
               "name": "modelName",
               "type": "asyncOptions",
               "loadMethod": "listModels",
-              "default": "gpt-4o-mini"
+              "default": "claude-haiku-4-5"
             },
             {
               "label": "Temperature",
@@ -53,75 +55,19 @@
               "default": true,
               "optional": true,
               "additionalParams": true
-            },
-            {
-              "label": "Allow Image Uploads",
-              "name": "allowImageUploads",
-              "type": "boolean",
-              "default": false,
-              "optional": true
-            },
-            {
-              "label": "Reasoning",
-              "name": "reasoning",
-              "type": "boolean",
-              "default": false,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Max Tokens",
-              "name": "maxTokens",
-              "type": "number",
-              "step": 1,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Top Probability",
-              "name": "topP",
-              "type": "number",
-              "step": 0.1,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Frequency Penalty",
-              "name": "frequencyPenalty",
-              "type": "number",
-              "step": 0.1,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Presence Penalty",
-              "name": "presencePenalty",
-              "type": "number",
-              "step": 0.1,
-              "optional": true,
-              "additionalParams": true
-            },
-            {
-              "label": "Timeout",
-              "name": "timeout",
-              "type": "number",
-              "step": 1,
-              "optional": true,
-              "additionalParams": true
             }
           ],
           "outputAnchors": [
             {
-              "id": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
-              "name": "chatOpenAI",
-              "label": "ChatOpenAI",
-              "description": "Wrapper around OpenAI large language models that use the Chat endpoint",
-              "type": "ChatOpenAI | BaseChatOpenAI | BaseChatModel | BaseLanguageModel | Runnable"
+              "id": "chatAnthropic_0-output-chatAnthropic_0-ChatAnthropic|ChatAnthropicMessages|BaseChatModel|BaseLanguageModel|BaseLangChain|Runnable|Serializable",
+              "name": "chatAnthropic",
+              "label": "ChatAnthropic",
+              "description": "Wrapper around ChatAnthropic large language models that use the Chat endpoint",
+              "type": "ChatAnthropic | ChatAnthropicMessages | BaseChatModel | BaseLanguageModel | BaseLangChain | Runnable | Serializable"
             }
           ],
           "outputs": {},
-          "selected": false,
-          "credential": "3bf22f9c-6bdc-4e55-9839-c4b9f0300238"
+          "selected": false
         }
       },
       {
@@ -268,7 +214,7 @@
               "{{currentDateTime_0.data.instance}}"
             ],
             "memory": "{{bufferMemory_0.data.instance}}",
-            "model": "{{chatOpenAI_0.data.instance}}",
+            "model": "{{chatAnthropic_0.data.instance}}",
             "systemMessage": "Tu es un assistant expert en audit de la paie et conformité DSN (Déclaration Sociale Nominative) pour des entreprises françaises.\n\nTu aides les auditeurs paie à :\n- Vérifier et recalculer des cotisations sociales (URSSAF, retraite complémentaire, prévoyance)\n- Identifier des anomalies dans les bulletins de paie ou fichiers DSN\n- Calculer des seuils et taux réglementaires (plafond SS, tranches AGIRC-ARRCO, etc.)\n- Répondre à des questions sur la réglementation de la paie en France\n\nTu as accès à deux outils :\n- **calculator** : pour effectuer tout calcul arithmétique précis\n- **currentDateTime** : pour obtenir la date et l'heure actuelles\n\nRègle d'utilisation des outils : utilise-les chaque fois que la question nécessite un calcul ou une information temporelle. Si tu peux répondre directement depuis tes connaissances, fais-le sans outil. Quand tu utilises un outil, explique brièvement pourquoi dans ta réponse."
           },
           "inputAnchors": [
@@ -352,8 +298,8 @@
     "edges": [
       {
         "id": "edge-llm-agent",
-        "source": "chatOpenAI_0",
-        "sourceHandle": "chatOpenAI_0-output-chatOpenAI_0-ChatOpenAI|BaseChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+        "source": "chatAnthropic_0",
+        "sourceHandle": "chatAnthropic_0-output-chatAnthropic_0-ChatAnthropic|ChatAnthropicMessages|BaseChatModel|BaseLanguageModel|BaseLangChain|Runnable|Serializable",
         "target": "toolAgent_0",
         "targetHandle": "toolAgent_0-input-model-BaseChatModel",
         "type": "buttonedge"

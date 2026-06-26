@@ -139,6 +139,64 @@ make force-reset   # force
 
 Ces commandes arrêtent la stack, suppriment les volumes PostgreSQL et Flowise, nettoient `project/`, puis redémarrent l’environnement proprement.
 
+---
+
+## 3. Déploiement fleet AWS (17 instances pour la formation)
+
+> Prérequis : AWS CLI configuré avec des credentials valides, accès à EC2 en `eu-west-3`.
+
+### Setup initial
+
+```bash
+cp deploy/aws/config.env.example deploy/aws/config.env
+# Éditer config.env : renseigner ANTHROPIC_API_KEY, OPENAI_GATEWAY_API_KEY, FLOWISE_PASSWORD
+```
+
+`config.env` est gitignored — ne jamais commiter ce fichier.
+
+### Workflow complet
+
+```bash
+make deploy-test      # Lance 1 VM de test (~12 min) — vérifie stack + flows
+                      # Si OK, répondre 'y' pour terminer la VM de test
+
+make deploy-bake      # Bake l'AMI (~20 min) — snapshot de la VM configurée
+
+make deploy-launch    # Lance les 17 instances depuis l'AMI (~3 min)
+
+make deploy-access    # Affiche le tableau URLs + login/password
+                      # Génère aussi deploy/aws/access.csv
+
+make deploy-teardown  # Termine toutes les instances après la formation
+```
+
+### Ce que fait chaque script
+
+| Commande | Durée | Description |
+|----------|-------|-------------|
+| `deploy-test` | ~12 min | VM Ubuntu fraîche → install → `make up` → vérifie flows → prompt terminate |
+| `deploy-bake` | ~20 min | VM tempo → install → pre-pull images → poweroff → snapshot AMI |
+| `deploy-launch` | ~3 min | Lance 17 EC2 depuis l'AMI, chaque boot démarre le stack |
+| `deploy-access` | ~5 s | Récupère les IPs et génère le tableau d'accès |
+| `deploy-teardown` | ~10 s | Termine toutes les instances tagguées `training=flowise-j2026` |
+
+### Ressources AWS créées
+
+- Security group `flowise-training-sg` (créé automatiquement si absent) : ports 22 et 3000
+- 1 AMI privée `flowise-training-YYYYMMDD-HHMMSS`
+- 17 instances `t3.medium` (2 vCPU / 4 GB RAM), volume 30 GB gp3
+
+### Coût estimé
+
+| Ressource | Coût/h | 8h formation |
+|-----------|--------|--------------|
+| 17 × t3.medium | $0.0416/h | ~$5.70 |
+| 17 × 30 GB gp3 | $0.002/h | ~$0.27 |
+| AMI (snapshot) | ~$0.05/GB | <$1 |
+| **Total** | | **~$7 / journée** |
+
+---
+
 ## Structure
 
 ```

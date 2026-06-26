@@ -13,7 +13,7 @@ J5_QUESTION_AGGREGATE := Donne-moi une vue agregée par etablissement des donnee
 J5_QUESTION_CASE := Analyse lexception EXC_URSSAF_AMOUNT_INCONSISTENT et dis-moi quelles preuves daudit et documentaires sont disponibles.
 J6_QUESTION := Un salarie presente une variation de brut de 18 pourcent et lexception EXC_URSSAF_AMOUNT_INCONSISTENT. Prepare une alerte daudit DSN exploitable par un auditeur.
 
-.PHONY: setup install-deps up down reset force-reset status logs-flowise logs-init api-key ping mcp-health psql wait-init test-j2 test-j3 test-j3-nir smoke-j3 reset-smoke-j3 from-scratch-j3 test-j4 test-j4-date test-j4-rag test-j4-rag-combo smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5-scope test-j5-aggregate test-j5-case smoke-j5 reset-smoke-j5 from-scratch-j5 test-j6 smoke-j6 reset-smoke-j6 from-scratch-j6 docs help
+.PHONY: setup install-deps up down reset force-reset status logs-flowise logs-init api-key ping mcp-health psql wait-init test-j2 test-j3 test-j3-nir smoke-j3 reset-smoke-j3 from-scratch-j3 test-j4 test-j4-date test-j4-rag test-j4-rag-combo smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5-scope test-j5-aggregate test-j5-case smoke-j5 reset-smoke-j5 from-scratch-j5 test-j6 smoke-j6 reset-smoke-j6 from-scratch-j6 docs help deploy-test deploy-bake deploy-launch deploy-access deploy-teardown
 
 help:
 	@echo "Usage: make <target>"
@@ -65,6 +65,13 @@ help:
 	@echo ""
 	@echo "Docs:"
 	@echo "  docs      List available training docs"
+	@echo ""
+	@echo "AWS fleet deployment (17 instances):"
+	@echo "  deploy-test     Launch 1 test VM, verify stack, prompt before terminate"
+	@echo "  deploy-bake     Bake the training AMI (run after deploy-test passes)"
+	@echo "  deploy-launch   Launch 17 instances from the baked AMI"
+	@echo "  deploy-access   Print the access table (URL + credentials per instance)"
+	@echo "  deploy-teardown Terminate all running training instances"
 
 setup:
 	./setup.sh
@@ -287,3 +294,22 @@ from-scratch-j6: reset-smoke-j6
 
 docs:
 	@ls docs/*.md | sed 's/^/  - /'
+
+# ── AWS fleet deployment ──────────────────────────────────────────────────────
+
+DEPLOY_DIR := deploy/aws
+
+deploy-test:
+	cd $(DEPLOY_DIR) && ./test.sh
+
+deploy-bake:
+	cd $(DEPLOY_DIR) && ./bake.sh
+
+deploy-launch:
+	cd $(DEPLOY_DIR) && ./launch.sh
+
+deploy-access:
+	cd $(DEPLOY_DIR) && ./access.sh
+
+deploy-teardown:
+	cd $(DEPLOY_DIR) && ./teardown.sh
