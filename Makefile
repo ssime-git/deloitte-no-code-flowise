@@ -306,7 +306,7 @@ deploy-bake:
 	cd $(DEPLOY_DIR) && ./bake.sh
 
 deploy-launch:
-	cd $(DEPLOY_DIR) && ./launch.sh
+	cd $(DEPLOY_DIR) && ./launch.sh $(COUNT)
 
 deploy-access:
 	cd $(DEPLOY_DIR) && ./access.sh

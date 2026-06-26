@@ -167,17 +167,15 @@ make smoke-j6          # Multi-Agent (attend Human Input — comportement normal
 make deploy-bake       # ~20 min — clone repo + pull images + snapshot
 
 # ── Étape 3 : 1 VM de validation avec les collègues ──────────────────────────
-# Dans deploy/aws/config.env : COUNT=1
-make deploy-launch     # Lance 1 instance depuis l'AMI (~90 s de boot)
-make deploy-access     # Affiche URL + login à partager avec les collègues
+make deploy-launch COUNT=1   # Lance 1 instance depuis l'AMI (~90 s de boot)
+make deploy-access           # Affiche URL + login à partager avec les collègues
 
 # Les collègues testent : J2 → J6, ~15-30 min
 # Si OK → étape 4. Sinon → make deploy-teardown, corriger, rebake.
 
 # ── Étape 4 : déploiement fleet ───────────────────────────────────────────────
 make deploy-teardown   # Termine la VM de validation
-# Dans deploy/aws/config.env : COUNT=17
-make deploy-launch     # Lance les 17 instances (~3 min)
+make deploy-launch COUNT=17  # Lance les 17 instances (~3 min)
 make deploy-access     # Tableau complet URLs + login/password → access.csv
 
 # ── Après la formation ────────────────────────────────────────────────────────

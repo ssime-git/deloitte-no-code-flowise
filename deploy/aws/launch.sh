@@ -2,14 +2,17 @@
 # Launch COUNT instances from the baked AMI. Each boots the full stack
 # (mcp profile) and imports the flows on first boot.
 #
-# Usage: ./launch.sh [AMI_ID]   (AMI_ID optional; defaults to the last baked one)
+# Usage: ./launch.sh [COUNT]           override count (default: COUNT from config.env)
+#        make deploy-launch COUNT=1    same via make
 set -euo pipefail
 source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 load_config
 require_aws
 
-AMI_ID="${1:-$(state_get AMI_ID)}"
-[ -n "$AMI_ID" ] || die "No AMI_ID. Run ./bake.sh first or pass it as an argument."
+# CLI arg overrides config.env COUNT (use case: make deploy-launch COUNT=1)
+[ -n "${1:-}" ] && COUNT="$1"
+AMI_ID="$(state_get AMI_ID)"
+[ -n "$AMI_ID" ] || die "No AMI_ID. Run ./bake.sh first."
 SG="$(state_get SG_ID)"; [ -n "$SG" ] || SG="$(ensure_sg)"
 info "Using AMI $AMI_ID, security group $SG, count $COUNT"
 
