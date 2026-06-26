@@ -157,17 +157,31 @@ cp deploy/aws/config.env.example deploy/aws/config.env
 ### Workflow complet
 
 ```bash
-make deploy-test      # Lance 1 VM de test (~12 min) — vérifie stack + flows
-                      # Si OK, répondre 'y' pour terminer la VM de test
+# ── Étape 1 : valider le stack localement ────────────────────────────────────
+make smoke-j3          # RAG Chat
+make smoke-j4          # Agent Simple + Agent RAG
+make smoke-j5          # Agent MCP
+make smoke-j6          # Multi-Agent (attend Human Input — comportement normal)
 
-make deploy-bake      # Bake l'AMI (~20 min) — snapshot de la VM configurée
+# ── Étape 2 : bake l'AMI ─────────────────────────────────────────────────────
+make deploy-bake       # ~20 min — clone repo + pull images + snapshot
 
-make deploy-launch    # Lance les 17 instances depuis l'AMI (~3 min)
+# ── Étape 3 : 1 VM de validation avec les collègues ──────────────────────────
+# Dans deploy/aws/config.env : COUNT=1
+make deploy-launch     # Lance 1 instance depuis l'AMI (~90 s de boot)
+make deploy-access     # Affiche URL + login à partager avec les collègues
 
-make deploy-access    # Affiche le tableau URLs + login/password
-                      # Génère aussi deploy/aws/access.csv
+# Les collègues testent : J2 → J6, ~15-30 min
+# Si OK → étape 4. Sinon → make deploy-teardown, corriger, rebake.
 
-make deploy-teardown  # Termine toutes les instances après la formation
+# ── Étape 4 : déploiement fleet ───────────────────────────────────────────────
+make deploy-teardown   # Termine la VM de validation
+# Dans deploy/aws/config.env : COUNT=17
+make deploy-launch     # Lance les 17 instances (~3 min)
+make deploy-access     # Tableau complet URLs + login/password → access.csv
+
+# ── Après la formation ────────────────────────────────────────────────────────
+make deploy-teardown   # Termine toutes les instances
 ```
 
 ### Ce que fait chaque script
