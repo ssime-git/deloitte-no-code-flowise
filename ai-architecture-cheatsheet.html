@@ -191,7 +191,7 @@ svg { display: block; }
   <div class="section">
     <p class="section-label">01 — Arbre de décision</p>
     <div class="tree-wrap">
-      <svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+      <svg viewBox="0 0 880 540" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
         <defs>
           <marker id="ta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
             <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -199,93 +199,95 @@ svg { display: block; }
         </defs>
 
         <!-- START -->
-        <rect x="330" y="10" width="200" height="40" rx="20" fill="#141413"/>
-        <text x="430" y="35" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="600" fill="white">Quel est mon besoin ?</text>
+        <rect x="340" y="10" width="200" height="40" rx="20" fill="#141413"/>
+        <text x="440" y="35" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="600" fill="white">Quel est mon besoin ?</text>
 
-        <!-- Q1 : tâche statique ? -->
-        <line x1="430" y1="50" x2="430" y2="78" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <rect x="305" y="80" width="250" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
-        <text x="430" y="103" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">La tâche est simple et connue d'avance ?</text>
+        <!-- Q1 -->
+        <line x1="440" y1="50" x2="440" y2="78" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <rect x="310" y="80" width="260" height="40" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="440" y="104" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">La tâche est simple et connue d'avance ?</text>
 
-        <!-- OUI → Prompt -->
-        <line x1="305" y1="99" x2="188" y2="99" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="246" y="93" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
-        <rect x="60" y="80" width="126" height="38" rx="8" fill="rgba(95,94,90,0.10)" stroke="#5F5E5A" stroke-width="1.5"/>
-        <text x="123" y="98" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#5F5E5A">🟤 PROMPT</text>
-        <text x="123" y="112" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">one-shot / few-shot</text>
+        <!-- Q1 OUI → PROMPT -->
+        <line x1="310" y1="100" x2="192" y2="100" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="251" y="94" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="60" y="80" width="130" height="40" rx="8" fill="rgba(95,94,90,0.10)" stroke="#5F5E5A" stroke-width="1.5"/>
+        <text x="125" y="99" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#5F5E5A">🟤 PROMPT</text>
+        <text x="125" y="113" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">one-shot / few-shot</text>
 
-        <!-- NON → Q2 -->
-        <line x1="430" y1="118" x2="430" y2="148" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="438" y="137" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
-        <rect x="295" y="150" width="270" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
-        <text x="430" y="173" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Les étapes sont prévisibles et fixes ?</text>
+        <!-- Q1 NON → Q2 -->
+        <line x1="440" y1="120" x2="440" y2="148" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="448" y="138" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="310" y="150" width="260" height="40" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="440" y="174" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Les étapes sont prévisibles et fixes ?</text>
 
-        <!-- OUI → Workflow -->
-        <line x1="295" y1="169" x2="188" y2="169" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="240" y="163" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
-        <rect x="52" y="150" width="134" height="38" rx="8" fill="rgba(24,95,165,0.10)" stroke="#185FA5" stroke-width="1.5"/>
-        <text x="119" y="168" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#185FA5">🔵 WORKFLOW</text>
-        <text x="119" y="182" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">pipeline / chaîne fixe</text>
+        <!-- Q2 OUI → WORKFLOW -->
+        <line x1="310" y1="170" x2="192" y2="170" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="251" y="164" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="55" y="150" width="135" height="40" rx="8" fill="rgba(24,95,165,0.10)" stroke="#185FA5" stroke-width="1.5"/>
+        <text x="122" y="169" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#185FA5">🔵 WORKFLOW</text>
+        <text x="122" y="183" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">pipeline / chaîne fixe</text>
 
-        <!-- NON → Q3 -->
-        <line x1="430" y1="188" x2="430" y2="218" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="438" y="207" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
-        <rect x="270" y="220" width="320" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
-        <text x="430" y="243" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Le modèle manque de connaissance métier ?</text>
+        <!-- Q2 NON → Q3 -->
+        <line x1="440" y1="190" x2="440" y2="218" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="448" y="208" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="300" y="220" width="280" height="40" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="440" y="244" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Le modèle manque de connaissance métier ?</text>
 
-        <!-- OUI → Q3b : données internes vs domaine -->
-        <line x1="270" y1="239" x2="188" y2="239" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="226" y="233" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
-        <rect x="20" y="220" width="166" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
-        <text x="103" y="240" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">Données changeantes</text>
-        <text x="103" y="253" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">ou domaine stable ?</text>
+        <!-- Q3 OUI → sub-question -->
+        <line x1="300" y1="240" x2="222" y2="240" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="261" y="234" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="40" y="220" width="180" height="40" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="130" y="237" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">Données changeantes</text>
+        <text x="130" y="251" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">ou domaine stable ?</text>
 
-        <!-- changeantes → RAG -->
-        <line x1="20" y1="239" x2="20" y2="299" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="6" y="273" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">données</text>
-        <text x="6" y="283" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">chaug.</text>
-        <rect x="-10" y="300" width="120" height="38" rx="8" fill="rgba(15,110,86,0.10)" stroke="#0F6E56" stroke-width="1.5"/>
-        <text x="50" y="318" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#0F6E56">🟢 RAG</text>
-        <text x="50" y="332" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">retrieval + LLM</text>
+        <!-- sub → RAG (gauche) -->
+        <line x1="90" y1="260" x2="80" y2="298" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="36" y="278" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">données</text>
+        <text x="36" y="289" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">changeantes</text>
+        <rect x="20" y="300" width="120" height="40" rx="8" fill="rgba(15,110,86,0.10)" stroke="#0F6E56" stroke-width="1.5"/>
+        <text x="80" y="319" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#0F6E56">🟢 RAG</text>
+        <text x="80" y="333" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">retrieval + LLM</text>
 
-        <!-- stable → Fine-tuning -->
-        <line x1="186" y1="239" x2="186" y2="299" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="192" y="273" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">domaine</text>
-        <text x="192" y="283" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">stable</text>
-        <rect x="126" y="300" width="120" height="38" rx="8" fill="rgba(186,117,23,0.10)" stroke="#BA7517" stroke-width="1.5"/>
-        <text x="186" y="318" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#BA7517">🟠 FINE-TUNE</text>
-        <text x="186" y="332" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">adapter le modèle</text>
+        <!-- sub → FINE-TUNE (droite) -->
+        <line x1="170" y1="260" x2="210" y2="298" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="224" y="278" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">domaine</text>
+        <text x="224" y="289" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">stable</text>
+        <rect x="150" y="300" width="120" height="40" rx="8" fill="rgba(186,117,23,0.10)" stroke="#BA7517" stroke-width="1.5"/>
+        <text x="210" y="319" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#BA7517">🟠 FINE-TUNE</text>
+        <text x="210" y="333" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">adapter le modèle</text>
 
-        <!-- NON → Q4 -->
-        <line x1="430" y1="258" x2="430" y2="288" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="438" y="277" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
-        <rect x="280" y="290" width="300" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
-        <text x="430" y="313" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">L'agent doit décider et agir lui-même ?</text>
+        <!-- Q3 NON → Q4 -->
+        <line x1="440" y1="260" x2="440" y2="298" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="448" y="283" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="300" y="300" width="280" height="40" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="440" y="324" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">L'agent doit décider et agir lui-même ?</text>
 
-        <!-- OUI → Q5 -->
-        <line x1="430" y1="328" x2="430" y2="358" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="438" y="347" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
-        <rect x="280" y="360" width="300" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
-        <text x="430" y="383" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Il doit se connecter à des outils externes ?</text>
+        <!-- Q4 NON → terminal Workflow/Prompt -->
+        <line x1="580" y1="320" x2="618" y2="320" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="599" y="314" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="620" y="300" width="170" height="40" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="705" y="319" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="600" fill="#5F5E5A">↩ Workflow / Prompt</text>
+        <text x="705" y="333" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">un appel suffit</text>
 
-        <!-- OUI → Agent + MCP -->
-        <line x1="580" y1="379" x2="660" y2="379" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="620" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
-        <rect x="662" y="360" width="148" height="38" rx="8" fill="rgba(29,158,117,0.10)" stroke="#1D9E75" stroke-width="1.5"/>
-        <text x="736" y="378" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="600" fill="#1D9E75">🟩 AGENT + MCP</text>
-        <text x="736" y="392" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">outils standardisés</text>
+        <!-- Q4 OUI → Q5 -->
+        <line x1="440" y1="340" x2="440" y2="368" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="448" y="358" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="300" y="370" width="280" height="40" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="440" y="394" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Il doit se connecter à des outils externes ?</text>
 
-        <!-- NON → Agent simple -->
-        <line x1="430" y1="398" x2="430" y2="428" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="438" y="417" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
-        <rect x="330" y="430" width="200" height="38" rx="8" fill="rgba(83,74,183,0.10)" stroke="#534AB7" stroke-width="1.5"/>
-        <text x="430" y="448" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#534AB7">🟣 AGENT simple</text>
-        <text x="430" y="462" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">outils custom intégrés</text>
+        <!-- Q5 OUI → AGENT + MCP -->
+        <line x1="580" y1="390" x2="618" y2="390" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="599" y="384" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="620" y="370" width="170" height="40" rx="8" fill="rgba(29,158,117,0.10)" stroke="#1D9E75" stroke-width="1.5"/>
+        <text x="705" y="389" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="600" fill="#1D9E75">🟩 AGENT + MCP</text>
+        <text x="705" y="403" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">outils standardisés</text>
 
-        <!-- NON de Q4 → Workflow -->
-        <line x1="280" y1="309" x2="230" y2="309" stroke="#87867F" stroke-width="1.5"/>
-        <line x1="230" y1="309" x2="230" y2="169" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
-        <text x="252" y="303" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <!-- Q5 NON → AGENT simple -->
+        <line x1="440" y1="410" x2="440" y2="448" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="448" y="433" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="340" y="450" width="200" height="40" rx="8" fill="rgba(83,74,183,0.10)" stroke="#534AB7" stroke-width="1.5"/>
+        <text x="440" y="469" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#534AB7">🟣 AGENT simple</text>
+        <text x="440" y="483" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">outils custom intégrés</text>
 
       </svg>
     </div>
@@ -498,7 +500,9 @@ svg { display: block; }
           <text x="40" y="126" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">👤 User</text>
           <text x="40" y="140" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">question</text>
 
-          <line x1="70" y1="128" x2="96" y2="128" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
+          <!-- User → Agent (haut) -->
+          <line x1="70" y1="118" x2="96" y2="118" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
+          <text x="83" y="111" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#87867F">ask</text>
 
           <!-- Agent -->
           <rect x="98" y="100" width="90" height="56" rx="8" fill="rgba(83,74,183,0.10)" stroke="#534AB7" stroke-width="1.5"/>
@@ -510,7 +514,7 @@ svg { display: block; }
           <line x1="143" y1="100" x2="143" y2="72" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
           <rect x="98" y="38" width="90" height="32" rx="8" fill="rgba(15,110,86,0.10)" stroke="#0F6E56" stroke-width="1.5"/>
           <text x="143" y="54" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#0F6E56">🟢 RAG</text>
-          <text x="143" y="65" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#0F6E56">FAQ + docs produits</text>
+          <text x="143" y="65" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#0F6E56">FAQ + docs</text>
 
           <!-- Agent → MCP Tools -->
           <line x1="188" y1="128" x2="216" y2="128" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
@@ -538,14 +542,15 @@ svg { display: block; }
           <rect x="280" y="193" width="88" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
           <text x="324" y="210" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">🔄 Return API</text>
 
-          <!-- Answer back -->
-          <line x1="98" y1="138" x2="72" y2="138" stroke="#534AB7" stroke-width="1.5" marker-end="url(#a1)"/>
-          <text x="85" y="132" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">réponse</text>
+          <!-- Agent → User (bas, retour) -->
+          <line x1="96" y1="140" x2="72" y2="140" stroke="#534AB7" stroke-width="1.5" marker-end="url(#a1)"/>
+          <text x="83" y="153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#534AB7">réponse</text>
 
-          <!-- Vector DB -->
-          <rect x="60" y="30" width="76" height="28" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
-          <text x="98" y="48" text-anchor="middle" font-family="system-ui" font-size="10" fill="#633806">🗄 Vector DB</text>
-          <line x1="98" y1="58" x2="120" y2="58" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#a1)"/>
+          <!-- Vector DB (à gauche du RAG, pas de chevauchement) -->
+          <rect x="6" y="38" width="84" height="32" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+          <text x="48" y="51" text-anchor="middle" font-family="system-ui" font-size="9" fill="#633806">🗄 Vector DB</text>
+          <text x="48" y="63" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#854F0B">embeddings</text>
+          <line x1="90" y1="54" x2="96" y2="54" stroke="#EF9F27" stroke-width="1.2" stroke-dasharray="3,2" marker-end="url(#a1)"/>
 
           <text x="190" y="250" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">patterns : RAG + Agent + MCP</text>
         </svg>
@@ -566,7 +571,9 @@ svg { display: block; }
           <rect x="10" y="110" width="60" height="36" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
           <text x="40" y="126" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">👨‍💻 Dev</text>
           <text x="40" y="140" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">IDE</text>
-          <line x1="70" y1="128" x2="96" y2="128" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+          <!-- Dev → Agent (haut) -->
+          <line x1="70" y1="118" x2="96" y2="118" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+          <text x="83" y="111" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#87867F">prompt</text>
 
           <!-- Agent -->
           <rect x="98" y="100" width="90" height="56" rx="8" fill="rgba(83,74,183,0.10)" stroke="#534AB7" stroke-width="1.5"/>
@@ -610,8 +617,9 @@ svg { display: block; }
           <text x="338" y="198" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">🧪 Tests</text>
           <text x="338" y="210" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#0F6E56">runner</text>
 
-          <line x1="98" y1="138" x2="72" y2="138" stroke="#534AB7" stroke-width="1.5" marker-end="url(#a2)"/>
-          <text x="85" y="132" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">patch</text>
+          <!-- Agent → Dev (bas, retour) -->
+          <line x1="96" y1="140" x2="72" y2="140" stroke="#534AB7" stroke-width="1.5" marker-end="url(#a2)"/>
+          <text x="83" y="153" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#534AB7">patch</text>
 
           <text x="190" y="250" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">patterns : Agent + MCP</text>
         </svg>
