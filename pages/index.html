@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Engineering — Cheatsheets</title>
+<style>
+:root {
+  --ivory: #FAF9F5;
+  --white: #FFFFFF;
+  --slate: #141413;
+  --gray-300: #D1CFC5;
+  --gray-500: #87867F;
+  --gray-700: #3D3D3A;
+  --serif: ui-serif, Georgia, "Times New Roman", serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:  ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--ivory);
+  font-family: var(--sans);
+  color: var(--gray-700);
+  padding: 80px 24px;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 600px; margin: 0 auto; }
+
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--gray-500);
+}
+h1 {
+  font-family: var(--serif); font-weight: 500; font-size: 2rem;
+  letter-spacing: -0.02em; color: var(--slate); margin-top: 8px;
+}
+.subtitle { color: var(--gray-500); font-size: 0.9rem; margin-top: 6px; margin-bottom: 48px; }
+
+.cards { display: flex; flex-direction: column; gap: 16px; }
+.card {
+  background: var(--white);
+  border: 1.5px solid var(--gray-300);
+  border-radius: 12px;
+  padding: 24px 28px;
+  text-decoration: none;
+  color: inherit;
+  display: flex; gap: 20px; align-items: center;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.card:hover {
+  border-color: var(--slate);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+.card-icon { font-size: 2rem; flex-shrink: 0; }
+.card-body {}
+.card-tag {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--gray-500); margin-bottom: 4px;
+}
+.card h2 { font-family: var(--serif); font-weight: 500; font-size: 1.1rem; color: var(--slate); margin-bottom: 4px; }
+.card p  { font-size: 0.85rem; color: var(--gray-500); }
+
+.footer {
+  margin-top: 48px; padding-top: 20px; border-top: 1.5px solid var(--gray-300);
+  font-family: var(--mono); font-size: 11px; color: var(--gray-500);
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <p class="eyebrow">AI Engineering — Fondamentaux</p>
+  <h1>Cheatsheets</h1>
+  <p class="subtitle">Références visuelles pour la formation AI Engineering.</p>
+
+  <div class="cards">
+    <a class="card" href="agent-vs-mcp.html">
+      <div class="card-icon">🔌</div>
+      <div class="card-body">
+        <p class="card-tag">Fondamentaux</p>
+        <h2>Agent · MCP · API</h2>
+        <p>Différences clés — anatomie, analogies, stdio, protocole JSON-RPC.</p>
+      </div>
+    </a>
+    <a class="card" href="ai-architecture-cheatsheet.html">
+      <div class="card-icon">🏗</div>
+      <div class="card-body">
+        <p class="card-tag">Architecture</p>
+        <h2>Architecture Decision Guide</h2>
+        <p>Arbre de décision, 6 patterns (Prompt → Fine-tune), anti-patterns, règles d'or.</p>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">Formation AI Engineering · Liora</div>
+</div>
+</body>
+</html>

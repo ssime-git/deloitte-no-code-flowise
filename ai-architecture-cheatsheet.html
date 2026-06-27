@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Engineering — Architecture Cheatsheet</title>
+<style>
+:root {
+  --ivory:    #FAF9F5;
+  --white:    #FFFFFF;
+  --slate:    #141413;
+  --clay:     #D97757;
+  --olive:    #788C5D;
+  --rust:     #B04A3F;
+  --oat:      #E3DACC;
+  --gray-150: #F0EEE6;
+  --gray-300: #D1CFC5;
+  --gray-500: #87867F;
+  --gray-700: #3D3D3A;
+  --border: 1.5px solid var(--gray-300);
+  --radius-panel: 12px;
+  --radius-row: 8px;
+  --serif: ui-serif, Georgia, "Times New Roman", serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:  ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Pattern colors */
+  --p-prompt:   #5F5E5A;
+  --p-workflow: #185FA5;
+  --p-rag:      #0F6E56;
+  --p-agent:    #534AB7;
+  --p-mcp:      #1D9E75;
+  --p-ft:       #BA7517;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--ivory);
+  color: var(--gray-700);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding: 52px 24px 100px;
+}
+.page { max-width: 960px; margin: 0 auto; }
+
+.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-500); }
+h1 { font-family: var(--serif); font-weight: 500; font-size: 2.2rem; letter-spacing: -0.02em; color: var(--slate); margin-top: 8px; }
+.subtitle { color: var(--gray-500); font-size: 0.95rem; margin-top: 6px; margin-bottom: 48px; }
+
+.section { margin-top: 56px; }
+.section-label {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--gray-500);
+  border-bottom: 1px solid var(--gray-300); padding-bottom: 8px; margin-bottom: 20px;
+}
+
+/* ── PATTERN PILLS ── */
+.pill {
+  display: inline-block; border-radius: 999px; padding: 2px 10px;
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+}
+.pill.prompt   { background: rgba(95,94,90,0.12);   color: var(--p-prompt); }
+.pill.workflow { background: rgba(24,95,165,0.12);  color: var(--p-workflow); }
+.pill.rag      { background: rgba(15,110,86,0.12);  color: var(--p-rag); }
+.pill.agent    { background: rgba(83,74,183,0.12);  color: var(--p-agent); }
+.pill.mcp      { background: rgba(29,158,117,0.12); color: var(--p-mcp); }
+.pill.ft       { background: rgba(186,117,23,0.12); color: var(--p-ft); }
+
+/* ── DECISION TREE SVG wrap ── */
+.tree-wrap {
+  background: var(--white); border: var(--border);
+  border-radius: var(--radius-panel); padding: 20px 16px;
+  overflow-x: auto;
+}
+.tree-wrap svg { min-width: 700px; }
+
+/* ── PATTERN CARDS ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 0;
+}
+.pcard {
+  background: var(--white); border: var(--border);
+  border-radius: var(--radius-panel); padding: 20px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.pcard.prompt   { border-top: 3px solid var(--p-prompt); }
+.pcard.workflow { border-top: 3px solid var(--p-workflow); }
+.pcard.rag      { border-top: 3px solid var(--p-rag); }
+.pcard.agent    { border-top: 3px solid var(--p-agent); }
+.pcard.mcp      { border-top: 3px solid var(--p-mcp); }
+.pcard.ft       { border-top: 3px solid var(--p-ft); }
+
+.pcard h3 { font-family: var(--serif); font-weight: 500; font-size: 1.05rem; color: var(--slate); }
+.pcard .meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.badge { border-radius: 6px; padding: 1px 8px; font-family: var(--mono); font-size: 10px; }
+.badge.complexity-low  { background: rgba(120,140,93,0.15); color: var(--olive); }
+.badge.complexity-mid  { background: rgba(217,119,87,0.15); color: var(--clay); }
+.badge.complexity-high { background: rgba(176,74,63,0.15);  color: var(--rust); }
+.badge.latency-low  { background: rgba(120,140,93,0.15); color: var(--olive); }
+.badge.latency-mid  { background: rgba(217,119,87,0.15); color: var(--clay); }
+.badge.latency-high { background: rgba(176,74,63,0.15);  color: var(--rust); }
+
+.pcard ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.pcard ul li { font-size: 0.82rem; display: flex; gap: 6px; align-items: flex-start; }
+.pcard ul li::before { content: "→"; font-family: var(--mono); color: var(--gray-500); flex-shrink: 0; }
+.pcard .no-list li::before { content: "✗"; color: var(--rust); }
+.pcard .yes-list li::before { content: "✓"; color: var(--olive); }
+
+.pcard .fw { font-family: var(--mono); font-size: 10px; color: var(--gray-500); border-top: 1px solid var(--gray-300); padding-top: 8px; margin-top: 4px; }
+.pcard .fw strong { color: var(--gray-700); }
+
+/* ── ARCH DIAGRAMS ── */
+.arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.arch-card {
+  background: var(--white); border: var(--border);
+  border-radius: var(--radius-panel); padding: 18px 16px; overflow-x: auto;
+}
+.arch-card .atitle { font-family: var(--serif); font-weight: 500; font-size: 1rem; color: var(--slate); margin-bottom: 4px; }
+.arch-card .asub   { font-family: var(--mono); font-size: 10px; color: var(--gray-500); margin-bottom: 12px; }
+
+/* ── COMPONENTS ── */
+.comp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.comp-card {
+  background: var(--white); border: var(--border);
+  border-radius: var(--radius-row); padding: 14px;
+}
+.comp-card .icon { font-size: 1.4rem; margin-bottom: 6px; }
+.comp-card h4 { font-family: var(--mono); font-size: 11px; font-weight: 600; color: var(--slate); margin-bottom: 4px; }
+.comp-card p  { font-size: 0.78rem; color: var(--gray-500); }
+
+/* ── FRAMEWORKS TABLE ── */
+.table-wrap { background: var(--white); border: var(--border); border-radius: var(--radius-panel); overflow: hidden; }
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+thead tr { background: var(--gray-150); }
+thead th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gray-500); padding: 10px 14px; text-align: left; }
+tbody td { padding: 10px 14px; border-top: 1px solid var(--gray-300); vertical-align: top; }
+tbody tr:hover { background: var(--gray-150); }
+td code { font-family: var(--mono); font-size: 11px; background: var(--gray-150); padding: 1px 5px; border-radius: 4px; }
+.yes { color: var(--olive); font-family: var(--mono); font-size: 12px; }
+.no  { color: var(--rust);  font-family: var(--mono); font-size: 12px; }
+.mid { color: var(--clay);  font-family: var(--mono); font-size: 12px; }
+
+/* ── ANTI-PATTERNS ── */
+.anti-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.anti-card {
+  background: var(--white); border: var(--border);
+  border-left: 3px solid var(--rust);
+  border-radius: var(--radius-row); padding: 14px 16px;
+}
+.anti-card .anti-tag { font-family: var(--mono); font-size: 10px; color: var(--rust); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.anti-card h4 { font-size: 0.88rem; font-weight: 600; color: var(--slate); margin-bottom: 4px; }
+.anti-card p  { font-size: 0.82rem; }
+.anti-card .fix { font-family: var(--mono); font-size: 10px; color: var(--olive); margin-top: 6px; }
+
+/* ── GOLDEN RULES ── */
+.rules { display: flex; flex-direction: column; gap: 10px; }
+.rule {
+  background: var(--white); border: var(--border);
+  border-radius: var(--radius-row); padding: 14px 18px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.rule .num { font-family: var(--serif); font-size: 1.6rem; font-weight: 500; color: var(--oat); flex-shrink: 0; line-height: 1; margin-top: 2px; }
+.rule h4   { font-size: 0.9rem; font-weight: 600; color: var(--slate); margin-bottom: 2px; }
+.rule p    { font-size: 0.82rem; color: var(--gray-500); }
+
+/* ── FOOTER ── */
+.footer { margin-top: 44px; padding-top: 22px; border-top: var(--border); font-family: var(--mono); font-size: 11px; color: var(--gray-500); line-height: 1.9; }
+.footer strong { color: var(--slate); }
+
+svg { display: block; }
+
+@media (max-width: 760px) {
+  .cards-grid, .arch-grid, .comp-grid, .anti-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="eyebrow">AI Engineering — Cheatsheet</p>
+  <h1>Architecture Decision Guide</h1>
+  <p class="subtitle">Choisir le bon pattern architectural — du simple prompt jusqu'au fine-tuning.</p>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       01 — ARBRE DE DÉCISION
+  ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">01 — Arbre de décision</p>
+    <div class="tree-wrap">
+      <svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+        <defs>
+          <marker id="ta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- START -->
+        <rect x="330" y="10" width="200" height="40" rx="20" fill="#141413"/>
+        <text x="430" y="35" text-anchor="middle" font-family="system-ui" font-size="13" font-weight="600" fill="white">Quel est mon besoin ?</text>
+
+        <!-- Q1 : tâche statique ? -->
+        <line x1="430" y1="50" x2="430" y2="78" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <rect x="305" y="80" width="250" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="430" y="103" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">La tâche est simple et connue d'avance ?</text>
+
+        <!-- OUI → Prompt -->
+        <line x1="305" y1="99" x2="188" y2="99" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="246" y="93" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="60" y="80" width="126" height="38" rx="8" fill="rgba(95,94,90,0.10)" stroke="#5F5E5A" stroke-width="1.5"/>
+        <text x="123" y="98" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#5F5E5A">🟤 PROMPT</text>
+        <text x="123" y="112" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">one-shot / few-shot</text>
+
+        <!-- NON → Q2 -->
+        <line x1="430" y1="118" x2="430" y2="148" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="438" y="137" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="295" y="150" width="270" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="430" y="173" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Les étapes sont prévisibles et fixes ?</text>
+
+        <!-- OUI → Workflow -->
+        <line x1="295" y1="169" x2="188" y2="169" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="240" y="163" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="52" y="150" width="134" height="38" rx="8" fill="rgba(24,95,165,0.10)" stroke="#185FA5" stroke-width="1.5"/>
+        <text x="119" y="168" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#185FA5">🔵 WORKFLOW</text>
+        <text x="119" y="182" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">pipeline / chaîne fixe</text>
+
+        <!-- NON → Q3 -->
+        <line x1="430" y1="188" x2="430" y2="218" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="438" y="207" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="270" y="220" width="320" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="430" y="243" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Le modèle manque de connaissance métier ?</text>
+
+        <!-- OUI → Q3b : données internes vs domaine -->
+        <line x1="270" y1="239" x2="188" y2="239" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="226" y="233" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="20" y="220" width="166" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="103" y="240" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">Données changeantes</text>
+        <text x="103" y="253" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">ou domaine stable ?</text>
+
+        <!-- changeantes → RAG -->
+        <line x1="20" y1="239" x2="20" y2="299" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="6" y="273" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">données</text>
+        <text x="6" y="283" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">chaug.</text>
+        <rect x="-10" y="300" width="120" height="38" rx="8" fill="rgba(15,110,86,0.10)" stroke="#0F6E56" stroke-width="1.5"/>
+        <text x="50" y="318" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#0F6E56">🟢 RAG</text>
+        <text x="50" y="332" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">retrieval + LLM</text>
+
+        <!-- stable → Fine-tuning -->
+        <line x1="186" y1="239" x2="186" y2="299" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="192" y="273" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">domaine</text>
+        <text x="192" y="283" font-family="ui-monospace,monospace" font-size="9" fill="#788C5D">stable</text>
+        <rect x="126" y="300" width="120" height="38" rx="8" fill="rgba(186,117,23,0.10)" stroke="#BA7517" stroke-width="1.5"/>
+        <text x="186" y="318" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#BA7517">🟠 FINE-TUNE</text>
+        <text x="186" y="332" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">adapter le modèle</text>
+
+        <!-- NON → Q4 -->
+        <line x1="430" y1="258" x2="430" y2="288" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="438" y="277" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="280" y="290" width="300" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="430" y="313" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">L'agent doit décider et agir lui-même ?</text>
+
+        <!-- OUI → Q5 -->
+        <line x1="430" y1="328" x2="430" y2="358" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="438" y="347" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="280" y="360" width="300" height="38" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="430" y="383" text-anchor="middle" font-family="system-ui" font-size="12" fill="#3D3D3A">Il doit se connecter à des outils externes ?</text>
+
+        <!-- OUI → Agent + MCP -->
+        <line x1="580" y1="379" x2="660" y2="379" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="620" y="373" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#788C5D">oui</text>
+        <rect x="662" y="360" width="148" height="38" rx="8" fill="rgba(29,158,117,0.10)" stroke="#1D9E75" stroke-width="1.5"/>
+        <text x="736" y="378" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="600" fill="#1D9E75">🟩 AGENT + MCP</text>
+        <text x="736" y="392" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">outils standardisés</text>
+
+        <!-- NON → Agent simple -->
+        <line x1="430" y1="398" x2="430" y2="428" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="438" y="417" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+        <rect x="330" y="430" width="200" height="38" rx="8" fill="rgba(83,74,183,0.10)" stroke="#534AB7" stroke-width="1.5"/>
+        <text x="430" y="448" text-anchor="middle" font-family="system-ui" font-size="12" font-weight="600" fill="#534AB7">🟣 AGENT simple</text>
+        <text x="430" y="462" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">outils custom intégrés</text>
+
+        <!-- NON de Q4 → Workflow -->
+        <line x1="280" y1="309" x2="230" y2="309" stroke="#87867F" stroke-width="1.5"/>
+        <line x1="230" y1="309" x2="230" y2="169" stroke="#87867F" stroke-width="1.5" marker-end="url(#ta)"/>
+        <text x="252" y="303" font-family="ui-monospace,monospace" font-size="10" fill="#B04A3F">non</text>
+
+      </svg>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       02 — PATTERN CARDS
+  ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">02 — Les 6 patterns</p>
+    <div class="cards-grid">
+
+      <!-- PROMPT -->
+      <div class="pcard prompt">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="pill prompt">Prompt</span>
+        </div>
+        <h3>🟤 Simple / Few-shot</h3>
+        <div class="meta">
+          <span class="badge complexity-low">Complexité: faible</span>
+          <span class="badge latency-low">Latence: &lt;2s</span>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">QUAND UTILISER</p>
+          <ul class="yes-list">
+            <li>Tâche unique et bien définie</li>
+            <li>Classification, résumé, extraction</li>
+            <li>Structured output (JSON imposé)</li>
+            <li>Transformation de texte</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">NE PAS UTILISER SI</p>
+          <ul class="no-list">
+            <li>Données internes nécessaires</li>
+            <li>Plusieurs étapes interdépendantes</li>
+          </ul>
+        </div>
+        <div class="fw"><strong>Frameworks :</strong> Instructor, Outlines, LiteLLM, OpenAI SDK direct</div>
+      </div>
+
+      <!-- WORKFLOW -->
+      <div class="pcard workflow">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="pill workflow">Workflow</span>
+        </div>
+        <h3>🔵 Pipeline orchestré</h3>
+        <div class="meta">
+          <span class="badge complexity-mid">Complexité: moyenne</span>
+          <span class="badge latency-mid">Latence: 5–30s</span>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">QUAND UTILISER</p>
+          <ul class="yes-list">
+            <li>Étapes fixes et prévisibles</li>
+            <li>Process RH, legal, finance</li>
+            <li>Approbations humaines (HITL)</li>
+            <li>Audit trail requis</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">NE PAS UTILISER SI</p>
+          <ul class="no-list">
+            <li>Le chemin dépend du contenu</li>
+            <li>Besoin de décision dynamique</li>
+          </ul>
+        </div>
+        <div class="fw"><strong>Frameworks :</strong> LangGraph, Prefect, n8n, Flowise, Temporal</div>
+      </div>
+
+      <!-- RAG -->
+      <div class="pcard rag">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="pill rag">RAG</span>
+        </div>
+        <h3>🟢 Retrieval-Augmented</h3>
+        <div class="meta">
+          <span class="badge complexity-mid">Complexité: moyenne</span>
+          <span class="badge latency-mid">Latence: 3–15s</span>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">QUAND UTILISER</p>
+          <ul class="yes-list">
+            <li>Docs internes, KB, contrats</li>
+            <li>Données qui changent souvent</li>
+            <li>Besoin de sourcing / citations</li>
+            <li>Volume trop grand pour le contexte</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">NE PAS UTILISER SI</p>
+          <ul class="no-list">
+            <li>Données stables → fine-tune</li>
+            <li>Pas de corpus documentaire</li>
+          </ul>
+        </div>
+        <div class="fw"><strong>Frameworks :</strong> LlamaIndex, LangChain, Weaviate, Qdrant, pgvector</div>
+      </div>
+
+      <!-- AGENT -->
+      <div class="pcard agent">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="pill agent">Agent</span>
+        </div>
+        <h3>🟣 Agent autonome</h3>
+        <div class="meta">
+          <span class="badge complexity-high">Complexité: haute</span>
+          <span class="badge latency-high">Latence: 30s–5min</span>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">QUAND UTILISER</p>
+          <ul class="yes-list">
+            <li>Objectif ouvert, chemin inconnu</li>
+            <li>Besoin d'itérer et corriger</li>
+            <li>Recherche, debug, analyse multi-sources</li>
+            <li>Tâches de niveau "dev junior"</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">NE PAS UTILISER SI</p>
+          <ul class="no-list">
+            <li>Latence critique (&lt;3s)</li>
+            <li>Étapes connues → workflow</li>
+          </ul>
+        </div>
+        <div class="fw"><strong>Frameworks :</strong> LangGraph, AutoGen, CrewAI, Hermes, Claude API</div>
+      </div>
+
+      <!-- AGENT + MCP -->
+      <div class="pcard mcp">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="pill mcp">Agent + MCP</span>
+        </div>
+        <h3>🟩 Agent + outils standardisés</h3>
+        <div class="meta">
+          <span class="badge complexity-high">Complexité: haute</span>
+          <span class="badge latency-high">Latence: variable</span>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">QUAND UTILISER</p>
+          <ul class="yes-list">
+            <li>Plusieurs agents partagent des outils</li>
+            <li>Outils maintenus par une autre équipe</li>
+            <li>Clients MCP-natifs (Cursor, Claude Desktop)</li>
+            <li>Découplage agent ↔ tooling requis</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">NE PAS UTILISER SI</p>
+          <ul class="no-list">
+            <li>1 seul agent, 1 seul outil simple</li>
+            <li>POC ou prototype rapide</li>
+          </ul>
+        </div>
+        <div class="fw"><strong>Frameworks :</strong> MCP SDK (Python/TS), Claude Desktop, Hermes, Cursor</div>
+      </div>
+
+      <!-- FINE-TUNING -->
+      <div class="pcard ft">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="pill ft">Fine-tuning</span>
+        </div>
+        <h3>🟠 Adapter le modèle</h3>
+        <div class="meta">
+          <span class="badge complexity-high">Complexité: très haute</span>
+          <span class="badge latency-low">Inférence: rapide</span>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">QUAND UTILISER</p>
+          <ul class="yes-list">
+            <li>Style / ton très spécifique (légal, médical)</li>
+            <li>Format de sortie propriétaire répétitif</li>
+            <li>Latence critique + domaine stable</li>
+            <li>Coût d'inférence à réduire (modèle plus petit)</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-size:0.78rem;font-family:var(--mono);color:var(--gray-500);margin-bottom:4px;">NE PAS UTILISER SI</p>
+          <ul class="no-list">
+            <li>Données changent souvent → RAG</li>
+            <li>Pas de dataset d'entraînement (&gt;500 ex.)</li>
+          </ul>
+        </div>
+        <div class="fw"><strong>Frameworks :</strong> Unsloth, LoRA/QLoRA, OpenAI Fine-tuning API, Axolotl</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       03 — ARCHITECTURES ENTREPRISE RÉELLES
+  ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">03 — Architectures entreprise réelles</p>
+    <div class="arch-grid">
+
+      <!-- ARCHI 1 : Support client e-commerce -->
+      <div class="arch-card">
+        <p class="atitle">Support client e-commerce</p>
+        <p class="asub">RAG + Agent + MCP — Zalando, FNAC style</p>
+        <svg viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <defs>
+            <marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+          </defs>
+
+          <!-- User -->
+          <rect x="10" y="110" width="60" height="36" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+          <text x="40" y="126" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">👤 User</text>
+          <text x="40" y="140" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">question</text>
+
+          <line x1="70" y1="128" x2="96" y2="128" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
+
+          <!-- Agent -->
+          <rect x="98" y="100" width="90" height="56" rx="8" fill="rgba(83,74,183,0.10)" stroke="#534AB7" stroke-width="1.5"/>
+          <text x="143" y="122" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="600" fill="#534AB7">🤖 Agent</text>
+          <text x="143" y="137" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">LLM</text>
+          <text x="143" y="149" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">+ mémoire</text>
+
+          <!-- Agent → RAG -->
+          <line x1="143" y1="100" x2="143" y2="72" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
+          <rect x="98" y="38" width="90" height="32" rx="8" fill="rgba(15,110,86,0.10)" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="143" y="54" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#0F6E56">🟢 RAG</text>
+          <text x="143" y="65" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#0F6E56">FAQ + docs produits</text>
+
+          <!-- Agent → MCP Tools -->
+          <line x1="188" y1="128" x2="216" y2="128" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
+
+          <!-- MCP vertical rail -->
+          <rect x="218" y="74" width="80" height="36" rx="8" fill="#0F6E56"/>
+          <text x="258" y="90" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" font-weight="600" fill="white">MCP Client</text>
+          <text x="258" y="103" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#5DCAA5">protocole</text>
+          <line x1="258" y1="110" x2="258" y2="128" stroke="#87867F" stroke-width="1.5"/>
+
+          <line x1="258" y1="128" x2="258" y2="210" stroke="#D1CFC5" stroke-width="1.5"/>
+
+          <!-- Tool 1 -->
+          <line x1="258" y1="145" x2="278" y2="145" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
+          <rect x="280" y="130" width="88" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="324" y="148" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">📦 Order API</text>
+
+          <!-- Tool 2 -->
+          <line x1="258" y1="175" x2="278" y2="175" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
+          <rect x="280" y="160" width="88" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="324" y="178" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">💳 CRM API</text>
+
+          <!-- Tool 3 -->
+          <line x1="258" y1="208" x2="278" y2="208" stroke="#87867F" stroke-width="1.5" marker-end="url(#a1)"/>
+          <rect x="280" y="193" width="88" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="324" y="210" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">🔄 Return API</text>
+
+          <!-- Answer back -->
+          <line x1="98" y1="138" x2="72" y2="138" stroke="#534AB7" stroke-width="1.5" marker-end="url(#a1)"/>
+          <text x="85" y="132" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">réponse</text>
+
+          <!-- Vector DB -->
+          <rect x="60" y="30" width="76" height="28" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+          <text x="98" y="48" text-anchor="middle" font-family="system-ui" font-size="10" fill="#633806">🗄 Vector DB</text>
+          <line x1="98" y1="58" x2="120" y2="58" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#a1)"/>
+
+          <text x="190" y="250" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">patterns : RAG + Agent + MCP</text>
+        </svg>
+      </div>
+
+      <!-- ARCHI 2 : Assistant développeur interne -->
+      <div class="arch-card">
+        <p class="atitle">Assistant développeur interne</p>
+        <p class="asub">Agent + MCP — GitHub Copilot / Cursor style</p>
+        <svg viewBox="0 0 380 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <defs>
+            <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+          </defs>
+
+          <!-- Dev -->
+          <rect x="10" y="110" width="60" height="36" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+          <text x="40" y="126" text-anchor="middle" font-family="system-ui" font-size="11" fill="#3D3D3A">👨‍💻 Dev</text>
+          <text x="40" y="140" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">IDE</text>
+          <line x1="70" y1="128" x2="96" y2="128" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+
+          <!-- Agent -->
+          <rect x="98" y="100" width="90" height="56" rx="8" fill="rgba(83,74,183,0.10)" stroke="#534AB7" stroke-width="1.5"/>
+          <text x="143" y="122" text-anchor="middle" font-family="system-ui" font-size="11" font-weight="600" fill="#534AB7">🤖 Agent</text>
+          <text x="143" y="137" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">Claude / GPT-4</text>
+          <text x="143" y="149" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">+ contexte</text>
+
+          <line x1="188" y1="128" x2="214" y2="128" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+
+          <!-- MCP -->
+          <rect x="216" y="110" width="72" height="36" rx="8" fill="#0F6E56"/>
+          <text x="252" y="127" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" font-weight="600" fill="white">MCP</text>
+          <text x="252" y="140" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#5DCAA5">protocole</text>
+
+          <line x1="288" y1="128" x2="288" y2="60" stroke="#D1CFC5" stroke-width="1.5"/>
+          <line x1="288" y1="128" x2="288" y2="210" stroke="#D1CFC5" stroke-width="1.5"/>
+
+          <!-- Tools -->
+          <line x1="288" y1="60" x2="306" y2="60" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+          <rect x="308" y="45" width="60" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="338" y="58" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">💻 Code</text>
+          <text x="338" y="70" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#0F6E56">exec</text>
+
+          <line x1="288" y1="95" x2="306" y2="95" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+          <rect x="308" y="80" width="60" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="338" y="93" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">📁 Files</text>
+          <text x="338" y="105" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#0F6E56">read/write</text>
+
+          <line x1="288" y1="128" x2="306" y2="128" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+          <rect x="308" y="113" width="60" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="338" y="127" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">🐙 GitHub</text>
+          <text x="338" y="139" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#0F6E56">PR/issues</text>
+
+          <line x1="288" y1="162" x2="306" y2="162" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+          <rect x="308" y="147" width="60" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="338" y="160" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">🔍 Search</text>
+          <text x="338" y="172" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#0F6E56">web/docs</text>
+
+          <line x1="288" y1="200" x2="306" y2="200" stroke="#87867F" stroke-width="1.5" marker-end="url(#a2)"/>
+          <rect x="308" y="185" width="60" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="338" y="198" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">🧪 Tests</text>
+          <text x="338" y="210" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#0F6E56">runner</text>
+
+          <line x1="98" y1="138" x2="72" y2="138" stroke="#534AB7" stroke-width="1.5" marker-end="url(#a2)"/>
+          <text x="85" y="132" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">patch</text>
+
+          <text x="190" y="250" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">patterns : Agent + MCP</text>
+        </svg>
+      </div>
+
+      <!-- ARCHI 3 : Pipeline traitement documents -->
+      <div class="arch-card">
+        <p class="atitle">Traitement de documents juridiques</p>
+        <p class="asub">Workflow + Structured Output — Legaltech style</p>
+        <svg viewBox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <defs>
+            <marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+          </defs>
+
+          <!-- Steps horizontaux -->
+          <!-- Step 1 -->
+          <rect x="10" y="100" width="64" height="40" rx="8" fill="rgba(24,95,165,0.10)" stroke="#185FA5" stroke-width="1.5"/>
+          <text x="42" y="117" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#185FA5">📄 Ingest</text>
+          <text x="42" y="131" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#185FA5">PDF / scan</text>
+
+          <line x1="74" y1="120" x2="92" y2="120" stroke="#87867F" stroke-width="1.5" marker-end="url(#a3)"/>
+
+          <!-- Step 2 -->
+          <rect x="94" y="100" width="64" height="40" rx="8" fill="rgba(24,95,165,0.10)" stroke="#185FA5" stroke-width="1.5"/>
+          <text x="126" y="117" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#185FA5">🔍 Extract</text>
+          <text x="126" y="131" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#185FA5">OCR + LLM</text>
+
+          <line x1="158" y1="120" x2="176" y2="120" stroke="#87867F" stroke-width="1.5" marker-end="url(#a3)"/>
+
+          <!-- Step 3 : Structured output -->
+          <rect x="178" y="88" width="74" height="64" rx="8" fill="rgba(95,94,90,0.10)" stroke="#5F5E5A" stroke-width="1.5"/>
+          <text x="215" y="110" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#5F5E5A">📋 Structure</text>
+          <text x="215" y="124" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#5F5E5A">JSON schema</text>
+          <text x="215" y="137" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#5F5E5A">parties, dates</text>
+          <text x="215" y="148" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#5F5E5A">montants...</text>
+
+          <line x1="252" y1="120" x2="268" y2="120" stroke="#87867F" stroke-width="1.5" marker-end="url(#a3)"/>
+
+          <!-- Step 4 : HITL -->
+          <rect x="270" y="100" width="64" height="40" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+          <text x="302" y="117" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#633806">👤 Review</text>
+          <text x="302" y="131" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#854F0B">HITL approv.</text>
+
+          <!-- Step 4 → DB -->
+          <line x1="302" y1="140" x2="302" y2="162" stroke="#87867F" stroke-width="1.5" marker-end="url(#a3)"/>
+          <rect x="262" y="164" width="80" height="30" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="302" y="183" text-anchor="middle" font-family="system-ui" font-size="10" fill="#085041">🗄 Base métier</text>
+
+          <!-- Labels étapes -->
+          <text x="190" y="220" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">workflow fixe — 4 étapes prédéfinies</text>
+          <text x="190" y="232" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#185FA5">Prefect / LangGraph / n8n</text>
+
+          <!-- Brace label -->
+          <text x="42" y="78" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#185FA5">étape 1</text>
+          <text x="126" y="78" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#185FA5">étape 2</text>
+          <text x="215" y="76" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#5F5E5A">étape 3</text>
+          <text x="302" y="78" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#854F0B">étape 4</text>
+        </svg>
+      </div>
+
+      <!-- ARCHI 4 : Fine-tuning domaine -->
+      <div class="arch-card">
+        <p class="atitle">Assistant médical / légal spécialisé</p>
+        <p class="asub">Fine-tuning + RAG — domaine stable + volume</p>
+        <svg viewBox="0 0 380 240" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <defs>
+            <marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+          </defs>
+
+          <!-- Training path -->
+          <rect x="10" y="20" width="100" height="36" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+          <text x="60" y="36" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#633806">📚 Dataset métier</text>
+          <text x="60" y="49" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#854F0B">500–50k exemples</text>
+
+          <line x1="110" y1="38" x2="134" y2="38" stroke="#87867F" stroke-width="1.5" marker-end="url(#a4)"/>
+
+          <rect x="136" y="20" width="100" height="36" rx="8" fill="rgba(186,117,23,0.10)" stroke="#BA7517" stroke-width="1.5"/>
+          <text x="186" y="36" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#BA7517">⚙️ Fine-tuning</text>
+          <text x="186" y="49" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#BA7517">LoRA / QLoRA</text>
+
+          <line x1="236" y1="38" x2="258" y2="38" stroke="#87867F" stroke-width="1.5" marker-end="url(#a4)"/>
+
+          <rect x="260" y="20" width="100" height="36" rx="8" fill="rgba(186,117,23,0.10)" stroke="#BA7517" stroke-width="1.5"/>
+          <text x="310" y="36" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#BA7517">🤖 LLM spécialisé</text>
+          <text x="310" y="49" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#BA7517">ton + format métier</text>
+
+          <!-- Separator -->
+          <line x1="10" y1="72" x2="370" y2="72" stroke="#D1CFC5" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="20" y="85" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">Runtime</text>
+
+          <!-- Runtime path -->
+          <rect x="10" y="92" width="60" height="36" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+          <text x="40" y="108" text-anchor="middle" font-family="system-ui" font-size="10" fill="#3D3D3A">👤 User</text>
+          <text x="40" y="120" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#87867F">question</text>
+
+          <line x1="70" y1="110" x2="94" y2="110" stroke="#87867F" stroke-width="1.5" marker-end="url(#a4)"/>
+
+          <rect x="96" y="92" width="80" height="36" rx="8" fill="rgba(15,110,86,0.10)" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="136" y="108" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#0F6E56">🟢 RAG</text>
+          <text x="136" y="121" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#0F6E56">docs récents</text>
+
+          <line x1="176" y1="110" x2="200" y2="110" stroke="#87867F" stroke-width="1.5" marker-end="url(#a4)"/>
+
+          <rect x="202" y="92" width="100" height="36" rx="8" fill="rgba(186,117,23,0.10)" stroke="#BA7517" stroke-width="1.5"/>
+          <text x="252" y="108" text-anchor="middle" font-family="system-ui" font-size="10" font-weight="600" fill="#BA7517">🤖 LLM ft</text>
+          <text x="252" y="121" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#BA7517">répond en jargon métier</text>
+
+          <line x1="302" y1="110" x2="322" y2="110" stroke="#87867F" stroke-width="1.5" marker-end="url(#a4)"/>
+
+          <rect x="324" y="92" width="46" height="36" rx="8" fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+          <text x="347" y="108" text-anchor="middle" font-family="system-ui" font-size="10" fill="#3D3D3A">📋</text>
+          <text x="347" y="121" text-anchor="middle" font-family="ui-monospace,monospace" font-size="8" fill="#87867F">output</text>
+
+          <!-- Vector DB -->
+          <rect x="96" y="148" width="80" height="28" rx="6" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+          <text x="136" y="166" text-anchor="middle" font-family="system-ui" font-size="10" fill="#633806">🗄 Vector DB</text>
+          <line x1="136" y1="148" x2="136" y2="128" stroke="#EF9F27" stroke-width="1" stroke-dasharray="3,2" marker-end="url(#a4)"/>
+
+          <text x="190" y="210" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#87867F">patterns : Fine-tuning + RAG</text>
+          <text x="190" y="222" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#BA7517">Unsloth / Axolotl + LlamaIndex</text>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       04 — COMPOSANTS CLÉS
+  ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">04 — Composants clés</p>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="icon">🧠</div>
+        <h4>LLM</h4>
+        <p>Moteur de raisonnement. GPT-4o, Claude, Gemini, Mistral, Llama.</p>
+      </div>
+      <div class="comp-card">
+        <div class="icon">🗄</div>
+        <h4>Vector DB</h4>
+        <p>Stocke les embeddings pour le RAG. Qdrant, Weaviate, pgvector, Pinecone.</p>
+      </div>
+      <div class="comp-card">
+        <div class="icon">🔢</div>
+        <h4>Embeddings</h4>
+        <p>Transforme le texte en vecteurs numériques. text-embedding-3, nomic, BGE.</p>
+      </div>
+      <div class="comp-card">
+        <div class="icon">🎭</div>
+        <h4>Orchestrateur</h4>
+        <p>Coordonne les étapes et les agents. LangGraph, CrewAI, AutoGen, Prefect.</p>
+      </div>
+      <div class="comp-card">
+        <div class="icon">💾</div>
+        <h4>Memory</h4>
+        <p>Contexte persistant entre sessions. Redis, Zep, Mem0, fichier JSON.</p>
+      </div>
+      <div class="comp-card">
+        <div class="icon">🔌</div>
+        <h4>MCP Server</h4>
+        <p>Expose des outils au LLM via protocole standard. Filesystem, GitHub, DB…</p>
+      </div>
+      <div class="comp-card">
+        <div class="icon">👤</div>
+        <h4>HITL</h4>
+        <p>Human-in-the-loop. Point d'approbation humaine avant action critique.</p>
+      </div>
+      <div class="comp-card">
+        <div class="icon">📊</div>
+        <h4>Observability</h4>
+        <p>Traces, logs, coûts. LangSmith, Langfuse, Arize, Helicone.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       05 — FRAMEWORKS
+  ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">05 — Frameworks clés</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Framework</th>
+            <th>Prompt</th>
+            <th>Workflow</th>
+            <th>RAG</th>
+            <th>Agent</th>
+            <th>MCP</th>
+            <th>Profil idéal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LangChain / LangGraph</strong></td>
+            <td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="yes">✓</td><td class="mid">~</td>
+            <td>Tout-en-un, équipe technique</td>
+          </tr>
+          <tr>
+            <td><strong>LlamaIndex</strong></td>
+            <td class="mid">~</td><td class="mid">~</td><td class="yes">✓✓</td><td class="mid">~</td><td class="no">✗</td>
+            <td>RAG avancé, search documentaire</td>
+          </tr>
+          <tr>
+            <td><strong>CrewAI</strong></td>
+            <td class="no">✗</td><td class="yes">✓</td><td class="mid">~</td><td class="yes">✓✓</td><td class="no">✗</td>
+            <td>Multi-agents rôles assignés</td>
+          </tr>
+          <tr>
+            <td><strong>AutoGen</strong></td>
+            <td class="no">✗</td><td class="mid">~</td><td class="mid">~</td><td class="yes">✓✓</td><td class="no">✗</td>
+            <td>Agents conversationnels, MS Research</td>
+          </tr>
+          <tr>
+            <td><strong>Flowise / n8n</strong></td>
+            <td class="yes">✓</td><td class="yes">✓✓</td><td class="yes">✓</td><td class="mid">~</td><td class="no">✗</td>
+            <td>No-code / low-code, prototypage rapide</td>
+          </tr>
+          <tr>
+            <td><strong>DSPy</strong></td>
+            <td class="yes">✓✓</td><td class="mid">~</td><td class="yes">✓</td><td class="mid">~</td><td class="no">✗</td>
+            <td>Optimisation automatique de prompts</td>
+          </tr>
+          <tr>
+            <td><strong>MCP SDK (Anthropic)</strong></td>
+            <td class="no">✗</td><td class="no">✗</td><td class="no">✗</td><td class="mid">~</td><td class="yes">✓✓</td>
+            <td>Créer des MCP Servers Python / TS</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       06 — ANTI-PATTERNS
+  ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">06 — Anti-patterns classiques</p>
+    <div class="anti-grid">
+      <div class="anti-card">
+        <p class="anti-tag">Anti-pattern</p>
+        <h4>RAG quand il faut fine-tuner</h4>
+        <p>Tu utilises RAG pour injecter du jargon métier statique que le modèle ne comprend jamais bien.</p>
+        <p class="fix">✓ Fix : fine-tune sur ce vocabulaire, garde RAG pour les données qui changent.</p>
+      </div>
+      <div class="anti-card">
+        <p class="anti-tag">Anti-pattern</p>
+        <h4>Agent quand il faut un workflow</h4>
+        <p>Les étapes sont connues et fixes mais tu laisses l'agent "décider" — coûteux, lent, imprévisible.</p>
+        <p class="fix">✓ Fix : code un workflow explicite si le chemin est prévisible.</p>
+      </div>
+      <div class="anti-card">
+        <p class="anti-tag">Anti-pattern</p>
+        <h4>MCP pour un seul agent, un seul outil</h4>
+        <p>Overhead inutile. Un tool() custom en 5 lignes suffit pour un POC ou un agent solo.</p>
+        <p class="fix">✓ Fix : MCP quand plusieurs agents partagent les outils ou en prod multi-équipe.</p>
+      </div>
+      <div class="anti-card">
+        <p class="anti-tag">Anti-pattern</p>
+        <h4>Fine-tuning comme premier réflexe</h4>
+        <p>Fine-tuner sans essayer d'abord prompt engineering + RAG — 80% des cas se résolvent avant.</p>
+        <p class="fix">✓ Fix : prompt → RAG → fine-tune. Dans cet ordre.</p>
+      </div>
+      <div class="anti-card">
+        <p class="anti-tag">Anti-pattern</p>
+        <h4>Context stuffing sans RAG</h4>
+        <p>Mettre 500 pages de docs dans le contexte système. Coûteux, dégradation de performance.</p>
+        <p class="fix">✓ Fix : RAG — ne récupère que les 3–5 chunks pertinents.</p>
+      </div>
+      <div class="anti-card">
+        <p class="anti-tag">Anti-pattern</p>
+        <h4>Agent sans observabilité</h4>
+        <p>Agent en prod sans traces → impossible de débugger, coûts incontrôlables.</p>
+        <p class="fix">✓ Fix : LangSmith / Langfuse dès le premier jour en prod.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       07 — RÈGLES D'OR
+  ════════════════════════════════════════════════════════════ -->
+  <div class="section">
+    <p class="section-label">07 — Règles d'or</p>
+    <div class="rules">
+      <div class="rule">
+        <div class="num">1</div>
+        <div>
+          <h4>Commencer simple, complexifier par la preuve</h4>
+          <p>Prompt → Workflow → RAG → Agent → Fine-tune. Chaque saut se justifie par une limite prouvée du niveau précédent.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="num">2</div>
+        <div>
+          <h4>Prévisible = workflow, incertain = agent</h4>
+          <p>Si tu peux écrire les étapes sur un post-it à l'avance, c'est un workflow. Si le chemin dépend du contenu, c'est un agent.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="num">3</div>
+        <div>
+          <h4>RAG pour les données qui bougent, fine-tune pour le style qui reste</h4>
+          <p>La connaissance changeante va dans un vector store. Le ton, le format, le vocabulaire propriétaire vont dans le modèle.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="num">4</div>
+        <div>
+          <h4>MCP = investissement d'équipe, pas de POC</h4>
+          <p>MCP vaut le coût quand plusieurs agents ou équipes partagent les mêmes outils. En solo ou prototype : tool() custom en 5 lignes.</p>
+        </div>
+      </div>
+      <div class="rule">
+        <div class="num">5</div>
+        <div>
+          <h4>Observabilité avant scalabilité</h4>
+          <p>Avant d'optimiser les coûts ou la latence, instrumente. Tu ne peux pas améliorer ce que tu ne mesures pas. LangSmith / Langfuse dès le jour 1 en prod.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <strong>Ordre de décision :</strong> Prompt → Workflow → RAG → Agent → Agent+MCP → Fine-tuning &nbsp;·&nbsp;
+    Chaque palier se justifie par une limite prouvée du précédent.
+  </div>
+
+</div>
+</body>
+</html>

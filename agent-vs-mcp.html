@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent vs MCP — Différences clés</title>
+<style>
+:root {
+  --ivory:    #FAF9F5;
+  --white:    #FFFFFF;
+  --slate:    #141413;
+  --clay:     #D97757;
+  --olive:    #788C5D;
+  --rust:     #B04A3F;
+  --oat:      #E3DACC;
+  --gray-150: #F0EEE6;
+  --gray-300: #D1CFC5;
+  --gray-500: #87867F;
+  --gray-700: #3D3D3A;
+  --border: 1.5px solid var(--gray-300);
+  --radius-panel: 12px;
+  --radius-row: 8px;
+  --serif: ui-serif, Georgia, "Times New Roman", serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:  ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--ivory);
+  color: var(--gray-700);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding: 52px 24px 100px;
+}
+.page { max-width: 860px; margin: 0 auto; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+}
+
+h1 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 2.1rem;
+  letter-spacing: -0.02em;
+  color: var(--slate);
+  margin-top: 8px;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--slate);
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  color: var(--gray-500);
+  font-size: 0.95rem;
+  margin-top: 6px;
+  margin-bottom: 48px;
+}
+
+.section { margin-top: 52px; }
+.section-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--gray-300);
+  padding-bottom: 8px;
+}
+
+/* COMPARE CARDS */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 16px;
+}
+
+.card {
+  background: var(--white);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+  padding: 24px;
+}
+
+.card.agent { border-top: 3px solid #534AB7; }
+.card.mcp   { border-top: 3px solid #0F6E56; }
+.card.api   { border-top: 3px solid var(--clay); }
+
+.card-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.card.agent .card-tag { color: #534AB7; }
+.card.mcp   .card-tag { color: #0F6E56; }
+.card.api   .card-tag { color: var(--clay); }
+
+.card h3 {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--slate);
+  margin-bottom: 10px;
+}
+
+.card p { font-size: 0.9rem; margin-bottom: 12px; }
+
+.card ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.card ul li {
+  font-size: 0.875rem;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+.card ul li::before {
+  content: "→";
+  font-family: var(--mono);
+  color: var(--gray-500);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ANALOGY */
+.analogy {
+  background: rgba(217,119,87,0.06);
+  border-left: 3px solid var(--clay);
+  border-radius: var(--radius-row);
+  padding: 14px 18px;
+  margin-top: 18px;
+}
+.analogy .label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clay);
+  margin-bottom: 5px;
+}
+.analogy p { font-size: 0.9rem; }
+
+/* INFO BOX */
+.infobox {
+  background: var(--white);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+  padding: 22px 24px;
+  margin-top: 16px;
+}
+.infobox p { font-size: 0.9rem; margin-bottom: 8px; }
+.infobox p:last-child { margin-bottom: 0; }
+
+/* CODE BLOCK */
+.code-block {
+  background: var(--slate);
+  color: #E8E6DF;
+  border-radius: var(--radius-row);
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin-top: 12px;
+}
+.code-block .cm { color: var(--gray-500); }
+.code-block .kw { color: #AFA9EC; }
+.code-block .hl { color: #5DCAA5; }
+.code-block .warn { color: #EF9F27; }
+
+/* LAYERS */
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-top: 16px;
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  border: var(--border);
+}
+.layer {
+  padding: 18px 22px;
+  border-bottom: var(--border);
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 20px;
+  align-items: start;
+  background: var(--white);
+}
+.layer:last-child { border-bottom: none; }
+.layer:hover { background: var(--gray-150); }
+.layer-tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.layer-tag.doc   { background: rgba(83,74,183,0.12); color: #534AB7; }
+.layer-tag.proto { background: rgba(15,110,86,0.12); color: #0F6E56; }
+.layer-tag.srv   { background: rgba(217,119,87,0.12); color: var(--clay); }
+.layer-where {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--gray-500);
+}
+.layer-title { font-weight: 600; font-size: 0.9rem; color: var(--slate); }
+.layer-desc  { font-size: 0.875rem; margin-top: 3px; }
+
+/* DIAGRAM WRAPPERS */
+.diagram-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 16px;
+}
+.diagram-card {
+  background: var(--white);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+  padding: 20px 16px;
+  overflow-x: auto;
+}
+.diagram-card .dtitle {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.diagram-card.agent .dtitle { color: #534AB7; }
+.diagram-card.mcp   .dtitle { color: #0F6E56; }
+
+.together-wrap {
+  background: var(--white);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+  padding: 20px 16px;
+  margin-top: 16px;
+  overflow-x: auto;
+}
+.together-wrap .dtitle {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  margin-bottom: 14px;
+}
+
+svg { display: block; width: 100%; height: auto; }
+
+/* TABLE */
+.table-wrap {
+  background: var(--white);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  margin-top: 16px;
+}
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+thead tr { background: var(--gray-150); }
+thead th {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gray-500);
+  padding: 10px 16px;
+  text-align: left;
+}
+tbody td {
+  padding: 10px 16px;
+  border-top: 1px solid var(--gray-300);
+  vertical-align: top;
+}
+tbody tr:hover { background: var(--gray-150); }
+.yes { color: var(--olive); font-family: var(--mono); }
+.no  { color: var(--rust);  font-family: var(--mono); }
+
+/* FOOTER */
+.footer {
+  margin-top: 44px;
+  padding-top: 22px;
+  border-top: var(--border);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: var(--gray-500);
+  line-height: 1.9;
+}
+.footer strong { color: var(--slate); }
+
+@media (max-width: 700px) {
+  .compare, .diagram-row { grid-template-columns: 1fr; }
+  .layer { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="eyebrow">AI Engineering — Fondamentaux</p>
+  <h1>Agent · MCP · API</h1>
+  <p class="subtitle">Trois concepts liés mais distincts — comprendre où chacun commence et où il s'arrête.</p>
+
+  <!-- ── 01 : AGENT vs MCP ──────────────────────────────────────── -->
+  <div class="section">
+    <p class="section-label">01 — Agent vs MCP en une phrase</p>
+    <div class="compare">
+
+      <div class="card agent">
+        <p class="card-tag">Agent</p>
+        <h3>🤖 Un système autonome qui raisonne et agit</h3>
+        <p>Il reçoit un objectif, planifie, appelle des outils, observe les résultats et itère.</p>
+        <ul>
+          <li>LLM comme moteur de décision</li>
+          <li>Mémoire (contexte, historique)</li>
+          <li>Choisit <em>quoi</em> faire et <em>quand</em></li>
+          <li>Boucle : plan → action → observation</li>
+        </ul>
+      </div>
+
+      <div class="card mcp">
+        <p class="card-tag">MCP — Model Context Protocol</p>
+        <h3>🔌 Un protocole standard de communication</h3>
+        <p>Il définit le "langage" que tout agent utilise pour parler à des outils — sans adaptateur sur mesure.</p>
+        <ul>
+          <li>Standard d'interface (comme USB-C)</li>
+          <li>Pas d'intelligence propre</li>
+          <li>Expose : outils, ressources, prompts</li>
+          <li>Découplage total : agent ↔ outils</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="analogy">
+      <p class="label">Analogie</p>
+      <p>
+        <strong>L'agent = le technicien</strong> qui décide quels outils sortir et dans quel ordre.<br>
+        <strong>MCP = la norme USB-C</strong> : une prise universelle — les outils s'y branchent sans câble propriétaire.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── 02 : MCP vs API ────────────────────────────────────────── -->
+  <div class="section">
+    <p class="section-label">02 — MCP vs API : la différence</p>
+
+    <div class="infobox">
+      <p><strong>Réponse courte : MCP utilise les APIs — c'est une couche au-dessus.</strong></p>
+      <p>Une API existe déjà (Slack, GitHub, Postgres…). MCP est le standard qui permet à l'agent de s'y brancher sans coder une intégration sur mesure à chaque fois.</p>
+    </div>
+
+    <div class="compare" style="margin-top:16px;">
+      <div class="card api">
+        <p class="card-tag">Sans MCP</p>
+        <h3>Chaque outil = intégration custom</h3>
+        <ul>
+          <li>Agent → code custom → API Slack</li>
+          <li>Agent → code custom → API GitHub</li>
+          <li>Agent → code custom → API PostgreSQL</li>
+          <li>10 outils = 10 intégrations différentes</li>
+        </ul>
+      </div>
+      <div class="card mcp">
+        <p class="card-tag">Avec MCP</p>
+        <h3>Toujours la même interface</h3>
+        <ul>
+          <li>Agent → MCP → Slack MCP Server → API Slack</li>
+          <li>Agent → MCP → GitHub MCP Server → API GitHub</li>
+          <li>Agent → MCP → Postgres MCP Server → API PG</li>
+          <li>10 outils = toujours le même protocole</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="analogy">
+      <p class="label">Analogie</p>
+      <p>
+        <strong>API</strong> = chaque fabricant a sa propre prise propriétaire.<br>
+        <strong>MCP</strong> = USB-C. Les fabricants adaptent leur prise en interne, toi tu branches toujours le même câble.
+      </p>
+    </div>
+  </div>
+
+  <!-- ── 03 : LES 3 COUCHES DE MCP ─────────────────────────────── -->
+  <div class="section">
+    <p class="section-label">03 — Les 3 couches de MCP</p>
+
+    <div class="layers">
+
+      <div class="layer">
+        <div>
+          <span class="layer-tag doc">1 — La doc</span><br>
+          <span class="layer-where">→ dans le prompt du LLM</span>
+        </div>
+        <div>
+          <p class="layer-title">Le serveur annonce ce qu'il sait faire</p>
+          <p class="layer-desc">Au démarrage, le serveur MCP envoie la liste de ses outils à l'agent. C'est un JSON qui atterrit dans le contexte du LLM — il le "lit" et comprend ce qu'il peut appeler.</p>
+          <div class="code-block"><span class="cm">// Ce que le LLM reçoit dans son contexte :</span>
+{ name: <span class="hl">"search_web"</span>,
+  description: <span class="hl">"Searches the web for a query"</span>,
+  parameters: { query: <span class="kw">string</span> } }</div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div>
+          <span class="layer-tag proto">2 — Le protocole</span><br>
+          <span class="layer-where">→ tourne dans l'agent ET le serveur</span>
+        </div>
+        <div>
+          <p class="layer-title">Le format fixe des messages entre les deux</p>
+          <p class="layer-desc">Ce n'est pas juste un fichier lu — c'est du code actif (un SDK) installé des deux côtés. Il garantit que les messages ont toujours la même forme, peu importe l'agent ou l'outil.</p>
+          <div class="code-block"><span class="cm">// L'agent appelle toujours comme ça :</span>
+{ <span class="kw">method</span>: <span class="hl">"tools/call"</span>,
+  <span class="kw">params</span>: { name: <span class="hl">"search_web"</span>, arguments: { query: <span class="hl">"MCP"</span> } } }
+
+<span class="cm">// Le serveur répond toujours comme ça :</span>
+{ <span class="kw">content</span>: [{ type: <span class="hl">"text"</span>, text: <span class="hl">"résultat..."</span> }] }</div>
+        </div>
+      </div>
+
+      <div class="layer">
+        <div>
+          <span class="layer-tag srv">3 — Le serveur</span><br>
+          <span class="layer-where">→ process qui tourne en local ou réseau</span>
+        </div>
+        <div>
+          <p class="layer-title">Le vrai code métier qui s'exécute</p>
+          <p class="layer-desc">C'est un vrai programme (Node.js, Python…) qui reçoit les appels du protocole et exécute la vraie logique : lire un fichier, requêter une BDD, appeler une API.</p>
+          <div class="code-block"><span class="cm"># Exemple MCP Server filesystem (simplifié) :</span>
+<span class="kw">@server</span>.call_tool(<span class="hl">"read_file"</span>)
+<span class="kw">async def</span> <span class="warn">read_file</span>(path: str):
+    <span class="kw">return</span> open(path).read()  <span class="cm"># ← vrai code Python</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 04 : STDIO ─────────────────────────────────────────────── -->
+  <div class="section">
+    <p class="section-label">04 — C'est quoi stdio ? Comment les deux process se parlent</p>
+
+    <div class="infobox">
+      <p><strong>stdio = standard input / output.</strong></p>
+      <p>Quand un programme tourne, il a 3 "tuyaux" ouverts par défaut :</p>
+    </div>
+
+    <div class="table-wrap" style="margin-top:12px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Tuyau</th>
+            <th>Direction</th>
+            <th>Exemple concret</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>stdin</strong> — standard input</td>
+            <td>→ vers le programme</td>
+            <td>Ce que tu tapes au clavier dans un terminal</td>
+          </tr>
+          <tr>
+            <td><strong>stdout</strong> — standard output</td>
+            <td>← depuis le programme</td>
+            <td>Ce que le programme affiche à l'écran</td>
+          </tr>
+          <tr>
+            <td><strong>stderr</strong> — standard error</td>
+            <td>← depuis le programme</td>
+            <td>Les messages d'erreur (en rouge dans le terminal)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="together-wrap" style="margin-top:16px;">
+      <p class="dtitle">Comment l'agent et le serveur MCP se parlent via stdio</p>
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr-bl" viewBox="0 0 10 10" refX="8" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M2 2 L8 5 L2 8" fill="none" stroke="#534AB7" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <marker id="arr-gr" viewBox="0 0 10 10" refX="8" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M2 2 L8 5 L2 8" fill="none" stroke="#0F6E56" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+          <marker id="arr-gy" viewBox="0 0 10 10" refX="8" refY="5"
+                  markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- Machine OS -->
+        <rect x="10" y="10" width="700" height="178" rx="14"
+              fill="none" stroke="#D1CFC5" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <text x="26" y="28" font-family="ui-monospace,monospace" font-size="10" fill="#87867F">même machine (ou réseau)</text>
+
+        <!-- Agent Process -->
+        <rect x="30" y="40" width="200" height="130" rx="10"
+              fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
+        <text x="130" y="66" text-anchor="middle"
+              font-family="system-ui" font-size="12" font-weight="600" fill="#3C3489">🤖 Agent (process 1)</text>
+        <text x="130" y="84" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="10" fill="#534AB7">ex: Claude Desktop</text>
+        <text x="130" y="102" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="10" fill="#534AB7">MCP Client SDK</text>
+        <line x1="60" y1="112" x2="200" y2="112" stroke="#534AB7" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
+        <text x="130" y="128" text-anchor="middle"
+              font-family="system-ui" font-size="10" fill="#534AB7">écrit dans stdout</text>
+        <text x="130" y="143" text-anchor="middle"
+              font-family="system-ui" font-size="10" fill="#534AB7">lit depuis stdin</text>
+        <text x="130" y="158" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="9" fill="#87867F">(du serveur MCP)</text>
+
+        <!-- stdio pipe -->
+        <rect x="248" y="76" width="224" height="56" rx="8"
+              fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+        <text x="360" y="97" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="11" font-weight="600" fill="#444441">stdio — le tuyau</text>
+        <!-- arrow agent → server (stdin) -->
+        <line x1="270" y1="100" x2="490" y2="100"
+              stroke="#534AB7" stroke-width="2" marker-end="url(#arr-bl)"/>
+        <text x="360" y="94" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="9" fill="#534AB7">stdin →</text>
+        <!-- arrow server → agent (stdout) -->
+        <line x1="490" y1="116" x2="270" y2="116"
+              stroke="#0F6E56" stroke-width="2" marker-end="url(#arr-gr)"/>
+        <text x="360" y="128" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="9" fill="#0F6E56">← stdout</text>
+
+        <!-- MCP Server Process -->
+        <rect x="490" y="40" width="210" height="130" rx="10"
+              fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+        <text x="595" y="66" text-anchor="middle"
+              font-family="system-ui" font-size="12" font-weight="600" fill="#085041">🗄 MCP Server (process 2)</text>
+        <text x="595" y="84" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="10" fill="#0F6E56">ex: filesystem-mcp</text>
+        <text x="595" y="102" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="10" fill="#0F6E56">MCP Server SDK</text>
+        <line x1="520" y1="112" x2="678" y2="112" stroke="#0F6E56" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
+        <text x="595" y="128" text-anchor="middle"
+              font-family="system-ui" font-size="10" fill="#0F6E56">lit depuis stdin</text>
+        <text x="595" y="143" text-anchor="middle"
+              font-family="system-ui" font-size="10" fill="#0F6E56">écrit dans stdout</text>
+        <text x="595" y="158" text-anchor="middle"
+              font-family="ui-monospace,monospace" font-size="9" fill="#87867F">exécute le vrai code</text>
+
+      </svg>
+    </div>
+
+    <div class="analogy" style="margin-top:16px;">
+      <p class="label">Analogie stdio</p>
+      <p>
+        Imagine deux personnes dans deux pièces séparées, reliées par un tuyau pneumatique (comme à la banque).<br>
+        <strong>L'agent glisse un message dans le tuyau</strong> (stdin du serveur).<br>
+        <strong>Le serveur glisse la réponse en retour</strong> (stdout vers l'agent).<br>
+        Pas de réseau, pas d'HTTP, pas de port — juste deux process qui s'échangent du texte directement sur la même machine.
+      </p>
+    </div>
+
+    <div class="infobox" style="margin-top:16px;">
+      <p><strong>Comment l'agent lance le serveur ?</strong></p>
+      <p>L'agent spawn le serveur MCP comme un sous-process — il l'exécute lui-même au démarrage :</p>
+      <div class="code-block"><span class="cm"># L'agent fait l'équivalent de ça :</span>
+subprocess.Popen([<span class="hl">"python"</span>, <span class="hl">"mon_serveur_mcp.py"</span>])
+<span class="cm"># Puis il "parle" dans stdin/stdout de ce sous-process</span></div>
+      <p style="margin-top:12px; font-size:0.875rem;">Il existe aussi un mode <strong>HTTP/SSE</strong> quand le serveur tourne sur une autre machine (réseau), mais stdio est le transport par défaut en local.</p>
+    </div>
+  </div>
+
+  <!-- ── 05 : SCHÉMAS ANATOMIE ──────────────────────────────────── -->
+  <div class="section">
+    <p class="section-label">05 — Schémas : anatomie comparée</p>
+    <div class="diagram-row">
+
+      <div class="diagram-card agent">
+        <p class="dtitle">Anatomie d'un agent</p>
+        <svg viewBox="0 0 320 310" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr-a1" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+            <marker id="arr-a2" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M2 2 L8 5 L2 8" fill="none" stroke="#534AB7"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+          <rect x="90" y="10" width="140" height="38" rx="8"
+                fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
+          <text x="160" y="33" text-anchor="middle"
+                font-family="system-ui" font-size="13" font-weight="600" fill="#3C3489">🎯 Objectif</text>
+          <line x1="160" y1="48" x2="160" y2="76"
+                stroke="#87867F" stroke-width="1.5" marker-end="url(#arr-a1)"/>
+          <rect x="60" y="78" width="200" height="52" rx="10"
+                fill="#534AB7" stroke="none"/>
+          <text x="160" y="99" text-anchor="middle"
+                font-family="system-ui" font-size="13" font-weight="600" fill="white">🧠 LLM — Raisonnement</text>
+          <text x="160" y="118" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="10" fill="#AFA9EC">plan · decide · reflect</text>
+          <rect x="272" y="88" width="42" height="34" rx="7"
+                fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+          <text x="293" y="102" text-anchor="middle"
+                font-family="system-ui" font-size="11" fill="#633806">🧠</text>
+          <text x="293" y="116" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="9" fill="#854F0B">mem.</text>
+          <line x1="262" y1="104" x2="270" y2="104"
+                stroke="#EF9F27" stroke-width="1" stroke-dasharray="3,2"/>
+          <line x1="160" y1="130" x2="160" y2="158"
+                stroke="#87867F" stroke-width="1.5" marker-end="url(#arr-a1)"/>
+          <rect x="70" y="160" width="180" height="40" rx="8"
+                fill="#E1F5EE" stroke="#0F6E56" stroke-width="1.5"/>
+          <text x="160" y="179" text-anchor="middle"
+                font-family="system-ui" font-size="12" font-weight="500" fill="#085041">⚡ Action / Appel outil</text>
+          <text x="160" y="194" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="9" fill="#0F6E56">(via MCP ou direct)</text>
+          <line x1="160" y1="202" x2="160" y2="230"
+                stroke="#87867F" stroke-width="1.5" marker-end="url(#arr-a1)"/>
+          <rect x="70" y="232" width="180" height="40" rx="8"
+                fill="#F0EEE6" stroke="#87867F" stroke-width="1.5"/>
+          <text x="160" y="251" text-anchor="middle"
+                font-family="system-ui" font-size="12" font-weight="500" fill="#444441">👁 Observation / Résultat</text>
+          <text x="160" y="265" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="9" fill="#87867F">retour au LLM</text>
+          <path d="M 68 252 C 20 252 20 104 58 104"
+                fill="none" stroke="#534AB7" stroke-width="1.5"
+                stroke-dasharray="5,4" marker-end="url(#arr-a2)"/>
+          <text x="11" y="190" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="9" fill="#534AB7"
+                transform="rotate(-90, 11, 190)">boucle</text>
+        </svg>
+      </div>
+
+      <div class="diagram-card mcp">
+        <p class="dtitle">Architecture MCP — 3 couches</p>
+        <svg viewBox="0 0 320 310" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arr-m1" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M2 2 L8 5 L2 8" fill="none" stroke="#87867F"
+                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </marker>
+          </defs>
+
+          <!-- Layer 1: Doc -->
+          <rect x="10" y="10" width="300" height="52" rx="10"
+                fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
+          <text x="160" y="30" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="10" font-weight="600" fill="#534AB7">COUCHE 1 — DOC</text>
+          <text x="160" y="46" text-anchor="middle"
+                font-family="system-ui" font-size="11" fill="#3C3489">Liste des outils → injectée dans le LLM</text>
+
+          <line x1="160" y1="62" x2="160" y2="88"
+                stroke="#87867F" stroke-width="1.5" marker-end="url(#arr-m1)"/>
+
+          <!-- Layer 2: Protocol -->
+          <rect x="10" y="90" width="300" height="64" rx="10"
+                fill="#0F6E56" stroke="none"/>
+          <text x="160" y="112" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="10" font-weight="600" fill="#5DCAA5">COUCHE 2 — PROTOCOLE</text>
+          <text x="160" y="128" text-anchor="middle"
+                font-family="system-ui" font-size="11" fill="white">SDK MCP — format fixe des messages</text>
+          <text x="160" y="145" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="9" fill="#5DCAA5">tourne dans l'agent ET dans le serveur</text>
+
+          <line x1="160" y1="154" x2="160" y2="180"
+                stroke="#87867F" stroke-width="1.5" marker-end="url(#arr-m1)"/>
+
+          <!-- Layer 3: Server -->
+          <rect x="10" y="182" width="300" height="64" rx="10"
+                fill="#FAEEDA" stroke="#EF9F27" stroke-width="1.5"/>
+          <text x="160" y="204" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="10" font-weight="600" fill="#854F0B">COUCHE 3 — SERVEUR</text>
+          <text x="160" y="220" text-anchor="middle"
+                font-family="system-ui" font-size="11" fill="#633806">Process qui s'exécute (Python, Node…)</text>
+          <text x="160" y="237" text-anchor="middle"
+                font-family="ui-monospace,monospace" font-size="9" fill="#854F0B">vrai code métier : lire, appeler, requêter</text>
+
+          <line x1="160" y1="246" x2="160" y2="270"
+                stroke="#87867F" stroke-width="1.5" marker-end="url(#arr-m1)"/>
+
+          <!-- APIs -->
+          <rect x="50" y="272" width="100" height="30" rx="8"
+                fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+          <text x="100" y="291" text-anchor="middle"
+                font-family="system-ui" font-size="11" fill="#444441">API Slack</text>
+
+          <rect x="170" y="272" width="100" height="30" rx="8"
+                fill="#F0EEE6" stroke="#D1CFC5" stroke-width="1.5"/>
+          <text x="220" y="291" text-anchor="middle"
+                font-family="system-ui" font-size="11" fill="#444441">API GitHub</text>
+        </svg>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── 06 : TABLEAU RÉCAP ─────────────────────────────────────── -->
+  <div class="section">
+    <p class="section-label">06 — Récapitulatif complet</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Critère</th>
+            <th>🤖 Agent</th>
+            <th>🔌 MCP</th>
+            <th>⚡ API</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Nature</strong></td>
+            <td>Système autonome</td>
+            <td>Protocole standard</td>
+            <td>Interface d'accès à un service</td>
+          </tr>
+          <tr>
+            <td><strong>Intelligence propre</strong></td>
+            <td class="yes">✓ Oui (LLM)</td>
+            <td class="no">✗ Non</td>
+            <td class="no">✗ Non</td>
+          </tr>
+          <tr>
+            <td><strong>Décide quoi faire ?</strong></td>
+            <td class="yes">✓ Oui</td>
+            <td class="no">✗ Non</td>
+            <td class="no">✗ Non</td>
+          </tr>
+          <tr>
+            <td><strong>Exécute du code ?</strong></td>
+            <td>Via les outils</td>
+            <td class="yes">✓ Oui (le serveur MCP)</td>
+            <td class="yes">✓ Oui (côté serveur)</td>
+          </tr>
+          <tr>
+            <td><strong>Standardise la communication ?</strong></td>
+            <td class="no">✗ Non</td>
+            <td class="yes">✓ Oui — c'est son rôle</td>
+            <td class="no">✗ Chacun son format</td>
+          </tr>
+          <tr>
+            <td><strong>Transport courant</strong></td>
+            <td>—</td>
+            <td>stdio (local) ou HTTP/SSE</td>
+            <td>HTTP / REST / GraphQL</td>
+          </tr>
+          <tr>
+            <td><strong>Analogie</strong></td>
+            <td>Le technicien</td>
+            <td>USB-C (norme)</td>
+            <td>La prise propriétaire</td>
+          </tr>
+          <tr>
+            <td><strong>Exemples</strong></td>
+            <td>Claude, Hermes, AutoGPT</td>
+            <td>filesystem-mcp, puppeteer-mcp</td>
+            <td>Slack API, GitHub API, OpenAI API</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── 07 : MCP COMME HTTP ───────────────────────────────────── -->
+  <div class="section">
+    <p class="section-label">07 — MCP est-il un protocole comme HTTP ?</p>
+
+    <div class="infobox">
+      <p><strong>Oui — l'analogie tient parfaitement.</strong> MCP est construit sur JSON-RPC 2.0, qui suit le même modèle requête/réponse qu'HTTP.</p>
+      <p>La différence : HTTP transporte n'importe quoi. MCP est <em>spécialisé</em> pour la communication agent ↔ outils — avec une discovery automatique pensée pour les LLMs.</p>
+    </div>
+
+    <div class="table-wrap" style="margin-top:14px;">
+      <table>
+        <thead>
+          <tr>
+            <th>HTTP</th>
+            <th>MCP</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Client envoie <code>POST /search</code></td>
+            <td>Agent envoie <code>tools/call</code> + nom de l'outil</td>
+          </tr>
+          <tr>
+            <td>Serveur reconnaît la route</td>
+            <td>Serveur reconnaît le nom de l'outil</td>
+          </tr>
+          <tr>
+            <td>Serveur exécute le handler</td>
+            <td>Serveur exécute la fonction Python/Node</td>
+          </tr>
+          <tr>
+            <td>Retourne <code>200 + JSON</code></td>
+            <td>Retourne <code>content: [{text: "..."}]</code></td>
+          </tr>
+          <tr>
+            <td><code>GET /</code> pour voir les routes dispo</td>
+            <td><code>tools/list</code> pour voir les outils dispo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="code-block" style="margin-top:14px;">
+<span class="cm">// Requête MCP (JSON-RPC 2.0) — même logique qu'un POST HTTP</span>
+{ <span class="kw">"method"</span>: <span class="hl">"tools/call"</span>,
+  <span class="kw">"params"</span>: { <span class="kw">"name"</span>: <span class="hl">"search_web"</span>, <span class="kw">"arguments"</span>: { <span class="kw">"query"</span>: <span class="hl">"MCP protocol"</span> } } }
+
+<span class="cm">// Réponse MCP — même logique qu'un 200 OK</span>
+{ <span class="kw">"content"</span>: [{ <span class="kw">"type"</span>: <span class="hl">"text"</span>, <span class="kw">"text"</span>: <span class="hl">"résultat..."</span> }] }</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <strong>En 3 phrases :</strong><br>
+    L'<strong>agent</strong> décide quoi faire — il raisonne et boucle jusqu'à atteindre l'objectif.<br>
+    <strong>MCP</strong> est le protocole standard qui permet à l'agent de parler à n'importe quel outil sans coder une intégration sur mesure.<br>
+    L'<strong>API</strong> est le service réel — MCP s'en sert en interne, l'agent n'a pas à la connaître directement.
+  </div>
+
+</div>
+</body>
+</html>
