@@ -80,6 +80,36 @@ ensure_sg() {
   echo "$sg"
 }
 
+# Create an EC2 keypair if KEY_NAME is not set in config.env.
+# Saves the .pem next to config.env and writes KEY_NAME back into config.env.
+ensure_keypair() {
+  if [ -n "${KEY_NAME:-}" ]; then
+    info "Using existing keypair: $KEY_NAME"
+    return
+  fi
+  local name="flowise-training-key"
+  local pem_path="${SCRIPT_DIR}/${name}.pem"
+  # Reuse if already exists on AWS
+  local existing
+  existing="$(awscli ec2 describe-key-pairs --key-names "$name" \
+    --query 'KeyPairs[0].KeyName' --output text 2>/dev/null || echo None)"
+  if [ "$existing" = "$name" ]; then
+    warn "Keypair $name already exists on AWS but .pem not found locally — delete it first if you lost the key." >&2
+    warn "aws ec2 delete-key-pair --key-name $name --region $AWS_REGION" >&2
+    [ -f "$pem_path" ] || die "Keypair $name exists on AWS but $pem_path is missing. See warning above."
+  else
+    info "Creating keypair $name..."
+    awscli ec2 create-key-pair --key-name "$name" \
+      --query 'KeyMaterial' --output text > "$pem_path"
+    chmod 600 "$pem_path"
+    info "Saved: $pem_path"
+  fi
+  # Persist KEY_NAME in config.env
+  sed -i "s|^KEY_NAME=.*|KEY_NAME=${name}|" "$CONFIG_FILE"
+  KEY_NAME="$name"
+  info "KEY_NAME set to $KEY_NAME in config.env"
+}
+
 state_set() { # key value
   touch "$STATE_FILE"
   grep -v "^$1=" "$STATE_FILE" > "${STATE_FILE}.tmp" 2>/dev/null || true
