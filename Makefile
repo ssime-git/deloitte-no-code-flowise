@@ -13,7 +13,7 @@ J5_QUESTION_AGGREGATE := Donne-moi une vue agregée par etablissement des donnee
 J5_QUESTION_CASE := Analyse lexception EXC_URSSAF_AMOUNT_INCONSISTENT et dis-moi quelles preuves daudit et documentaires sont disponibles.
 J6_QUESTION := Un salarie presente une variation de brut de 18 pourcent et lexception EXC_URSSAF_AMOUNT_INCONSISTENT. Prepare une alerte daudit DSN exploitable par un auditeur.
 
-.PHONY: setup install-deps up down reset force-reset status logs-flowise logs-init api-key ping mcp-health psql wait-init test-j2 test-j3 test-j3-nir smoke-j3 reset-smoke-j3 from-scratch-j3 test-j4 test-j4-date test-j4-rag test-j4-rag-combo smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5-scope test-j5-aggregate test-j5-case smoke-j5 reset-smoke-j5 from-scratch-j5 test-j6 smoke-j6 reset-smoke-j6 from-scratch-j6 docs help deploy-key deploy-test deploy-bake deploy-launch deploy-access deploy-teardown
+.PHONY: setup install-deps up down reset force-reset status logs-flowise logs-init api-key ping mcp-health psql wait-init test-j2 test-j3 test-j3-nir smoke-j3 reset-smoke-j3 from-scratch-j3 test-j4 test-j4-date test-j4-rag test-j4-rag-combo smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5-scope test-j5-aggregate test-j5-case smoke-j5 reset-smoke-j5 from-scratch-j5 test-j6 smoke-j6 reset-smoke-j6 from-scratch-j6 docs help deploy-key deploy-terminate-vm deploy-test deploy-bake deploy-launch deploy-access deploy-teardown
 
 help:
 	@echo "Usage: make <target>"
@@ -67,8 +67,9 @@ help:
 	@echo "  docs      List available training docs"
 	@echo ""
 	@echo "AWS fleet deployment (17 instances):"
-	@echo "  deploy-key      Create EC2 keypair if KEY_NAME not set (saves .pem + updates config.env)"
-	@echo "  deploy-test     Launch 1 test VM, verify stack, prompt before terminate"
+	@echo "  deploy-key           Create EC2 keypair if KEY_NAME not set (saves .pem + updates config.env)"
+	@echo "  deploy-terminate-vm  Terminate a specific instance: make deploy-terminate-vm ID=i-xxxx"
+	@echo "  deploy-test          Launch 1 test VM, verify stack, prompt before terminate"
 	@echo "  deploy-bake     Bake the training AMI (run after deploy-test passes)"
 	@echo "  deploy-launch   Launch 17 instances from the baked AMI"
 	@echo "  deploy-access   Print the access table (URL + credentials per instance)"
@@ -302,6 +303,12 @@ DEPLOY_DIR := deploy/aws
 
 deploy-key:
 	@cd $(DEPLOY_DIR) && bash -c 'source lib.sh && load_config && require_aws && ensure_keypair'
+
+deploy-terminate-vm:
+	@[ -n "$(ID)" ] || { echo "Usage: make deploy-terminate-vm ID=i-xxxx"; exit 1; }
+	@cd $(DEPLOY_DIR) && bash -c 'source lib.sh && load_config && require_aws && \
+	  awscli ec2 terminate-instances --instance-ids $(ID) \
+	    --query "TerminatingInstances[0].CurrentState.Name" --output text'
 
 deploy-test:
 	cd $(DEPLOY_DIR) && ./test.sh
