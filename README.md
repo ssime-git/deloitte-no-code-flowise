@@ -154,6 +154,16 @@ cp deploy/aws/config.env.example deploy/aws/config.env
 
 `config.env` est gitignored — ne jamais commiter ce fichier.
 
+### Étape 0 : créer la clé SSH (une seule fois)
+
+```bash
+make deploy-key
+```
+
+Crée le keypair EC2 `flowise-training-key` si `KEY_NAME` est vide dans `config.env`, sauvegarde le `.pem` localement (`deploy/aws/flowise-training-key.pem`, chmod 600) et met à jour `config.env` automatiquement.
+
+> Si la clé existe déjà sur AWS et que le `.pem` est présent, cette commande ne fait rien.
+
 ### Workflow complet
 
 ```bash
@@ -163,32 +173,49 @@ make smoke-j4          # Agent Simple + Agent RAG
 make smoke-j5          # Agent MCP
 make smoke-j6          # Multi-Agent (attend Human Input — comportement normal)
 
-# ── Étape 2 : bake l'AMI ─────────────────────────────────────────────────────
+# ── Étape 2 : créer la clé SSH si pas encore fait ────────────────────────────
+make deploy-key        # idempotent — ne recrée pas si déjà présente
+
+# ── Étape 3 : tester sur une VM fraîche ──────────────────────────────────────
+make deploy-test       # ~12 min — Ubuntu vierge → install → smoke → prompt terminate
+# SSH de debug possible : ssh -i deploy/aws/flowise-training-key.pem ubuntu@<IP>
+
+# ── Étape 4 : bake l'AMI ─────────────────────────────────────────────────────
 make deploy-bake       # ~20 min — clone repo + pull images + snapshot
 
-# ── Étape 3 : 1 VM de validation avec les collègues ──────────────────────────
+# ── Étape 5 : 1 VM de validation avec les collègues ──────────────────────────
 make deploy-launch COUNT=1   # Lance 1 instance depuis l'AMI (~90 s de boot)
 make deploy-access           # Affiche URL + login à partager avec les collègues
 
 # Les collègues testent : J2 → J6, ~15-30 min
-# Si OK → étape 4. Sinon → make deploy-teardown, corriger, rebake.
+# Si OK → étape 6. Sinon → make deploy-teardown, corriger, rebake.
 
-# ── Étape 4 : déploiement fleet ───────────────────────────────────────────────
-make deploy-teardown   # Termine la VM de validation
+# ── Étape 6 : déploiement fleet ───────────────────────────────────────────────
+make deploy-teardown         # Termine la VM de validation
 make deploy-launch COUNT=17  # Lance les 17 instances (~3 min)
-make deploy-access     # Tableau complet URLs + login/password → access.csv
+make deploy-access           # Tableau complet URLs + login/password → access.csv
 
 # ── Après la formation ────────────────────────────────────────────────────────
 make deploy-teardown   # Termine toutes les instances
 ```
 
+### Terminer une instance spécifique
+
+```bash
+make deploy-terminate-vm ID=i-xxxxxxxxxxxx
+```
+
+Utile pour supprimer une VM de test sans passer par `deploy-teardown` (qui termine **toutes** les instances tagguées).
+
 ### Ce que fait chaque script
 
 | Commande | Durée | Description |
 |----------|-------|-------------|
+| `deploy-key` | ~5 s | Crée keypair EC2 si absent, sauvegarde `.pem`, met à jour `config.env` |
+| `deploy-terminate-vm ID=i-xxx` | ~5 s | Termine une instance spécifique |
 | `deploy-test` | ~12 min | VM Ubuntu fraîche → install → `make up` → vérifie flows → prompt terminate |
 | `deploy-bake` | ~20 min | VM tempo → install → pre-pull images → poweroff → snapshot AMI |
-| `deploy-launch` | ~3 min | Lance 17 EC2 depuis l'AMI, chaque boot démarre le stack |
+| `deploy-launch` | ~3 min | Lance N EC2 depuis l'AMI, chaque boot démarre le stack |
 | `deploy-access` | ~5 s | Récupère les IPs et génère le tableau d'accès |
 | `deploy-teardown` | ~10 s | Termine toutes les instances tagguées `training=flowise-j2026` |
 
