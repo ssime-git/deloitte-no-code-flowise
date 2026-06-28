@@ -167,8 +167,7 @@
               "name": "systemMessagePrompt",
               "type": "string",
               "rows": 4,
-              "optional": true,
-              "additionalParams": true
+              "optional": true
             }
           ],
           "outputAnchors": [

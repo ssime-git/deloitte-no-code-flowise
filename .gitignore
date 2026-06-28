@@ -4,3 +4,8 @@ __pycache__/
 .ruff_cache/
 .python-version
 .env.aws
+
+# AWS deploy kit — local config (secrets) and runtime state
+deploy/aws/config.env
+deploy/aws/.state
+deploy/aws/access.csv

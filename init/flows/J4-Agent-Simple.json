@@ -262,8 +262,7 @@
               "type": "string",
               "default": "You are a helpful AI assistant.",
               "rows": 4,
-              "optional": true,
-              "additionalParams": true
+              "optional": true
             },
             {
               "label": "Max Iterations",
