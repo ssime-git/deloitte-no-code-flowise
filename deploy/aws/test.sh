@@ -67,6 +67,8 @@ for i in \$(seq 1 90); do
   fi
   sleep 10
 done
+echo "[smoke] Applying Flowise engine patches..."
+make patch-flowise
 echo "[smoke] Running make smoke tests..."
 for T in test-j2 test-j3 test-j4 test-j4-rag test-j5-scope test-j6; do
   if make "\$T" >/tmp/smoke-\${T}.out 2>&1; then
