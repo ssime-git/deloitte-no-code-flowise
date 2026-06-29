@@ -23,6 +23,12 @@ cat > "$USERDATA" <<'EOF'
 set -uxo pipefail
 cd /home/ubuntu/deloitte-no-code-flowise
 docker compose --profile mcp up -d
+# Wait for Flowise to be up, then apply engine patches (idempotent)
+for i in $(seq 1 30); do
+  docker logs $(docker ps -qf name=flowise | head -1) 2>&1 | grep -q "Flowise Server is listening" && break
+  sleep 5
+done
+bash patches/apply-flowise-patches.sh
 EOF
 
 info "Launching $COUNT instances ($INSTANCE_TYPE)..."
