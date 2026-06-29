@@ -220,20 +220,20 @@
             "llmMessages": [
               {
                 "role": "system",
-                "content": "Tu es le superviseur d'une mini-equipe d'audit paie / DSN dans Flowise.\n\nTu pilotes trois workers specialises :\n- DOC : recherche documentaire et justification reglementaire via des outils gouvernes\n- CALC : controles quantitatifs, calculs et verification de montants\n- REPORT : redaction de la restitution d'audit a partir des elements deja produits\n\nRegles de supervision :\n- Choisis toujours exactement un prochain etat parmi DOC, CALC, REPORT ou FINISH.\n- Si la demande parle de regles, d'exception DSN, de justification ou de source, commence ou repasse par DOC.\n- Si la demande implique pourcentage, ecart, montant, variation ou recalcul, passe par CALC avant REPORT.\n- N'envoie REPORT qu'une fois que les elements utiles ont ete collectes. Pour une demande mixte documentaire + quantitatif, vise DOC puis CALC puis REPORT.\n- Si un humain rejette la synthese avec un feedback, tiens compte de ce feedback dans la prochaine instruction et relance le worker utile. Ne choisis pas FINISH dans ce cas, meme si final_report etait deja rempli : le rejet annule la synthese precedente.\n- Si final_report est vide ET que la conversation contient un feedback de rejet, c'est une reprise apres rejet - reprends les workers necessaires pour corriger le rapport selon le feedback.\n- Ne choisis FINISH que si final_report est non vide ET qu'aucun rejet humain recent n'est present dans la conversation.\n- Une fois FINISH choisi, ne demande plus aucune validation et n'envoie plus aucun worker.\n- Tu n'ecris jamais la restitution finale toi-meme : tu delegues au worker REPORT.\n- Sois parcimonieux : pas de boucle inutile, pas de worker redondant."
+                "content": "Tu es le superviseur d'une mini-equipe d'audit paie / DSN dans Flowise.\n\nTu pilotes trois workers specialises :\n- DOC : recherche documentaire et justification reglementaire via des outils gouvernes\n- CALC : controles quantitatifs, calculs et verification de montants\n- REPORT : redaction de la restitution d'audit a partir des elements deja produits\n\nRegles de supervision :\n- Choisis toujours exactement un prochain etat parmi DOC, CALC ou REPORT.\n- Si la demande parle de regles, d'exception DSN, de justification ou de source, commence ou repasse par DOC.\n- Si la demande implique pourcentage, ecart, montant, variation ou recalcul, passe par CALC avant REPORT.\n- N'envoie REPORT qu'une fois que les elements utiles ont ete collectes par DOC et/ou CALC. Pour une demande mixte documentaire + quantitatif, vise DOC puis CALC puis REPORT.\n- Quand toutes les informations sont reunies, choisis REPORT. La restitution sera soumise automatiquement a validation humaine apres le worker REPORT.\n- Si un humain rejette la synthese avec un feedback, tiens compte de ce feedback et relance les workers necessaires pour corriger, puis renvoie REPORT.\n- Tu n'ecris jamais la restitution finale toi-meme : tu delegues au worker REPORT.\n- Sois parcimonieux : pas de boucle inutile, pas de worker redondant."
               }
             ],
             "llmEnableMemory": true,
             "llmMemoryType": "allMessages",
             "llmMemoryWindowSize": "20",
             "llmMemoryMaxTokenLimit": "2000",
-            "llmUserMessage": "Choisis le prochain etat et donne une instruction courte et exploitable si un worker doit agir. Valeurs autorisees pour next : DOC, CALC, REPORT, FINISH.",
+            "llmUserMessage": "Choisis le prochain etat et donne une instruction courte et exploitable au worker. Valeurs autorisees pour next : DOC, CALC, REPORT.",
             "llmReturnResponseAs": "userMessage",
             "llmStructuredOutput": [
               {
                 "key": "next",
                 "type": "enum",
-                "enumValues": "DOC, CALC, REPORT, FINISH",
+                "enumValues": "DOC, CALC, REPORT",
                 "description": "Nom du prochain worker a activer"
               },
               {
@@ -553,12 +553,6 @@
                 "value1": "{{ $flow.state.next }}",
                 "operation": "equal",
                 "value2": "REPORT"
-              },
-              {
-                "type": "string",
-                "value1": "{{ $flow.state.next }}",
-                "operation": "equal",
-                "value2": "FINISH"
               }
             ]
           },
@@ -2076,20 +2070,6 @@
         "id": "edge-condition-report"
       },
       {
-        "source": "conditionAgentflow_0",
-        "sourceHandle": "conditionAgentflow_0-output-3",
-        "target": "directReplyAgentflow_0",
-        "targetHandle": "directReplyAgentflow_0",
-        "data": {
-          "sourceColor": "#FFB938",
-          "targetColor": "#4DDBBB",
-          "edgeLabel": "FINISH",
-          "isHumanInput": false
-        },
-        "type": "agentFlow",
-        "id": "edge-condition-finish"
-      },
-      {
         "source": "agentAgentflow_0",
         "sourceHandle": "agentAgentflow_0-output-agentAgentflow",
         "target": "loopAgentflow_0",
@@ -2376,20 +2356,20 @@
           "llmMessages": [
             {
               "role": "system",
-              "content": "Tu es le superviseur d'une mini-equipe d'audit paie / DSN dans Flowise.\n\nTu pilotes trois workers specialises :\n- DOC : recherche documentaire et justification reglementaire via des outils gouvernes\n- CALC : controles quantitatifs, calculs et verification de montants\n- REPORT : redaction de la restitution d'audit a partir des elements deja produits\n\nRegles de supervision :\n- Choisis toujours exactement un prochain etat parmi DOC, CALC, REPORT ou FINISH.\n- Si la demande parle de regles, d'exception DSN, de justification ou de source, commence ou repasse par DOC.\n- Si la demande implique pourcentage, ecart, montant, variation ou recalcul, passe par CALC avant REPORT.\n- N'envoie REPORT qu'une fois que les elements utiles ont ete collectes. Pour une demande mixte documentaire + quantitatif, vise DOC puis CALC puis REPORT.\n- Si un humain rejette la synthese avec un feedback, tiens compte de ce feedback dans la prochaine instruction et relance le worker utile. Ne choisis pas FINISH dans ce cas, meme si final_report etait deja rempli : le rejet annule la synthese precedente.\n- Si final_report est vide ET que la conversation contient un feedback de rejet, c'est une reprise apres rejet - reprends les workers necessaires pour corriger le rapport selon le feedback.\n- Ne choisis FINISH que si final_report est non vide ET qu'aucun rejet humain recent n'est present dans la conversation.\n- Une fois FINISH choisi, ne demande plus aucune validation et n'envoie plus aucun worker.\n- Tu n'ecris jamais la restitution finale toi-meme : tu delegues au worker REPORT.\n- Sois parcimonieux : pas de boucle inutile, pas de worker redondant."
+              "content": "Tu es le superviseur d'une mini-equipe d'audit paie / DSN dans Flowise.\n\nTu pilotes trois workers specialises :\n- DOC : recherche documentaire et justification reglementaire via des outils gouvernes\n- CALC : controles quantitatifs, calculs et verification de montants\n- REPORT : redaction de la restitution d'audit a partir des elements deja produits\n\nRegles de supervision :\n- Choisis toujours exactement un prochain etat parmi DOC, CALC ou REPORT.\n- Si la demande parle de regles, d'exception DSN, de justification ou de source, commence ou repasse par DOC.\n- Si la demande implique pourcentage, ecart, montant, variation ou recalcul, passe par CALC avant REPORT.\n- N'envoie REPORT qu'une fois que les elements utiles ont ete collectes par DOC et/ou CALC. Pour une demande mixte documentaire + quantitatif, vise DOC puis CALC puis REPORT.\n- Quand toutes les informations sont reunies, choisis REPORT. La restitution sera soumise automatiquement a validation humaine apres le worker REPORT.\n- Si un humain rejette la synthese avec un feedback, tiens compte de ce feedback et relance les workers necessaires pour corriger, puis renvoie REPORT.\n- Tu n'ecris jamais la restitution finale toi-meme : tu delegues au worker REPORT.\n- Sois parcimonieux : pas de boucle inutile, pas de worker redondant."
             }
           ],
           "llmEnableMemory": true,
           "llmMemoryType": "allMessages",
           "llmMemoryWindowSize": "20",
           "llmMemoryMaxTokenLimit": "2000",
-          "llmUserMessage": "Choisis le prochain etat et donne une instruction courte et exploitable si un worker doit agir. Valeurs autorisees pour next : DOC, CALC, REPORT, FINISH.",
+          "llmUserMessage": "Choisis le prochain etat et donne une instruction courte et exploitable au worker. Valeurs autorisees pour next : DOC, CALC, REPORT.",
           "llmReturnResponseAs": "userMessage",
           "llmStructuredOutput": [
             {
               "key": "next",
               "type": "enum",
-              "enumValues": "DOC, CALC, REPORT, FINISH",
+              "enumValues": "DOC, CALC, REPORT",
               "description": "Nom du prochain worker a activer"
             },
             {
@@ -2709,12 +2689,6 @@
               "value1": "{{ $flow.state.next }}",
               "operation": "equal",
               "value2": "REPORT"
-            },
-            {
-              "type": "string",
-              "value1": "{{ $flow.state.next }}",
-              "operation": "equal",
-              "value2": "FINISH"
             }
           ]
         },
@@ -4230,20 +4204,6 @@
       },
       "type": "agentFlow",
       "id": "edge-condition-report"
-    },
-    {
-      "source": "conditionAgentflow_0",
-      "sourceHandle": "conditionAgentflow_0-output-3",
-      "target": "directReplyAgentflow_0",
-      "targetHandle": "directReplyAgentflow_0",
-      "data": {
-        "sourceColor": "#FFB938",
-        "targetColor": "#4DDBBB",
-        "edgeLabel": "FINISH",
-        "isHumanInput": false
-      },
-      "type": "agentFlow",
-      "id": "edge-condition-finish"
     },
     {
       "source": "agentAgentflow_0",
