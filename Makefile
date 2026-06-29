@@ -13,7 +13,7 @@ J5_QUESTION_AGGREGATE := Donne-moi une vue agregée par etablissement des donnee
 J5_QUESTION_CASE := Analyse lexception EXC_URSSAF_AMOUNT_INCONSISTENT et dis-moi quelles preuves daudit et documentaires sont disponibles.
 J6_QUESTION := Un salarie presente une variation de brut de 18 pourcent et lexception EXC_URSSAF_AMOUNT_INCONSISTENT. Prepare une alerte daudit DSN exploitable par un auditeur.
 
-.PHONY: setup install-deps up down reset force-reset status logs-flowise logs-init api-key ping mcp-health psql wait-init test-j2 test-j3 test-j3-nir smoke-j3 reset-smoke-j3 from-scratch-j3 test-j4 test-j4-date test-j4-rag test-j4-rag-combo smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5-scope test-j5-aggregate test-j5-case smoke-j5 reset-smoke-j5 from-scratch-j5 test-j6 smoke-j6 reset-smoke-j6 from-scratch-j6 docs help deploy-key deploy-terminate-vm deploy-test deploy-bake deploy-launch deploy-access deploy-teardown
+.PHONY: setup install-deps up down reset force-reset status logs-flowise logs-init api-key ping mcp-health psql wait-init patch-flowise test-j2 test-j3 test-j3-nir smoke-j3 reset-smoke-j3 from-scratch-j3 test-j4 test-j4-date test-j4-rag test-j4-rag-combo smoke-j4 reset-smoke-j4 from-scratch-j4 test-j5-scope test-j5-aggregate test-j5-case smoke-j5 reset-smoke-j5 from-scratch-j5 test-j6 smoke-j6 reset-smoke-j6 from-scratch-j6 docs help deploy-key deploy-terminate-vm deploy-test deploy-bake deploy-launch deploy-access deploy-teardown
 
 help:
 	@echo "Usage: make <target>"
@@ -103,6 +103,9 @@ install-deps:
 
 up: install-deps
 	docker compose up -d
+
+patch-flowise:
+	bash patches/apply-flowise-patches.sh
 
 down:
 	docker compose down
@@ -286,10 +289,11 @@ test-j6: wait-init
 		printf '\n'; \
 	}
 
-smoke-j6: ping mcp-health test-j6
+smoke-j6: patch-flowise ping mcp-health test-j6
 
 reset-smoke-j6:
 	COMPOSE_PROFILE=mcp ./reset.sh -f
+	$(MAKE) patch-flowise
 	$(MAKE) smoke-j6
 
 from-scratch-j6: reset-smoke-j6
