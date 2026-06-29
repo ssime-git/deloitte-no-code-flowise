@@ -9,3 +9,6 @@ __pycache__/
 deploy/aws/config.env
 deploy/aws/.state
 deploy/aws/access.csv
+deploy/aws/flowise-training-key.pem
+docs/local_assets
+docs/courses
