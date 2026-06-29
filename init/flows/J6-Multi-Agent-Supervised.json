@@ -260,7 +260,7 @@
             "llmModelConfig": {
               "llmModel": "chatAnthropic",
               "FLOWISE_CREDENTIAL_ID": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-              "modelName": "claude-opus-4-5",
+              "modelName": "claude-sonnet-4-6",
               "temperature": 0.1,
               "streaming": true,
               "allowImageUploads": false
@@ -2396,7 +2396,7 @@
           "llmModelConfig": {
             "llmModel": "chatAnthropic",
             "FLOWISE_CREDENTIAL_ID": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
-            "modelName": "claude-opus-4-5",
+            "modelName": "claude-sonnet-4-6",
             "temperature": 0.1,
             "streaming": true,
             "allowImageUploads": false
