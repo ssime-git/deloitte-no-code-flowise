@@ -4,7 +4,7 @@
 set -euo pipefail
 
 DOCKER=$(command -v docker); [ "$(id -u)" != "0" ] && DOCKER="sudo docker"
-CONTAINER=$($DOCKER ps --filter ancestor=flowiseai/flowise -q | head -1)
+CONTAINER=$($DOCKER ps --filter name=flowise-flowise -q | head -1)
 if [ -z "$CONTAINER" ]; then
   echo "[patch] Flowise container not found, skipping"
   exit 0
