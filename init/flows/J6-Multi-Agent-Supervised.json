@@ -1624,7 +1624,7 @@
           "inputs": {
             "loopBackToNode": "llmAgentflow_0-Supervisor",
             "maxLoopCount": 5,
-            "fallbackMessage": "",
+            "fallbackMessage": "Limite de recherches documentaires atteinte. Veuillez relancer une nouvelle demande.",
             "loopUpdateState": []
           },
           "inputAnchors": [],
@@ -1706,7 +1706,7 @@
           "inputs": {
             "loopBackToNode": "llmAgentflow_0-Supervisor",
             "maxLoopCount": 5,
-            "fallbackMessage": "",
+            "fallbackMessage": "Limite de calculs atteinte. Veuillez relancer une nouvelle demande.",
             "loopUpdateState": []
           },
           "inputAnchors": [],
@@ -3760,7 +3760,7 @@
         "inputs": {
           "loopBackToNode": "llmAgentflow_0-Supervisor",
           "maxLoopCount": 5,
-          "fallbackMessage": "",
+          "fallbackMessage": "Limite de recherches documentaires atteinte. Veuillez relancer une nouvelle demande.",
           "loopUpdateState": []
         },
         "inputAnchors": [],
@@ -3842,7 +3842,7 @@
         "inputs": {
           "loopBackToNode": "llmAgentflow_0-Supervisor",
           "maxLoopCount": 5,
-          "fallbackMessage": "",
+          "fallbackMessage": "Limite de calculs atteinte. Veuillez relancer une nouvelle demande.",
           "loopUpdateState": []
         },
         "inputAnchors": [],
