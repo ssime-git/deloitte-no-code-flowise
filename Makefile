@@ -262,7 +262,7 @@ test-j5-case: wait-init
 smoke-j5: ping mcp-health test-j5-scope test-j5-aggregate test-j5-case
 
 reset-smoke-j5:
-	COMPOSE_PROFILE=mcp ./reset.sh -f
+	COMPOSE_PROFILES=mcp ./reset.sh -f
 	$(MAKE) smoke-j5
 
 from-scratch-j5: reset-smoke-j5
@@ -292,7 +292,7 @@ test-j6: wait-init
 smoke-j6: patch-flowise ping mcp-health test-j6
 
 reset-smoke-j6:
-	COMPOSE_PROFILE=mcp ./reset.sh -f
+	COMPOSE_PROFILES=mcp ./reset.sh -f
 	$(MAKE) patch-flowise
 	$(MAKE) smoke-j6
 
