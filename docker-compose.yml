@@ -110,9 +110,27 @@ services:
         apk add --no-cache curl jq bash python3 py3-pip postgresql-client >/dev/null 2>&1
         exec /init/import-flows.sh
 
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    profiles: [https]
+    networks: [training_net]
+    depends_on:
+      flowise:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    environment:
+      DOMAIN: ${DOMAIN:?Set DOMAIN in .env, e.g. 35-181-26-207.sslip.io}
+
 volumes:
   pgdata:
   flowise_data:
+  caddy_data:
 
 networks:
   training_net:
