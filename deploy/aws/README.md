@@ -83,14 +83,56 @@ aws ec2 terminate-instances --instance-ids i-0abc...    # puis relancer 1 instan
 ./teardown.sh --all     # + deregister l'AMI et supprime ses snapshots (stop des coûts de stockage)
 ```
 
+## 7. Accès HTTPS via gateway (réseaux d'entreprise qui bloquent HTTP:3000)
+
+Certains réseaux d'entreprise (proxy/filtrage) bloquent l'accès direct en HTTP sur un
+port non-standard (3000) ou par IP nue. Solution : une VM séparée (« instructeur »,
+hors flotte des 17) fait office de **gateway HTTPS**, et route chaque apprenant vers
+sa VM par nom d'hôte — sans toucher aux 17 VMs de formation.
+
+Architecture :
+- La VM instructeur tourne Caddy (profil Compose `https`), qui obtient automatiquement
+  un certificat Let's Encrypt par nom d'hôte via [sslip.io](https://sslip.io) (DNS
+  gratuit qui résout `<n'importe-quoi>.<ip-avec-tirets>.sslip.io` vers cette IP — donc
+  aucun DNS à demander à un admin).
+- Un bloc Caddy par apprenant : `learnerNN.<ip-instructeur-avec-tirets>.sslip.io` →
+  `reverse_proxy <ip-publique-vm-apprenant>:3000`.
+- Les 17 VMs de formation restent strictement inchangées (HTTP:3000, comme avant).
+
+Prérequis one-shot sur la VM instructeur (déjà fait si tu relis ce README après coup) :
+ouvrir 80/443 sur son security group, ajouter `DOMAIN=<ip-instructeur-avec-tirets>.sslip.io`
+dans son `.env`, puis `docker compose --profile mcp --profile https up -d caddy`.
+
+Régénérer le mapping (après un reset/relaunch qui change des IPs, ou pour rafraîchir
+la liste) :
+
+```bash
+./gateway.sh
+```
+
+Le script : liste les instances running via `describe-instances`, régénère le
+`Caddyfile` de la VM instructeur (un bloc par apprenant), le pousse par `scp`, et
+recharge Caddy à chaud (`caddy reload`, zéro downtime). Il affiche ensuite les URLs
+`https://learnerNN.<domaine-instructeur>` à distribuer.
+
+Limites à connaître :
+- **Point de défaillance unique** : si la VM instructeur tombe, les 17 accès HTTPS
+  tombent avec elle (les apprenants restent joignables en direct via
+  `http://<ip>:3000`, cf. `access.sh`).
+- **sslip.io** est un service tiers gratuit ; en cas de blocage par un filtre
+  strict (catégorie "anonymizer/dynamic-DNS"), passer à un vrai sous-domaine
+  (1 enregistrement DNS de type A vers l'IP de la VM instructeur suffit — aucune
+  config TLS côté admin, Caddy gère le certificat automatiquement).
+
 ## Notes & arbitrages
 
 - **Profil mcp** : nécessaire pour J5 (Agent MCP) et J6 (multi-agent). Le port MCP (8001)
   reste **interne** au réseau Docker — pas besoin de l'exposer.
 - **Sizing** : `t3.medium` (4 Go) suffit en mono-utilisateur mais c'est juste ;
   `t3.large` (8 Go) est plus confortable (~+13 $ sur la journée pour 17 instances).
-- **Sécurité** : restreins `SSH_CIDR` à ton IP. Flowise est servi en **HTTP** sur :3000
-  (pas de TLS) — acceptable pour une formation éphémère.
+- **Sécurité** : restreins `SSH_CIDR` à ton IP. Par défaut Flowise est servi en **HTTP**
+  sur :3000 (pas de TLS) — acceptable pour une formation éphémère, mais bloqué par
+  certains réseaux d'entreprise ; voir §7 pour l'alternative HTTPS via gateway.
 - **Secrets dans l'AMI** : les clés API sont dans le `.env` baké → garde l'AMI **privée**.
 - **Coût** : pense à `terminate` (pas `stop`) et à `--all` pour ne pas payer le stockage AMI/snapshots.
 
@@ -103,4 +145,5 @@ aws ec2 terminate-instances --instance-ids i-0abc...    # puis relancer 1 instan
 | `bake.sh` | Crée l'AMI de formation |
 | `launch.sh` | Lance les N instances |
 | `access.sh` | Tableau d'accès + `access.csv` |
+| `gateway.sh` | Régénère et pousse le Caddyfile de la gateway HTTPS (§7) |
 | `teardown.sh` | Termine la flotte (+ option AMI/snapshots) |
