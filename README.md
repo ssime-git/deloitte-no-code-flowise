@@ -199,6 +199,19 @@ make deploy-access           # Tableau complet URLs + login/password → access.
 make deploy-teardown   # Termine toutes les instances
 ```
 
+### Accès HTTPS (réseaux d'entreprise bloquant HTTP:3000)
+
+Si les VMs sont inaccessibles depuis un réseau filtré (proxy d'entreprise, port 3000
+non-standard, IP nue) : une VM instructeur séparée sert de gateway HTTPS (Caddy +
+certificats Let's Encrypt automatiques via sslip.io) et route chaque apprenant vers sa
+VM par nom d'hôte, sans toucher aux 17 VMs de formation.
+
+```bash
+make deploy-gateway    # régénère et pousse le Caddyfile de la gateway (après un reset/relaunch)
+```
+
+Détails complets (architecture, prérequis one-shot, limites) : voir [`deploy/aws/README.md`](deploy/aws/README.md#7-accès-https-via-gateway-réseaux-dentreprise-qui-bloquent-http3000).
+
 ### Terminer une instance spécifique
 
 ```bash
@@ -217,6 +230,7 @@ Utile pour supprimer une VM de test sans passer par `deploy-teardown` (qui termi
 | `deploy-bake` | ~20 min | VM tempo → install → pre-pull images → poweroff → snapshot AMI |
 | `deploy-launch` | ~3 min | Lance N EC2 depuis l'AMI, chaque boot démarre le stack |
 | `deploy-access` | ~5 s | Récupère les IPs et génère le tableau d'accès |
+| `deploy-gateway` | ~10 s | Régénère et pousse le Caddyfile de la gateway HTTPS (VM instructeur) |
 | `deploy-teardown` | ~10 s | Termine toutes les instances tagguées `training=flowise-j2026` |
 
 ### Ressources AWS créées
