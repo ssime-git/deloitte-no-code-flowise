@@ -12,3 +12,4 @@ deploy/aws/access.csv
 deploy/aws/flowise-training-key.pem
 docs/local_assets
 docs/courses
+data/from_deloitte
