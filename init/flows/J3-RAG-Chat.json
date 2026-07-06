@@ -182,7 +182,7 @@
           "inputs": {
             "embeddings": "{{openAIEmbeddings_0.data.instance}}",
             "topK": 4,
-            "document": "{{folderFiles_0.data.instance}}"
+            "document": "[\"{{folderFiles_0.data.instance}}\",\"{{fileLoader_0.data.instance}}\"]"
           },
           "outputAnchors": [
             {
