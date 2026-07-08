@@ -525,11 +525,11 @@ tbody tr:hover { background: var(--gray-150); }
         <rect x="30" y="40" width="200" height="130" rx="10"
               fill="#EEEDFE" stroke="#534AB7" stroke-width="1.5"/>
         <text x="130" y="66" text-anchor="middle"
-              font-family="system-ui" font-size="12" font-weight="600" fill="#3C3489">🤖 Agent (process 1)</text>
+              font-family="system-ui" font-size="12" font-weight="600" fill="#3C3489">🤖 Harnais / client (process 1)</text>
         <text x="130" y="84" text-anchor="middle"
               font-family="ui-monospace,monospace" font-size="10" fill="#534AB7">ex: Claude Desktop</text>
         <text x="130" y="102" text-anchor="middle"
-              font-family="ui-monospace,monospace" font-size="10" fill="#534AB7">MCP Client SDK</text>
+              font-family="ui-monospace,monospace" font-size="10" fill="#534AB7">MCP Client SDK — héberge l'agent</text>
         <line x1="60" y1="112" x2="200" y2="112" stroke="#534AB7" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
         <text x="130" y="128" text-anchor="middle"
               font-family="system-ui" font-size="10" fill="#534AB7">écrit dans stdout</text>
@@ -578,19 +578,19 @@ tbody tr:hover { background: var(--gray-150); }
       <p class="label">Analogie stdio</p>
       <p>
         Imagine deux personnes dans deux pièces séparées, reliées par un tuyau pneumatique (comme à la banque).<br>
-        <strong>L'agent glisse un message dans le tuyau</strong> (stdin du serveur).<br>
-        <strong>Le serveur glisse la réponse en retour</strong> (stdout vers l'agent).<br>
+        <strong>Le harnais glisse un message dans le tuyau</strong> (stdin du serveur).<br>
+        <strong>Le serveur glisse la réponse en retour</strong> (stdout vers le harnais).<br>
         Pas de réseau, pas d'HTTP, pas de port — juste deux process qui s'échangent du texte directement sur la même machine.
       </p>
     </div>
 
     <div class="infobox" style="margin-top:16px;">
-      <p><strong>Comment l'agent lance le serveur ?</strong></p>
-      <p>L'agent spawn le serveur MCP comme un sous-process — il l'exécute lui-même au démarrage :</p>
-      <div class="code-block"><span class="cm"># L'agent fait l'équivalent de ça :</span>
+      <p><strong>Qui lance le serveur MCP, et où ?</strong></p>
+      <p>En transport <strong>stdio</strong>, c'est le <strong>harnais</strong> (l'appli qui héberge l'agent — pas l'agent lui-même, qui ne fait que raisonner) qui spawn le serveur comme sous-process, sur sa propre machine, au démarrage :</p>
+      <div class="code-block"><span class="cm"># Le harnais fait l'équivalent de ça :</span>
 subprocess.Popen([<span class="hl">"python"</span>, <span class="hl">"mon_serveur_mcp.py"</span>])
-<span class="cm"># Puis il "parle" dans stdin/stdout de ce sous-process</span></div>
-      <p style="margin-top:12px; font-size:0.875rem;">Il existe aussi un mode <strong>HTTP/SSE</strong> quand le serveur tourne sur une autre machine (réseau), mais stdio est le transport par défaut en local.</p>
+<span class="cm"># Puis il lit/écrit sur stdin/stdout de ce sous-process</span></div>
+      <p style="margin-top:12px; font-size:0.875rem;">Ce n'est pas le seul mode : en <strong>HTTP</strong>, le serveur MCP tourne en continu, indépendamment, dans son propre process/container — personne ne le "spawn" à la demande. C'est le mode utilisé dans ce projet : <code>mcp-server/server.py</code> (FastMCP, port 8000) tourne dans son propre container Docker, et Flowise (le harnais) s'y connecte juste via <code>http://mcp-server:8000/mcp</code>, sans jamais le lancer.</p>
     </div>
   </div>
 
