@@ -1,0 +1,1043 @@
+I 
+(A ctes législatifs ) 
+RÈGLEMENTS 
+RÈGLEMENT (UE) 2019/2088 DU P ARLEMENT EUR OPÉEN ET DU CONSEIL 
+du 27 no v embre 2019 
+sur la publication d’infor mations en matière de durabilité dans le secteur des ser vices f inanciers 
+(T exte présent ant de l’intérêt pour l’EEE) 
+LE P ARLEMENT EUR OPÉEN ET LE CON SEIL DE L ’UNION EUR OPÉENNE, 
+vu le trait é sur le f onctionnement de l’Union européenne, et notamment son ar ticle 114, 
+vu la proposition de la Commission européenne, 
+après transmission du projet d’acte législatif aux parlements nationaux, 
+vu l’avis du Comité économique et social européen (
+1
+), 
+statuant conf or mément à la procédure législative ordinaire (
+2
+), 
+considérant ce qui suit: 
+(1) Le 25 sept embre 2015, l’ Assemblée g énérale des Nations unies a adopt é un nouveau cadre mondial de 
+développement durable: le programme de développement durable à l’hor izon 2030 (ci-après dénommé 
+«programme à l’hor izon 2030»), qui s ’ar ticule autour des objectifs de développement durable (ODD). Dans sa 
+communication du 22 novembre 2016 intitulée «Proch aines étapes pour un av enir européen durable», la 
+Commission f ait le lien entre les ODD et le cadre d’action de l’Un ion de sor te que tout es les actions et initiatives de 
+l’Un ion, sur son te r r it oire et à l’échelle mondiale, intègrent les ODD dès le dépar t. Dans ses conclusions du 
+20 juin 2017, le Conseil a conf ir mé la volont é de l’Un ion et de ses États membres de mettre en œuvre le 
+programme à l’hor izon 2030 de manière compl ète, cohérent e, g lobale, inté grée et effective et en étroite coopération 
+av ec les par ten aires et les autres acte urs concer nés. 
+(2) Le passage à une économie à f aible intensit é de carbone, plus durable, économe en ressources et circulaire, 
+conf or mément aux ODD, est essentiel pour garantir la compétitivit é à long term e de l’économie de l’Un ion. L ’accord 
+de P ar is adop té au titre de la conven tion-cadre des Nations unies sur les chang ements climatiques (ci-après dénommé 
+«accord de Par is»), qui a ét é approuvé par l’Union le 5 oct obre 2016 (
+3
+) et qui est entré en vigueur le 4 no vembre 
+2016, cherc he à renf orcer la r ipost e aux c hange ments climatiques, entre autres en rendant les f lux financiers 
+compati bles av ec une transition vers un développement à faible émission de g az à eff et de ser re et résilient aux 
+c hangements climatiques. 
+(3) Afin d’atteindre les objectifs de l’accord de Par is et de réduire sensiblement les r isques et les effets des c hangements 
+climatiques, l’objectif g lobal est de contenir l’élévation de la tem pérature mo y enne de la planèt e netteme nt en 
+dessous de 2 °C par rappor t aux niveaux préindustr iels et de poursuivre l’action menée pour limiter l’élévation de la 
+tem pérature à 1,5 °C par rappor t aux niveaux préindustr iels. 
+(
+1
+) JO C 62 du 15.2.2019, p. 97. 
+(
+2
+) P osition du Parlement européen du 18 avr il 2019 (non encore par ue au Jour nal officiel ) et décision du Conseil du 8 novembre 2019. 
+(
+3
+) Décision (UE) 2016/1841 du Conseil du 5 octobre 2016 relative à la conclusion, au nom de l’Union européenne, de l’accord de Paris 
+adopt é au titre de la conv ention-cadre des Nations unies sur les c hangements climatiques (JO L 282 du 19.10.2016, p. 1). 
+FR Jour nal officiel de l’Union européenne 9.12.2019                                                                                                                                           L 317/1   
+(4) Les directives 2009/65/CE (
+4
+), 2009/138/CE (
+5
+), 2011/61/UE (
+6
+), 2013/36/UE (
+7
+), 2014/65/UE (
+8
+), (UE) 2016/97 (
+9
+), 
+(UE) 2016/2341 (
+10
+) du P arlement européen et du Conseil, et les règ lements (UE) n
+o 
+345/2013 (
+11
+), (UE) 
+n
+o 
+346/2013 (
+12
+), (UE) 2015/760 (
+13
+) et (UE) 2019/1238 (
+14
+) du P arlement européen et du Conseil ont pour objectif 
+commun de fa ciliter l’accès aux activités des org anismes de placement collectif en valeurs mobilières (OPCVM), des 
+établissements de crédit, des ge stionnaires de f onds d’inve stissement altern atifs (ci-après dénommés «gestionnai res 
+de FIA») qui gèrent ou commercialisent des f onds d’inv estissement alte r natifs, y compr is des f onds européens 
+d’inve stissement à long term e (EL TIF), des entrepr ises d’assurance, des entrepr ises d’investissement, des 
+interm édiaires d’assurance, des institutions de retrait e professionnelle (IRP), des ges tionnaires de f onds de capital- 
+r isque éligibles (gest ionnaires d’EuVEC A), des g estionnaires de f onds d’entrepreneur iat social éligibles (g estionnaires 
+d’EuSEF) et des f our nisseurs de produits paneuropéens d’épargne-retrait e individuelle (PEPP), ainsi que l’exe rcice de 
+ces activités. Ces directives et règ lements assurent une prote ction plus unif or me des investisseurs fi naux et 
+sim plif ient l’accès de ceux-ci à un larg e éventail de produits financiers, tout en prévo yant des règ les qui per mett ent 
+aux inv estisseurs finaux de prendre des décisions d’inv estissement en connaissance de cause. 
+(5) La publication d’inf or mations destinées aux inv estisseurs fi naux sur l’inté gration des r isques en matière de durabilité, 
+sur la pr ise en comp te des incidences nég atives en matière de durabilité, sur les objectifs d’inve stissement durable ou 
+sur la promotion des caractér istiques envi ronnementales ou sociales dans la pr ise de décision en matière 
+d’inve stissement et dans les processus de conseil n’est pas suffisamment développée car cette publication 
+d’inf or mations n’est pas encore soumise à des exigenc es har monisées. 
+(6) La dérog ation au présent règ lement dont bénéficie nt les conseillers fi nanciers em plo yant moins de trois personnes 
+devrait s’entendre sans préjudice de l’application des dispositions de droit national transposant les 
+directives 2014/65/UE et (UE) 2016/97, en par ticulier des règ les relatives aux conseils en investissement et en 
+assurance. Dès lors, bien que ces conseillers ne soient pas ten us de f our nir des inf or mations conf or mément au 
+présent règ lement, ils sont ten us de prendre en comp te et d’intégrer les r isques en matière de durabilité dans le cadre 
+de leurs processus de conseil. 
+(7) Les entit és relevant du présent règ lement, en f onction de la nature de leurs activités, devraient respecte r les règ les 
+relatives aux acteurs des march és fi nanciers, lorsqu’elles sont des initiat eurs de produits financie rs, et devraient 
+respecter les règ les relatives aux conseillers financiers, lorsqu’elles f our nissent des conseils en inv estissement ou des 
+conseils en assurance. Dès lors, lorsque de telles entités mènent parallèlement des activités d’acteur s des marc hés 
+fi nanciers et des activités de conseillers fi nanciers, ces entité s devraient être considérées comme des acteurs des 
+march és fi nanciers si elles agissent en tant qu’initiateurs de produits fi nanciers, y compris la ge stion de por te feuille, 
+et comme des conseillers financie rs si elles f our nissent des conseils en inv estissement ou des conseils en assurance. 
+(8) L ’Un ion étant confrontée de manière croissant e aux conséquences catastrophiques et im prévisibles des c hange ments 
+climatiques, de l’épuisement des ressources et d’autres problématiques liées à la durabilit é, il est urgent d’agir pour 
+mobiliser des capitaux non seulement au mo yen de politiques publiques, mais ég alement par le secteur des ser vices 
+fi nanciers. Dès lors, les acteurs des marchés financiers et les conseillers financiers devraient être tenus de publier des 
+inf or mations spécifi ques concer nant leurs approch es relatives à l’inté gration des r isques en matière de durabilit é et à 
+la pr ise en comp te des incidences négatives en matière de durabilit é. 
+(
+4
+) Directive 2009/65/CE du Parlement européen et du Conseil du 13 juillet 2009 por tant coordination des dispositions législatives, 
+rég lementaires et administratives concer nant cer tains org anismes de placement collectif en valeurs mobilières (OPCVM) (JO L 302 du 
+17.11.2009, p. 32). 
+(
+5
+) Directive 2009/138/CE du Parlement européen et du Conseil du 25 novembre 2009 sur l’accès aux activit és de l’assurance et de la 
+réassurance et leur exercice (solvabilit é II) (JO L 335 du 17.12.2009, p. 1). 
+(
+6
+) Directive 2011/61/UE du Parlement européen et du Conseil du 8 juin 2011 sur les gest ionnaires de f onds d’investissement alter natifs et 
+modifiant les directives 2003/41/CE et 2009/65/CE ainsi que les règ lements (CE) n
+o 
+1060/2009 et (UE) n
+o 
+1095/2010 (JO L 174 du 
+1.7.2011, p. 1). 
+(
+7
+) Directive 2013/36/UE du Parlement européen et du Conseil du 26 juin 2013 concer nant l’accès à l’activité des établissements de crédit 
+et la sur veillance pr udentielle des établissements de crédit et des entrepr ises d’investissement, modifian t la directive 2002/87/CE et 
+abrogean t les directives 2006/48/CE et 2006/49/CE (JO L 176 du 27.6.2013, p. 338). 
+(
+8
+) Directive 2014/65/UE du P arlement européen et du Conseil du 15 mai 2014 concer nant les marchés d’instr uments financiers et 
+modifiant la directive 2002/92/CE et la directive 2011/61/UE (JO L 173 du 12.6.2014, p. 349). 
+(
+9
+) Directive (UE) 2016/97 du Parlement européen et du Conseil du 20 janvier 2016 sur la distr ibution d’assurances (JO L 26 du 2.2.2016, 
+p. 19). 
+(
+10
+) Directive (UE) 2016/2341 du Parlement européen et du Conseil du 14 décembre 2016 concer nant les activités et la sur veillance des 
+institutions de retraite professionnelle (IRP) (JO L 354 du 23.12.2016, p. 37). 
+(
+11
+) Règ lement (UE) n
+o 
+345/2013 du Parlement européen et du Conseil du 17 avril 2013 relatif aux f onds de capital-r isque européens (JO 
+L 115 du 25.4.2013, p. 1). 
+(
+12
+) Règ lement (UE) n
+o 
+346/2013 du Parlement européen et du Conseil du 17 avril 2013 relatif aux f onds d’entrepreneur iat social 
+européens (JO L 115 du 25.4.2013, p. 18). 
+(
+13
+) Règ lement (UE) 2015/760 du P arlement Européen et du Conseil du 29 avril 2015 relatif aux f onds européens d’in vestissement à long 
+terme (JO L 123 du 19.5.2015, p. 98). 
+(
+14
+) Règ lement (UE) 2019/1238 du P arlement européen et du Conseil du 20 juin 2019 relatif à un produit paneuropéen d’épargne-retraite 
+individuelle (PEPP) (JO L 198 du 25.7.2019, p. 1). 
+FR Jour nal officiel de l’Union européenne L 317/2                                                                                                                                           9.12.2019   
+(9) En l’absence de règ les har monisées de l’Un ion sur la publication d’inf or mations en matière de durabilité destinées aux 
+inve stisseurs finaux, il est probable que des mesures diverg ent es continuent d’être adopt ées à l’éc helon national et 
+que diverses approches subsistent dans les différ ents sect eurs des ser vices fi nanciers. Ces mesures et approch es 
+diverg entes continueraient de créer d’imp or tantes distorsions de concur rence en raison des différ ences notables 
+concer nant les nor mes de publication d’inf or mations. En outre, le développement parallèle de pratiques f ondées sur 
+le march é, axée s sur des pr ior it és commerciales qui entraînent des résultats diverg ents, se traduit aujourd’hui par une 
+fragmentation accr ue du marc hé et pour rait même renf orcer encore les déf aillances dans le f onctionnement du 
+march é intéri eur à l’avenir . Les diverg ences des nor mes de publication d’inf or mations et des pratiques f ondées sur le 
+march é rendent très difficile la compar aison entre les diffé rents produits financiers, créent des conditions de 
+concur rence inég ales entre ces produits et entre les canaux de distr ibution, et ér igent des obstacles supplémentaires 
+au sein du marc hé intéri eur . Ces diverge nces pour raient ég alement être une source de confusion pour les 
+inve stisseurs finaux et fausser leurs décisions d’inve stissement. P our assurer le respect de l’accord de P ar is, les États 
+membres r isquent d’adopt er des mesures nationales diverg ent es qui pour raient créer des entraves au bon 
+f onctionnement du marc hé intéri eur et por ter préjudice aux acteurs des marc hés fi nanciers et aux conseillers 
+fi nanciers. De surcroît, comme il n’existe pas de règ les har monisées relatives à la transparence, il est diff icile pour les 
+inve stisseurs finaux de compare r eff icacement différ ents produits financiers dans différents États membres du point 
+de vue de leurs r isques environnementaux, sociaux et en matière de gouver nance ainsi que des objectifs 
+d’inve stissement durable qu’ils poursuivent. Il est dès lors nécessaire de lever les obstacles existants au 
+f onctionnement du marché intérieur et de renf orcer la compar abilité des produits f inanciers afin d’évite r l’appar ition 
+probable d’obstacles à l’avenir . 
+(10) Le présent règ lement vise à réduire l’asymétr ie de l’inf or mation dans le cadre de la relation entre mandants et 
+mandataires pour ce qui est de l’int égration des r isques en matière de durabilité, de la pr ise en comp te des 
+incidences néga tives en matière de durabilité, de la promotion des caract ér istiques en vironnementales ou sociales et 
+des investissements durables en exigeant des acte urs des marchés fi nanciers et des conseillers financie rs qu’ils 
+publient des inf or mations précontractuelles et des inf or mations f our nies en continu destinées aux inv estisseurs 
+fi naux, lorsqu’ils agissent en tant que mandataires pour ces inv estisseurs finaux (mandants). 
+(11) Le présent règ lement compl ète les exigenc es en matière de publication d’inf or mations énoncées dans les directives 
+2009/65/CE, 2009/138/CE, 2011/61/UE, 2014/65/UE, (UE) 2016/97 et (UE) 2016/2341 et les règ lements (UE) 
+n
+o 
+345/2013, (UE) n
+o 
+346/2013, (UE) 2015/760 et (UE) 2019/1238 ainsi que dans les dispositions de droit national 
+régissant les produits d’épargne-retraite individuelle. Afin de g arantir un suivi méthodique et efficace du respect du 
+présent règ lement, les États membres devraient s’appuyer sur les autori té s compét ent es déjà désignées en ver tu 
+desdit es règ les. 
+(12) Le présent règ lement maintient les exige nces impos ant aux acteur s des marchés financiers et aux conseillers 
+fi nanciers d’agir au mieux des inté rêts des inv estisseurs finaux, notamment, mais pas uniquement, l’exigence 
+consistant à f aire preuve de la dilig ence requise avant de réaliser l’in vestissement, comme cela est prévu dans les 
+directives 2009/65/CE, 2009/138/CE, 2011/61/UE, 2013/36/UE, 2014/65/UE, (UE) 2016/97 et (UE) 2016/2341 et 
+les règ lements (UE) n
+o 
+345/2013 et (UE) n
+o 
+346/2013 ainsi que dans les dispositions de droit national régissant les 
+produits d’épargne-retrait e individuelle. Afin de respecter les obligations qui leur incombent en ver tu de ces règ les, 
+les acteurs des marchés financie rs et les conseillers fi nanciers devraient intégrer dans leurs procédures, y compris 
+leurs procédures de diligence raisonnable, et évaluer en per manence non seulement tous les r isques financiers 
+per tinents, mais ég alement tous les r isques per tinents en matière de durabilit é suscep tibles d’av oir une incidence 
+négativ e im por tante et per tinente sur le rendement fi nancier d’un inve stissement ou d’un conseil. P ar conséquent, 
+les acteur s des march és fi nanciers et les conseillers financie rs devraient préciser dans leurs politiques la manière 
+dont ils intègrent ces r isques, et publier ces politiques. 
+(13) Le présent règ lement prévoi t l’obligation pour les acteurs des march és fi nanciers et les conseillers fi nanciers qui 
+f our nissent des conseils en inv estissement ou des conseils en assurance relatifs à des produits d’inve stissement 
+f ondés sur l’assurance, indépendamment de la concep tion des produits fi nanciers et du marché cible, de publier des 
+politiques écr ites sur l’intégration des r isques en matière de durabilit é et de garantir la transparence de cette 
+intégration. 
+(14) P ar «r isque en matière de durabilit é», on ent end un événement ou une situation dans le domaine en vironnemental, 
+social ou de la gouver nance qui, s ’il sur vient, pour rait av oir une incidence négativ e impor tante sur la valeur de 
+l’investisse ment, comme indiqué dans la législation sectorielle, en par ticulier dans les directives 2009/65/CE, 
+2009/138/CE, 2011/61/UE, 2013/36/UE, 2014/65/UE, (UE) 2016/97 et (UE) 2016/2341, ou dans les actes 
+délégués et les nor mes tec hniques de rég lementation adopt és en ver tu de ces actes. 
+(15) Le présent règ lement devrait être sans préjudice des règ les relatives à l’int égration des r isques prévues par les 
+directives 2009/65/CE, 2009/138/CE, 2011/61/UE, 2013/36/UE, 2014/65/UE, (UE) 2016/97 et (UE) 2016/2341 et 
+les règ lements (UE) n
+o 
+345/2013 et (UE) n
+o 
+346/2013 ainsi que par les dispositions de droit national régissant les 
+produits d’épargne-retrait e individuelle, y compris , mais sans s’ y limiter , des cr itères de propor tionnalit é applicables 
+FR Jour nal officiel de l’Union européenne 9.12.2019                                                                                                                                           L 317/3   
+per tinents tels que la taille, l’organisation intern e et la nature, la por tée et la complexit é des activités concer nées. Le 
+présent règ lement vise à par venir à davantag e de transparence en ce qui concer ne la manière dont les acte urs des 
+march és financiers et les conseillers financiers intègrent les r isques en matière de durabilit é dans leurs décisions 
+d’inve stissement et dans leurs conseils en inv estissement ou en assurance. Lorsque l’évaluation des r isques en 
+matière de durabilit é per met de conclure qu’il n’existe aucun r isque en la matière jugé per tinent pour le produit 
+fi nancier , il con vient d’en expliquer les raisons. Lorsque l’évaluation per met de conclure que ces r isques sont 
+per tinents, il convie nt de publier des inf or mations sur la mesure dans laquelle ces r isques en matière de durabilit é 
+pour raient av oir une incidence sur les perf or mances du produit financier , en term es qualitatifs ou quantitatifs. Les 
+évaluations des r isques en matière de durabilité et les inf or mations précontractuelles y afférent es f our nies par les 
+acteur s des marc hés fi nanciers devraient venir aliment er les inf or mations précontractuelles publiées par les 
+conseillers fi nanciers. Les conseillers fi nanciers devraient publier des inf or mations sur la manière dont ils tiennent 
+comp te des r isques en matière de durabilit é dans le processus de sélection du produit fi nancier présenté aux 
+inve stisseurs finaux av ant de f our nir leurs conseils, indépendamment des préférences en matière de durabilité des 
+inve stisseurs fi naux. Ceci devrait s ’ent endre sans préjudice de l’application des dispositions de droit national 
+transposant les directives 2014/65/UE et (UE) 2016/97, en par ticulier des oblig ations incombant aux acteur s des 
+march és financiers et aux conseillers fi nanciers en ce qui concer ne la gouver nance des produits, l’évaluation de 
+l’adéquation et du caractère appropr ié et l’évaluation des exigenc es et des besoins. 
+(16) Les décisions d’investissement et les conseils en inv estissement pour raient prov oquer des eff ets négatif s im por tants 
+ou suscep tibles de l’être sur les f acteur s de durabilit é, contr ibuer à de tels effe ts ou être directe ment liés à ceux-ci. 
+(17) Afin de g arantir une application cohérent e et unif or me du présent règ lement, il est nécessaire d’établir une déf inition 
+har monisée de la notion d’«in vestissements durables», qui prévoit que les sociétés dans lesquelles les inv estissements 
+sont réalisés adop tent des pratiques de bonne gouver nance et que le pr incipe de précaution consistant à ne pas 
+«causer de préjudice impor tant» est garant i, c’est-à-dire qu’il n’est pas causé de préjudice impor tant à l’objectif 
+en vironnemental ni à l’objectif social. 
+(18) Lorsque des acteurs des marchés financiers, comp te ten u de leur taille, de la nature et de l’ét endue de leurs activités et 
+des types de produits financiers qu’ils mett ent à disposition, prennent en comp te les pr incipales incidences négatives, 
+imp or tantes ou suscept ibles de l’être, de décisions d’inv estissement sur les fact eurs de durabilit é, ils devraient intégre r 
+dans leurs procédures, y compris leurs procédures de dilig ence, les procédures de pr ise en comp te des pr incipales 
+incidences néga tives en plus des r isques fi nanciers per tinents et des r isques per tinents en matière de durabilité. Les 
+inf or mations relatives à ces procédures pour raient décr ire la manière dont les acteur s des marchés financiers 
+s ’acquitt ent de leurs responsabilités de gestion ou d’autres engag ements envers les actionnaires en matière de 
+durabilit é. Les acteur s des marc hés f inanciers devraient f aire figurer sur leurs sites internet des inf or mations relatives 
+à ces procédures ainsi que les descr ipt ions des pr incipales incidences négatives. À cet ég ard, le comité mixte de 
+l’ Aut or ité bancaire européenne instituée par le règ lement (UE) n
+o 
+1093/2010 du P arlement européen et du 
+Conseil (
+15
+) (ABE), l’ Aut or ité européenne des assurances et des pensions profe ssionnelles instituée par le règ lement 
+(UE) n
+o 
+1094/2010 du Parlement européen et du Conseil (
+16
+) (AEAPP) et l’ A utorité européenne des marc hés 
+fi nanciers instituée par le règ lement (UE) n
+o 
+1095/2010 du P arlement européen et du Conseil (
+17
+) (AEMF) (ci-après 
+dénommé «comité mixt e») et les acteurs des marc hés fi nanciers et les conseillers fi nanciers devraient ten ir comp te 
+du guide sur le devoir de diligence raisonnable pour une conduit e responsable des entrepr ises élaboré par 
+l’Organis ation de coopération et de développement économiques (OCDE) et des pr incipes pour l’in vestissement 
+responsable soutenu s par les Nations unies. 
+(19) La pr ise en comp te de fact eurs de durabilit é dans le processus de pr ise de décision en matière d’inv estissement et le 
+processus de conseil peut appor ter des ava ntages au-delà des march és fi nanciers. Elle peut renf orcer la résilience de 
+l’économie réelle et la stabilité du système fi nancier . Ce f aisant, elle peut av oir à term e une incidence sur le rappor t 
+r isque/rendement des produits fi nanciers. Il est dès lors essentiel que les acteur s des marchés financiers et les 
+conseillers financiers f our nissent les inf or mations nécessaires per mettant aux inv estisseurs finaux de prendre des 
+décisions d’investissement en connaissance de cause. 
+(
+15
+) Règ lement (UE) n
+o 
+1093/2010 du P arlement européen et du Conseil du 24 novembre 2010 instituant une Aut or it é européenne de 
+sur veillance (Aut or it é bancaire européenne), modifiant la décision n
+o 
+716/2009/CE et abrogeant la décision 2009/78/CE de la 
+Commission (JO L 331 du 15.12.2010, p. 12). 
+(
+16
+) Règ lement (UE) n
+o 
+1094/2010 du P arlement européen et du Conseil du 24 novembre 2010 instituant une Aut or it é européenne de 
+sur veillance (Aut or ité européenne des assurances et des pensions professionnelles), modifiant la décision n
+o 
+716/2009/CE et 
+abrogeant la décision 2009/79/CE de la Commission (JO L 331 du 15.12.2010, p. 48). 
+(
+17
+) Règ lement (UE) n
+o 
+1095/2010 du P arlement européen et du Conseil du 24 novembre 2010 instituant une Aut or it é européenne de 
+sur veillance (Aut or ité européenne des marchés financiers), modifian t la décision n
+o 
+716/2009/CE et abrogeant la décision 2009/77/ 
+CE de la Commission (JO L 331 du 15.12.2010, p. 84). 
+FR Jour nal officiel de l’Union européenne L 317/4                                                                                                                                           9.12.2019   
+(20) Les acteur s des marc hés financiers qui prennent en comp te les pr incipales incidences nég atives des décisions 
+d’inve stissement sur les fact eurs de durabilit é devraient, pour c haque produit fi nancier , indiquer de manière concise, 
+en te r mes qualitatifs ou quantitatifs, dans les inf or mations précontractuelles publiées, comment les pr incipales 
+incidences négatives sont pr ises en comp te et faire une déclaration indiquant que les inf or mations relatives aux 
+pr incipales incidences négat ives sur les fact eurs de durabilit é sont disponibles dans le cadre des inf or mations 
+communiquées en continu. Il convient d’entendre par pr incipales incidences négativ es les incidences des décisions 
+d’inve stissement et des conseils en inv estissement qui entraînent des effets négatif s sur les fact eurs de durabilit é. 
+(21) À ce jour , des produits durables présentant diffé rents degrés d’ambition ont été créés. P ar conséquent, aux fi ns de la 
+publication d’inf or mations précontractuelles et de la publication d’inf or mations dans des rappor ts pér iodiques, il est 
+nécessaire d’opérer une distinction entre les exigences applicables aux produits financiers promouvant des 
+caracté r istiques en vironnementales ou sociales et les exigenc es applicables aux produits financie rs dont l’objectif est 
+d’av oir une incidence positive sur l’env ironnement et la société. Dès lors, en ce qui concer ne les produits financiers 
+présentant des caract ér istiques environnementales ou sociales, les acteurs des marc hés fi nanciers devraient publier 
+des inf or mations indiquant si et comment l’indice désigné, l’indice de durabilit é ou l’indice d’intégrat ion est aligné 
+sur ces caractér istiques et, lorsqu’aucun indice de référen ce n’est utilisé, des inf or mations sur la manière dont les 
+caracté r istiques des produits fi nanciers en matière de durabilit é sont respectée s. En ce qui concer ne les produits 
+fi nanciers dont l’objectif est d’av oir une incidence positive sur l’environnement et la société, les acteurs des march és 
+fi nanciers devraient publier des inf or mations sur l’indice de référence de durabilit é qu’ils utilisent pour mesurer les 
+performa nces en matière de durabilit é et, lorsqu’aucun indice de référen ce n’est utilisé, ils devraient expliquer 
+comment l’objectif de durabilit é est atte int. Ces publications au mo ye n de rappor ts pér iodiques devraient être 
+réalisées c haque année. 
+(22) Le présent règ lement est sans préjudice des règ les en matière de rémunération ou d’évaluation des performa nces du 
+personnel des acteurs des marc hés financiers et des conseillers fi nanciers au titre des directives 2009/65/CE, 
+2009/138/CE, 2011/61/UE, 2013/36/UE, 2014/65/UE, (UE) 2016/97 et (UE) 2016/2341, et des règ lements (UE) 
+n
+o 
+345/2013 et (UE) n
+o 
+346/2013, et sans préjudice des actes d’exécuti on et des dispositions de droit national 
+régissant les produits d’épargne-retrait e individuelle, y compris , mais sans s’ y limiter , les cr itères de propor tionnalité 
+applicables per tinents te ls que la taille, l’organ isation interne et la nature, la por té e et la compl exité des activités 
+concer nées. Néanmoins, il convient de par venir à davantag e de transparence, en term es qualitatifs ou quantitatifs, 
+en ce qui concer ne les politiques de rémunération des acteurs des marchés fi nanciers et des conseillers financiers, 
+pour leurs conseils en inv estissement ou en assurance, qui promeuvent une g estion des r isques saine et effective en 
+ce qui concer ne les r isques en matière de durabilité, tandis que la str ucture de la rémunération n’encourage pas la 
+pr ise de r isques excess ive en matière de durabilit é et est liée à la performa nce aj ustée aux r isques. 
+(23) Afin de renf orcer la transparence et d’inf or mer les inve stisseurs finaux, l’accès aux inf or mations sur la manière dont 
+les acte urs des marc hés financiers et les conseillers financiers intègrent respectivement les r isques per tinents en 
+matière de durabilit é, imp or tants ou suscept ibles de l’être, dans leurs processus de pr ise de décision 
+d’inve stissement, notamment les aspects orga nisationnels, de gestion des r isques et de gouver nance de ces 
+processus, et dans leurs processus de conseil devrait être rég lementé en exigeant de ces entités qu’elles tiennent à 
+jour des inf or mations concises sur ces politiques sur leur sit e inte r net. 
+(24) Les exigenc es actuelles en matière de publication d’inf or mations fi x ées dans le droit de l’Union ne prévoi ent pas la 
+publication de tout es les inf or mations nécessaires pour inf or mer dûment les inv estisseurs fi naux de l’incidence en 
+matière de durabilit é des inve stissements qu’ils réalisent dans des produits financiers présentant des caractér istiques 
+en vironnementales ou sociales ou dans des produits fi nanciers visant des objectifs de durabilité. Il convient dès lors 
+de fixer des exige nces en matière de publication d’inf or mations plus spécifi ques et nor malisées concer nant ces 
+inve stissements. P ar exem ple, il devrait être régulièrement rendu comp te de l’incidence g lobale des produits 
+fi nanciers en matière de durabilit é au mo yen d’indicate urs per tinents per mettant de mesurer l’objectif 
+d’inve stissement durable choisi. Lorsqu’un indice appropr ié a été désigné comme indice de référence, cette 
+inf or mation devrait éga lement être f our nie pour l’indice désigné ainsi que pour un indice de march é larg e à des fi ns 
+de comparaison. Lorsque les gestionnaires d’EuSEF mett ent à disposition des inf or mations sur l’incidence sociale 
+positive que vise un f onds donné, sur l’ensemble des eff ets sociaux produits et sur les méthodes y aff érentes utilisées 
+conf or mément au règ lement (UE) n
+o 
+346/2013, ils pour raient, le cas éché ant, utiliser ces inf or mations aux fins de la 
+publication d’inf or mations au titre du présent règ lement. 
+(25) La directive 2013/34/UE du P arlement européen et du Conseil (
+18
+) im pose des oblig ations en matière de transparence 
+concer nant les questions en vironnementales, sociales et de gouver nance d’entrepr ise dans le cadre de la 
+communication d’inf or mations non fi nancières. T outef ois, la f or me et la présentation requises par ladite directive ne 
+convie nnent pas touj ours à un usag e direct par les acteurs des marc hés fi nanciers et les conseillers fi nanciers dans 
+leurs relations av ec des inv estisseurs fi naux. Les acteurs des marchés financiers et les conseillers financie rs devraient 
+av oir la possibilité d’utiliser les inf or mations fi gurant dans les rappor ts de ge stion et les déclarations non fi nancières 
+aux fins du présent règ lement conf or mément à ladit e directive, le cas éch éant. 
+(
+18
+) Directive 2013/34/UE du P arlement européen et du Conseil du 26 juin 2013 relative aux états financiers annuels, aux états f inanciers 
+consolidés et aux rappor ts y afférents de cer taines f or mes d’entrepr ises, modifian t la directive 2006/43/CE du Parlement européen et 
+du Conseil et abrogean t les directives 78/660/CEE et 83/349/CEE du Conseil (JO L 182 du 29.6.2013, p. 19). 
+FR Jour nal officiel de l’Union européenne 9.12.2019                                                                                                                                           L 317/5   
+(26) Afin que les inf or mations publiées sur les sit es inte r net des acte urs des march és fi nanciers et des conseillers fi nanciers 
+soient fiables, elles devraient être ten ues à jour et tout e révision ou modifi cation de ces inf or mations devrait être 
+clairement expliquée. 
+(27) Bien que le présent règ lement ne por te pas sur les régimes nationaux de sécur ité sociale couver ts par les règ lements 
+(CE) n
+o 
+883/2004 et (CE) n
+o 
+987/2009, les États membres devraient av oir la possibilit é d’appliquer le présent 
+règ lement à de tels régimes, afi n de réduire l’asymétr ie de l’inf or mation, étant donné qu’ils ouvrent de plus en plus 
+cer taines par ties de la g estion des régimes de retrait e oblig atoires au sein de leurs systèmes de sécur ité sociale à des 
+acteur s des march és financiers ou d’autres entité s de droit pr ivé, que ces régimes sont exposés à des r isques en 
+matière de durabilit é et qu’ils sont suscep tibles de prendre en comp te des incidences négat ives en matière de 
+durabilit é, de promouvoir des caractér istiques environnementales ou sociales ou de réaliser des investissements 
+durables. 
+(28) Le présent règ lement ne devrait pas empêc her un État membre d’adop ter ou de maint enir en vigueur des dispositions 
+plus str ictes en matière de publication des politiques d’adaptation aux c hange ments climatiques et de publication 
+d’autres inf or mations destinées aux inve stisseurs finaux sur les r isques en matière de durabilit é, pour autant que les 
+acteur s des march és fi nanciers et les conseillers financiers concer nés aient leur siège social sur son terr itoire. De 
+telles dispositions ne sauraient tout ef ois entra ver l’application effective du présent règ lement ou la réalisation de ses 
+objectifs. 
+(29) En ver tu de la directive (UE) 2016/2341, les IRP sont déjà tenues d’appliquer des règ les de gouver nance et de ge stion 
+des r isques à leurs décisions d’inve stissement et évaluations des r isques, dans un souci de continuité et de régular ité . 
+La pr ise de décisions d’inv estissement et l’évaluation des r isques per tinents, y compr is les r isques en vironnementaux, 
+sociaux et en matière de gouver nance, devraient inter venir d’une manière qui g arantisse le respect des intérêts des 
+membres et des bénéficiaires des IRP . L ’ AEAPP devrait publier des lignes directr ices précisant la manière dont la 
+pr ise de décisions d’inve stissement et l’évaluation des r isques par les IRP doivent prendre en comp te les r isques 
+en vironnementaux, sociaux et en matière de gouver nance conf or mément à la directive (UE) 2016/2341. 
+(30) L ’ ABE, l’ AEAPP et l’ AEMF (ci-après collectivement dénommées "autor it és européennes de sur veillance") devraient être 
+mandaté es, par l’inte r médiaire du comit é mixt e, pour élaborer un projet de nor mes tec hniques de rég lementation 
+détaillant plus précisément le contenu, les méthodes et la présentation pour les inf or mations relatives aux 
+indicateur s de durabilit é concer nant les incidences négatives en matière de climat et d’autres incidences négatives en 
+matière d’environnement, les questions sociales et de personnel, le respect des droits de l’homme et la lutte contre la 
+cor r uption et les actes de cor r upti on, ainsi que la présentation et le contenu des inf or mations pour ce qui est de la 
+promotion des caracté r istiques en vironnementales ou sociales et des objectifs d’investissement durable à publier 
+dans les documents précontractuels, dans les rappor ts annuels et sur les sit es inte r net des acteurs des marc hés 
+fi nanciers, conf or mément aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et (UE) 
+n
+o 
+1095/2010. La Commission devrait être habilit ée à adopt er ces nor mes tec hniques de rég lementation par v oie 
+d’actes délégués en ver tu de l’ar ticle 290 du traité sur le f onctionnement de l’Un ion européenne et conf or mément 
+aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et (UE) n
+o 
+1095/2010. 
+(31) Les autori té s européennes de sur veillance devraient être mandaté es, par l’int er médiaire du comité mixte, pour 
+élaborer des projets de nor mes te chniques de rég lementation afin d’établir la présentation type de l’inf or mation sur 
+la promotion des caractér istiques envi ronnementales ou sociales et des investissements durables dans les 
+communications publicitaires. La Commission devrait être habilité e à adopt er ces nor mes tec hniques d’exécuti on au 
+mo yen d’un acte d’exé cution en ver tu de l’ar ticle 291 du traité sur le f onctionnement de l’Un ion européenne et 
+conf or mément aux ar ticles 15 des règ lements (UE) n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et (UE) n
+o 
+1095/2010. 
+(32) Étant donné que les rappor ts annuels résument en pr incipe les résultats d’activité pour des années civiles compl ète s, 
+les dispositions du présent règ lement relatives aux exigences de transparence pour de tels rappor ts ne devraient 
+s ’appliquer qu’à par tir du 1
+er 
+janv ier 2022. 
+(33) Les règ les en matière de publication d’inf or mations figurant dans le présent règ lement devraient compl éter les 
+dispositions des directives 2009/65/CE, 2009/138/CE, 2011/61/UE, 2014/65/UE, (UE) 2016/97 et 
+(UE) 2016/2341 et des règ lements (UE) n
+o 
+345/2013, (UE) n
+o 
+346/2013, (UE) 2015/760 et (UE) 2019/1238. 
+(34) Le présent règ lement respecte les droits f ondamentaux et obser ve les pr incipes reconnus, en par ticulier , par la Char te 
+des droits f ondamentaux de l’Union européenne. 
+(35) Étant donné que les objectifs du présent règ lement, à sav oir renf orcer la prot ection des investisseurs finaux et 
+améliorer la publication d’inf or mations qui leur sont destinées, y compris en cas d’ac hats transfrontières par des 
+inve stisseurs finaux, ne peuvent pas être att eints de manière suffisante par les États membres mais peuvent en raison 
+de la nécessité d’établir des exigenc es en matière de publication d’inf or mations unif or mes l’être mieux au niveau de 
+l’Un ion, celle-ci peut prendre des mesures, conf or mément au pr incipe de subsidiar ité consacré à l’ar ticle 5 du traité 
+sur l’Un ion européenne. Conf or mément au pr incipe de propor tionnalité tel qu’énoncé audit ar ticle, le présent 
+règ lement n’excè de pas ce qui est nécessaire pour atteindre ces objectifs, 
+FR Jour nal officiel de l’Union européenne L 317/6                                                                                                                                           9.12.2019   
+ONT ADOPTÉ LE PRÉSENT RÈGLEMENT : 
+Ar ticle pr emier 
+Objet 
+Le présent règ lement établit des règ les har monisées pour les acteur s des marc hés fi nanciers et les conseillers financiers 
+relatives à la transparence en ce qui concer ne l’inté gration des r isques en matière de durabilité et la pr ise en comp te des 
+incidences négatives en matière de durabilit é dans leurs processus ainsi que la f our niture d’inf or mations en matière de 
+durabilit é en ce qui concer ne les produits fi nanciers. 
+Ar ticle 2 
+Déf initions 
+Aux fi ns du présent règ lement, on ent end par: 
+1) «act eur des marchés financiers»: 
+a) une entrepr ise d’assurance qui propose des produits d’inve stissement f ondés sur l’assurance; 
+b) une entrepr ise d’inv estissement f our nissant des ser vices de g estion de por tef euille; 
+c) une institution de retrait e profe ssionnelle (IRP); 
+d) un initiat eur de produit de retrait e; 
+e) un g estionnaire de f onds d’inve stissement altern atif (ci-après dénommé «gestionnaire de FIA»); 
+f) un f our nisseur de produits paneuropéens d’épargne-retraite individuelle (PEPP); 
+g) un g estionnaire de f onds de capital-r isque éligible enregistré conf or mément à l’ar ticle 14 du règ lement (UE) 
+n
+o 
+345/2013; 
+h) un g estionnaire de f onds d’entrepreneur iat social éligible enregistré conf or mément à l’ar ticle 15 du règ lement (UE) 
+n
+o 
+346/2013; 
+i) une sociét é de gestion d’organi smes de placement collectif en valeurs mobilières (ci-après dénommée «société de 
+g estion d’OPCVM»); ou 
+j) un établissement de crédit f our nissant des ser vices de gestion de por tef euille; 
+2) «entrepr ise d’assurance»: une entrepr ise d’assurance agréée conf or mément à l’ar ticle 18 de la directive 2009/138/CE; 
+3) «produit d’inv estissement f ondé sur l’assurance»: 
+a) un produit d’inv estissement f ondé sur l’assurance au sens de l’ar ticle 4, point 2), du règ lement (UE) n
+o 
+1286/2014 
+du P arlement européen et du Conseil (
+19
+); ou 
+b) un produit d’assurance qui est proposé à un inv estisseur profes sionnel et qui compo r te une durée de vie ou une 
+valeur de rac hat qui est totalem ent ou par tiellement exposée, de manière direct e ou indirect e, aux f luctuations du 
+marc hé; 
+4) «gest ionnaire de FIA»: un ge stionnaire de f onds d’inve stissement alternatif (FIA) au sens de l’ar ticle 4, paragraphe 1, 
+point b), de la directive 2011/61/UE; 
+5) «entrepr ise d’inve stissement»: une entrepr ise d’inv estissement au sens de l’ar ticle 4, paragraphe 1, point 1), de la 
+directive 2014/65/UE; 
+6) «gest ion de por tef euille»: la ge stion de por tef euille au sens de l’ar ticle 4, paragraphe 1, point 8), de la directive 
+2014/65/UE; 
+7) «institution de retrait e profess ionnelle» ou «IRP»: une institution de retrait e professionnelle agréée ou enregistrée 
+conf or mément à l’ar ticle 9 de la directive (UE) 2016/2341, à l’ex ception d’une institution pour laquelle un État 
+membre a c hoisi d’appliquer l’ar ticle 5 de ladit e directive ou d’une institution qui gère des régimes de retrait e 
+comp tant au total moins de quinze affi liés; 
+(
+19
+) Règ lement (UE) n
+o 
+1286/2014 du Parlement européen et du Conseil du 26 no vembre 2014 sur les documents d’inf or mations clés 
+relatifs aux produits d’investissement pac kagés de détail et f ondés sur l’assurance (JO L 352 du 9.12.2014, p. 1). 
+FR Jour nal officiel de l’Union européenne 9.12.2019                                                                                                                                           L 317/7   
+8) «produit de retrait e»: 
+a) un produit de retraite visé à l’ar ticle 2, paragraphe 2, point e), du règ lement (UE) n
+o 
+1286/2014; ou 
+b) un produit de retraite individuel visé à l’ar ticle 2, paragraphe 2, point g), du règ lement (UE) n
+o 
+1286/2014; 
+9) «produit paneuropéen d’épargne-retraite individuelle» ou «PEPP», un produit visé à l’ar ticle 2, point 2), du règ lement 
+(UE) 2019/1238; 
+10) «société de ge stion d’OPCVM»: 
+a) une sociét é de gestion au sens de l’ar ticle 2, paragraphe 1, point b), de la directive 2009/65/CE; ou 
+b) une sociét é d’inv estissement agréée conf or mément à la directive 2009/65/CE n’a yant pas désigné une sociét é de 
+g estion agréée conf or mément à ladite directive pour sa ges tion; 
+11) «conseiller fi nancier»: 
+a) un interm édiaire d’assurance qui f our nit des conseils en assurance relatifs à des produits d’inve stissement f ondés sur 
+l’assurance; 
+b) une entrepr ise d’assurance qui f our nit des conseils en assurance relatifs à des produits d’investissement f ondés sur 
+l’assurance; 
+c) un établissement de crédit qui f our nit des conseils en inv estissement ; 
+d) une entrepr ise d’inv estissement qui f our nit des conseils en inv estissement ; 
+e) un g estionnaire de FIA qui f our nit des conseils en inv estissement conf or mément à l’ar ticle 6, paragraphe 4, point 
+b) i), de la directive 2011/61/UE; ou 
+f) une sociét é de gestion d’OPCVM qui f our nit des conseils en inve stissement conf or mément à l’ar ticle 6, 
+paragraphe 3, point b) i), de la directive 2009/65/CE; 
+12) «produit financier»: 
+a) un por tef euille géré conf or mément au point 6) du présent ar ticle; 
+b) un f onds d’investissement alte r natif (FIA); 
+c) un produit d’investissement f ondé sur l’assurance; 
+d) un produit de retraite; 
+e) un régime de retraite; 
+f) un OPCVM; ou 
+g) un PEPP; 
+13) «f onds d’investissement altern atif» ou «FIA»: un FIA au sens de l’ar ticle 4, paragraphe 1, point a), de la 
+directive 2011/61/UE; 
+14) «régime de retrait e»: un régime de retrait e au sens de l’ar ticle 6, point 2), de la directive (UE) 2016/2341; 
+15) «organ isme de placement collectif en valeurs mobilières» ou «OPCVM»: un organisme agréé conf or mément à l’ar ticle 5 
+de la directive 2009/65/CE; 
+16) «conseil en inv estissement»: un conseil en inv estissement au sens de l’ar ticle 4, paragraphe 1, point 4), de la 
+directive 2014/65/UE; 
+17) «in vestissement durable»: un investissement dans une activité économique qui contr ibue à un objectif 
+en vironnemental, mesuré par exem ple au mo yen d’indicateur s clés en matière d’utilisation effi cace des ressources 
+concer nant l’utilisation d’énergie, d’énergies renouvelables, de matières premières, d’eau et de terr es, en matière de 
+production de déch ets et d’émissions de gaz à effe t de ser re ou en matière d’eff ets sur la biodiversité et l’économie 
+circulaire, ou un inve stissement dans une activité économique qui contr ibue à un objectif social, en par ticulier un 
+inv estissement qui contr ibue à la lutte contre les inég alité s ou qui f av or ise la cohésion sociale, l’int égration sociale et 
+les relations de tra vail, ou un inv estissement dans le capital humain ou des communaut és économiquement ou 
+socialement défa vori sées, pour autant que ces inv estissements ne causent de préjudice im por tant à aucun de ces 
+objectifs et que les sociétés dans lesquels les inv estissements sont réalisés appliquent des pratiques de bonne 
+gouver nance, en par ticulier en ce qui concer ne des str uctures de g estion saines, les relations avec le personnel, la 
+rémunération du personnel compét ent et le respect des oblig ations fi scales; 
+18) «in vestisseur profess ionnel»: un client qui rem plit les cr itères prévus à l’annexe II de la directive 2014/65/UE; 
+19) «in vestisseur de détail»: un inve stisseur qui n’est pas un inv estisseur profe ssionnel; 
+20) «int er médiaire d’assurance»: un interm édiaire d’assurance au sens de l’ar ticle 2, paragraphe 1, point 3), de la directive 
+(UE) 2016/97; 
+FR Jour nal officiel de l’Union européenne L 317/8                                                                                                                                           9.12.2019   
+21) «conseil en assurance»: un conseil au sens de l’ar ticle 2, paragraphe 1, point 15), de la directive (UE) 2016/97; 
+22) «r isque en matière de durabilit é»: un événement ou une situation dans le domaine en vironnemental, social ou de la 
+gouver nance qui, s ’il sur vient, pour rait av oir une incidence négat ive impor tante, réelle ou poten tielle, sur la valeur de 
+l’in vestissement ; 
+23) «f onds européen d’inv estissement à long term e» ou «EL TIF»: un f onds agréé conf or mément à l’ar ticle 6 du règ lement 
+(UE) 2015/760; 
+24) «fact eurs de durabilit é»: des questions envi ronnementales, sociales et de personnel, le respect des droits de l’homme et 
+la lutte contre la cor r uption et les acte s de cor r uption. 
+Ar ticle 3 
+T ransparence des politiques relativ es aux r isques en matière de durabilité 
+1. Les acteurs des marc hés fi nanciers publient sur leur sit e intern et des inf or mations concer nant leurs politiques relatives 
+à l’int égration des r isques en matière de durabilit é dans leur processus de pr ise de décision en matière d’inv estissement. 
+2. Les conseillers fi nanciers publient sur leur sit e intern et des inf or mations concer nant leurs politiques relatives à 
+l’inté gration des r isques en matière de durabilit é dans leurs conseils en investissement ou leurs conseils en assurance. 
+Ar ticle 4 
+T ransparence des incidences négativ es en matière de durabilité au niv eau des entités 
+1. Les acte urs des marchés financiers publient et tiennent à jour sur leur sit e internet : 
+a) lorsqu’ils prennent en comp te les pr incipales incidences négatives des décisions d’inv estissement sur les fa cteurs de 
+durabilit é, une déclaration sur les politiques de dilig ence raisonnable en ce qui concer ne ces incidences, comp te ten u de 
+leur taille, de la nature et de l’étendue de leurs activités ainsi que des types de produits fi nanciers qu’ils mettent à 
+disposition; ou 
+b) lorsqu’ils ne prennent pas en comp te les incidences négatives des décisions d’inve stissement sur les f acteurs de durabilité, 
+des inf or mations claires sur les raisons pour lesquelles ils ne le f ont pas, y compr is, le cas échéant, des inf or mations 
+indiquant si et quand ils ont l’int ention de prendre en comp te ces incidences néga tives. 
+2. Les acteur s des marc hés financiers incluent, dans les inf or mations f our nies conf or mément au paragraphe 1, point a), 
+au moins: 
+a) des inf or mations sur leurs politiques relatives au recensement et à la hiérarchisation des pr incipales incidences négativ es 
+en matière de durabilit é et les indicateur s y aff érents; 
+b) une descr iption des pr incipales incidences négat ives en matière de durabilit é et de tout es mesures pr ises à cet ég ard ou, 
+le cas échéant, prévues; 
+c) un bref résumé des politiques d’engag ement, conf or mément à l’ar ticle 3 octies de la directive 2007/36/CE, le cas 
+échéant; 
+d) la mention de leur respect des codes relatifs à un compo r tement responsable des entrepr ises et des nor mes intern atio­
+nalement reconnues en matière de diligence raisonnable et de communication d’inf or mations et, le cas éch éant, de leur 
+degré d’alignement sur les objectifs de l’accord de P ar is. 
+3. P ar dérog ation au paragraphe 1, à par tir du 30 juin 2021, les acteur s des marchés financie rs dépassant, à la dat e de 
+clôture de leur bilan, le cr itère du nombre mo ye n de cinq cents salar iés sur l’exercice publient et tiennent à jour sur leur sit e 
+internet une déclaration sur leurs politiques de diligence raisonnable en ce qui concer ne les pr incipales incidences négativ es 
+des décisions d’inv estissement sur les f acteurs de durabilit é. Ladit e déclaration compr end au moins les inf or mations visées 
+au paragraphe 2. 
+4. P ar dérogation au paragraphe 1 du présent ar ticle, à par tir du 30 juin 2021, les acteur s des marchés financiers qui 
+sont des entrepr ises mères d’un grand groupe tel qu’il est visé à l’ar ticle 3, paragraphe 7, de la directive 2013/34/UE 
+dépassant, à la date de clôture du bilan du groupe, sur une base consolidée, le cr itère du nombre mo y en de cinq cents 
+salar iés sur l’exercice, publient et tiennent à jour sur leur sit e internet une déclaration sur leurs politiques de dilig ence 
+raisonnable en ce qui concer ne les pr incipales incidences négativ es des décisions d’investissement sur les f acteurs de 
+durabilit é. Ladite déclaration compr end au moins les inf or mations visées au paragraphe 2. 
+FR Jour nal officiel de l’Union européenne 9.12.2019                                                                                                                                           L 317/9   
+5. Les conseillers fi nanciers publient et tiennent à jour sur leur sit e intern et: 
+a) des inf or mations indiquant si, comp te ten u de leur taille, de la nature et de l’étendu e de leurs activités ainsi que des types 
+de produits financiers sur lesquels ils f our nissent des conseils, ils prennent en considération, dans leurs conseils en 
+inve stissement ou leurs conseils en assurance, les pr incipales incidences néga tives sur les f acteurs de durabilit é; ou 
+b) des inf or mations indiquant pourquoi ils ne prennent pas en comp te les incidences négatives des décisions 
+d’inve stissement sur les fa cteurs de durabilit é dans leurs conseils en inve stissement ou leurs conseils en assurance, y 
+compris , le cas éché ant, des inf or mations indiquant si et quand ils ont l’int ention de prendre en comp te ces incidences 
+négatives. 
+6. Au plus tard le 30 décembre 2020, les autori tés européennes de sur veillance élaborent, par l’int er médiaire du comit é 
+mixt e, des projets de nor mes te chniques de rég lementation conf or mément aux ar ticles 10 à 14 des règ lements (UE) 
+n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et (UE) n
+o 
+1095/2010 concer nant le conte nu, les méthodes et la présentation pour les 
+inf or mations visées aux paragraphes 1 à 5 du présent ar ticle, pour ce qui est des indicateurs de durabilité concer nant les 
+incidences nég atives en matière de climat et d’autres incidences négatives en matière d’environnement. 
+Le cas éch éant, les autor it és européennes de sur veillance sollicit ent des contr ibutions de l’ Agen ce européenne pour 
+l’env ironnement et du Centre commun de recherc he de la Commission européenne. 
+Le pouvoir de compl éter le présent règ lement en adoptant les nor mes tec hniques de rég lementation visées au premier alinéa 
+du présent paragraphe est délégué à la Commission conf or mément aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, 
+(UE) n
+o 
+1094/2010 et (UE) n
+o 
+1095/2010. 
+7. Au plus tard le 30 décembre 2021, les autor it és de sur veillance élaborent, par l’inter médiaire du comité mixt e, des 
+projets de nor mes tec hniques de rég lementation conf or mément aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, 
+(UE) n
+o 
+1094/2010 et (UE) n
+o 
+1095/2010 concer nant le cont enu, les méthodes et la présentation pour les inf or mations 
+visées aux paragraphes 1 à 5 du présent ar ticle, pour ce qui est des indicateurs de durabilit é concer nant les incidences 
+négativ es dans le domaine des questions sociales et de personnel, du respect des droits de l’homme et de la lutte contre la 
+cor r uption et les acte s de cor r uption. 
+Le pouvoir de compl éter le présent règ lement en adoptant les nor mes tec hniques de rég lementation visées au premier alinéa 
+du présent paragraphe est délégué à la Commission conf or mément aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, 
+(UE) n
+o 
+1094/2010 et (UE) n
+o 
+1095/2010. 
+Ar ticle 5 
+T ransparence des politiques de rémunération en ce qui concer ne l’intég ration des r isques en matière de durabilité 
+1. Les acteurs des marchés fi nanciers et les conseillers financiers incluent dans leurs politiques de rémunération des 
+inf or mations sur la manière dont ces politiques sont adap tées à l’inté gration des r isques en matière de durabilité et publient 
+ces inf or mations sur leur site internet. 
+2. Les inf or mations visées au paragraphe 1 sont incluses dans les politiques de rémunération que les acteur s des march és 
+fi nanciers et les conseillers financiers sont ten us d’établir et de tenir à jour conf or mément à la législation sect or ielle, en 
+par ticulier les directives 2009/65/CE, 2009/138/CE, 2011/61/UE, 2013/36/UE, 2014/65/UE, (UE) 2016/97 et (UE) 
+2016/2341. 
+Ar ticle 6 
+T ransparence de l’intég ration des r isques en matière de durabilité 
+1. Dans les inf or mations précontractuelles publiées, les acteurs des march és financiers décr ivent: 
+a) la manière dont les r isques en matière de durabilit é sont intégrés dans leurs décisions d’inv estissement ; et 
+b) les résultats de l’évaluation des incidences probables des r isques en matière de durabilité sur le rendement des produits 
+fi nanciers qu’ils mett ent à disposition. 
+Lorsque les acte urs des marc hés fi nanciers estiment que les r isques en matière de durabilit é ne sont pas per tinents, les 
+descr iptions visées au premier alinéa comprennent une explication claire et concise des raisons de cette estimation. 
+2. Dans les inf or mations précontractuelles publiées, les conseillers fi nanciers décr ivent : 
+a) la manière dont les r isques en matière de durabilité sont intégré s dans leurs conseils en inve stissement ou en assurance; 
+et 
+b) le résultat de l’évaluation des incidences probables des r isques en matière de durabilit é sur le rendement des produits 
+fi nanciers sur lesquels ils f our nissent des conseils. 
+Lorsque les conseillers fi nanciers estiment que les r isques en matière de durabilit é ne sont pas per tinents, les descr iptions 
+visées au premier alinéa compre nnent une explication claire et concise des raisons de cette estimation. 
+FR Jour nal officiel de l’Union européenne L 317/10                                                                                                                                         9.12.2019   
+3. Les inf or mations visées aux paragraphes 1 et 2 du présent ar ticle sont publiées comme suit: 
+a) pour les gestionnaires de FIA, dans les inf or mations à communiquer aux inv estisseurs visées à l’ar ticle 23, paragraphe 1, 
+de la directive 2011/61/UE; 
+b) pour les entrepr ises d’assurance, dans les inf or mations à f our nir visées à l’ar ticle 185, paragraphe 2, de la 
+directive 2009/138/CE ou, le cas échéant, conf or mément à l’ar ticle 29, paragraphe 1, de la directive (UE) 2016/97; 
+c) pour les IRP , dans les inf or mations à f our nir visées à l’ar ticle 41 de la directive (UE) 2016/2341; 
+d) pour les ges tionnaires de f onds de capital-r isque éligibles, dans les inf or mations à f our nir visées à l’ar ticle 13, 
+paragraphe 1, du règ lement (UE) n
+o 
+345/2013; 
+e) pour les ges tionnaires de f onds d’entrepreneur iat social éligibles, dans les inf or mations à f our nir visées à l’ar ticle 14, 
+paragraphe 1, du règ lement (UE) n
+o 
+346/2013; 
+f) pour les initiat eurs de produits de retrait e, par écr it et en tem ps utile av ant qu’un inve stisseur de détail ne soit lié par un 
+contrat relatif à un produit de retrait e; 
+g) pour les sociét és de ges tion d’OPCVM, dans le prospectus visé à l’ar ticle 69 de la directive 2009/65/CE; 
+h) pour les entrepr ises d’investissement qui f our nissent des ser vices de gestion de por tef euille ou des conseils en 
+inv estissement, conf or mément à l’ar ticle 24, paragraphe 4, de la directive 2014/65/UE; 
+i) pour les établissements de crédit qui f our nissent des ser vices de g estion de por tef euille ou des conseils en inv estissement, 
+conf or mément à l’ar ticle 24, paragraphe 4, de la directive 2014/65/UE; 
+j) pour les interm édiaires d’assurance et les entrepr ises d’assurance qui f our nissent des conseils en assurance relatifs à des 
+produits d’investissement f ondés sur l’assurance et pour les interm édiaires d’assurance qui f our nissent des conseils en 
+assurance relatifs à des produits de retrait e exposés aux f luctuations du marché, conf or mément à l’ar ticle 29, 
+paragraphe 1, de la directive (UE) 2016/97; 
+k) pour les g estionnaires de FIA g érant des EL TIF , dans le prospectus visé à l’ar ticle 23 du règ lement (UE) 2015/760; 
+l) pour les f our nisseurs de PEPP , dans le document d’inf or mations clés sur le PEPP visé à l’ar ticle 26 du règ lement (UE) 
+2019/1238. 
+Ar ticle 7 
+T ransparence des incidences négativ es en matière de durabilité au niv eau des produits f inanciers 
+1. Au plus tard le 30 décembre 2022, pour c haque produit fi nancier , lorsqu’un acteur des march és fi nanciers applique 
+l’ar ticle 4, paragraphe 1, point a), ou l’ar ticle 4, paragraphe 3 ou 4, les inf or mations à publier visées à l’ar ticle 6, 
+paragraphe 3, compre nnent ce qui suit: 
+a) une explication claire et motivée indiquant si un produit financier prend en comp te les pr incipales incidences négativ es 
+sur les f acteur s de durabilit é et, dans l’affir mative, la manière dont il le fa it ; 
+b) une déclaration indiquant que les inf or mations relatives aux pr incipales incidences négativ es sur les fact eurs de 
+durabilit é sont disponibles dans les inf or mations à publier en ver tu de l’ar ticle 11, paragraphe 2. 
+Lorsque les inf or mations visées à l’ar ticle 11, paragraphe 2, compr ennent une quantif ication des pr incipales incidences 
+négativ es sur les fact eurs de durabilit é, ces inf or mations peuvent se f onder sur les dispositions des nor mes tec hniques de 
+rég lementation adopt ées en ver tu de l’ar ticle 4, paragraphes 6 et 7. 
+2. Lorsqu’un acte ur des marchés f inanciers applique l’ar ticle 4, paragraphe 1, point b), les inf or mations à publier visées à 
+l’ar ticle 6, paragraphe 3, compr ennent, pour c haque produit fi nancier , une déclaration indiquant que l’act eur des marc hés 
+fi nanciers ne prend pas en comp te les incidences négativ es des décisions d’inv estissement sur les fa cteurs de durabilit é ainsi 
+qu’une explication des raisons pour lesquelles il ne le f ait pas. 
+Ar ticle 8 
+T ransparence de la promotion des caractér ist iques environnementales ou sociales dans les inf or mations 
+précontractuelles publiées 
+1. Lorsqu’un produit fi nancier promeut, entre autres caract ér istiques, des caracté r istiques environnementales ou 
+sociales, ou une combinaison de ces caracté r istiques, pour autant que les sociét és dans lesquelles les inv estissements sont 
+réalisés appliquent des pratiques de bonne gouver nance, les inf or mations à publier en ver tu de l’ar ticle 6, paragraphes 1 
+et 3, compre nnent : 
+a) des inf or mations sur la manière dont ces caract ér istiques sont respectées; 
+b) si un indice a été désigné comme indice de référen ce, des inf or mations indiquant si et de quelle manière cet indice est 
+adapt é à ces caracté r istiques. 
+FR Jour nal officiel de l’Union européenne 9.12.2019                                                                                                                                         L 317/11   
+2. Les acteur s des marc hés financiers incluent dans les inf or mations à publier en ver tu de l’ar ticle 6, paragraphes 1 et 3, 
+une indication de l’endroit où trouver la méthodologie utilisée pour le calcul de l’indice visé au paragraphe 1 du présent 
+ar ticle. 
+3. Les autorités européennes de sur veillance élaborent, par l’inter médiaire du comité mixte, des projets de nor mes 
+tec hniques de rég lementation afin de détailler la présentation et le contenu des inf or mations à publier en ver tu du présent 
+ar ticle. 
+Lorsqu’elles élaborent les projets de nor mes tec hniques de rég lementation visés au premier alinéa, les autorités européennes 
+de sur veillance tiennent comp te des différents types de produits financiers, de leurs caractér istiques ainsi que de leurs 
+différ ences, et de l’objectif consistant à publier des inf or mations exact es, lo yales, claires, non trom peuses, simples et 
+concises. 
+Les autorités européennes de sur veillance soumett ent les projets de nor mes te chniques de rég lementation visés au premier 
+alinéa à la Commission au plus tard le 30 décembre 2020. 
+Le pouvoir de compl éter le présent règ lement en adoptant les nor mes tec hniques de rég lementation visées au premier alinéa 
+est délégué à la Commission conf or mément aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et 
+(UE) n
+o 
+1095/2010. 
+Ar ticle 9 
+T ransparence des inv estissements durables dans les informa tions précontractuelles publiées 
+1. Lorsqu’un produit financier a pour objectif l’investissement durable et qu’un indice a été désigné comme indice de 
+référen ce, les inf or mations à publier en ver tu de l’ar ticle 6, paragraphes 1 et 3, sont accompag nées: 
+a) d’inf or mations sur la manière dont l’indice désigné est aligné sur cet objectif; 
+b) d’une explication indiquant pourquoi et comment l’indice désigné aligné sur cet objectif diffère d’un indice de marché 
+larg e. 
+2. Lorsqu’un produit financier a pour objectif l’in vestissement durable et qu’aucun indice n’a été désigné comme indice 
+de référence, les inf or mations à publier en ver tu de l’ar ticle 6, paragraphes 1 et 3, comprenn ent une explication de la 
+manière dont cet objectif doit être atteint . 
+3. Lorsqu’un produit financier a pour objectif une réduction des émissions de carbone, les inf or mations à publier 
+conf or mément à l’ar ticle 6, paragraphes 1 et 3, compr ennent l’objectif de faible exposition aux émissions de carbone en 
+vue de la réalisation des objectifs de limitation du réch auffement planétaire à long term e fi x és par l’accord de P ar is. 
+P ar dérogation au paragraphe 2 du présent ar ticle, lorsqu’aucun indice de référence «transition climatique» de l’Union ou 
+indice de référence «accord de Par is» de l’Un ion conf or mément au règ lement (UE) 2016/1011 du P arlement européen et du 
+Conseil (
+20
+) n’est disponible, les inf or mations visées à l’ar ticle 6 compre nnent une explication détaillée de la manière dont la 
+poursuite des eff or ts déplo yé s pour atte indre l’objectif de réduction des émissions de carbone est assurée en vue de la 
+réalisation des objectifs de limitation du réc hauffement planétaire à long term e fixés par l’accord de Par is. 
+4. Les acteurs des marc hés fi nanciers incluent dans les inf or mations à publier conf or mément à l’ar ticle 6, paragraphes 1 
+et 3, une indication de l’endroit où trouver la méthodologie utilisée pour le calcul des indices visés au paragraphe 1 du 
+présent ar ticle et des indices de réfé rence visés au paragraphe 3, deuxième alinéa, du présent ar ticle. 
+5. Les autorités européennes de sur veillance élaborent, par l’inter médiaire du comité mixte, des projets de nor mes 
+tec hniques de rég lementation afin de détailler la présentation et le contenu des inf or mations à publier en ver tu du présent 
+ar ticle. 
+Lorsqu’elles élaborent les projets de nor mes tec hniques de rég lementation visés au premier alinéa du présent paragraphe, les 
+autori tés européennes de sur veillance tiennent comp te des diffé rents types de produits financie rs, de leurs objectifs visés 
+aux paragraphes 1, 2 et 3, ainsi que de leurs diffé rences, et de l’objectif consistant à publier des inf or mations exact es, 
+lo yales, claires, non trom peuses, sim ples et concises. 
+(
+20
+) Règ lement (UE) 2016/1011 du Parlement européen et du Conseil du 8 juin 2016 concer nant les indices utilisés comme indices de 
+référence dans le cadre d’instr uments et de contrats f inanciers ou pour mesurer la perf or mance de f onds d’investissement et modifian t 
+les directives 2008/48/CE et 2014/17/UE et le règ lement (UE) n
+o 
+596/2014 (JO L 171 du 29.6.2016, p. 1). 
+FR Jour nal officiel de l’Union européenne L 317/12                                                                                                                                         9.12.2019   
+Les autorités européennes de sur veillance soumett ent les projets de nor mes te chniques de rég lementation visés au premier 
+alinéa à la Commission au plus tard le 30 décembre 2020. 
+Le pouvoir de compl éter le présent règ lement en adoptant les nor mes tec hniques de rég lementation visées au premier alinéa 
+est délégué à la Commission conf or mément aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et 
+(UE) n
+o 
+1095/2010. 
+Ar ticle 10 
+T ransparence de la promotion des caractér is tiques environnementales ou sociales et des inv est issements durables 
+sur les sites inter net 
+1. Les acteurs des marchés fi nanciers publient et tiennent à jour sur leur sit e internet les inf or mations suivantes pour 
+c haque produit fi nancier visé à l’ar ticle 8, paragraphe 1, et à l’ar ticle 9, paragraphes 1, 2 et 3: 
+a) une descr iption des caractér istiques envi ronnementales ou sociales ou de l’objectif d’inve stissement durable; 
+b) des inf or mations sur les méthodes utilisées pour évaluer , mesurer et sur veiller les caractér istiques en vironnementales ou 
+sociales ou l’incidence des investissements durables sélectionnés pour le produit financier , y compris ses sources des 
+données, les cr itères d’évaluation des actifs sous-jacents et les indicateurs per tinents en matière de durabilit é utilisés 
+pour mesurer les caracté r istiques en vironnementales ou sociales ou l’incidence g lobale du produit financie r en matière 
+de durabilit é; 
+c) les inf or mations visées aux ar ticles 8 et 9; 
+d) les inf or mations visées à l’ar ticle 11. 
+Les inf or mations à publier en ver tu du premier alinéa sont claires, succincte s et compréh ensibles pour les inv estisseurs. Elles 
+sont publiées de f açon exacte, lo yale, claire, non trom peuse, sim ple et concise et sur des pages visibles et facilement 
+accessibles du site intern et. 
+2. Les autorités européennes de sur veillance élaborent, par l’inter médiaire du comité mixte, des projets de nor mes 
+tec hniques de rég lementation afin de détailler le conte nu des inf or mations visées au paragraphe 1, premier alinéa, points a) 
+et b), et les exigenc es de présentation visées au paragraphe 1, deuxième alinéa. 
+Lorsqu’elles élaborent les projets de nor mes tec hniques de rég lementation visés au premier alinéa du présent paragraphe, les 
+autori tés européennes de sur veillance tiennent comp te des diffé rents types de produits fi nanciers, de leurs caractér istiques et 
+de leurs objectifs visés au paragraphe 1 ainsi que de leurs différ ences. Les autor it és européennes de sur veillance mettent à 
+jour les nor mes tec hniques de rég lementation à la lumière des év olutions rég lementaires et tec hnologiques. 
+Les autorités européennes de sur veillance soumett ent les projets de nor mes te chniques de rég lementation visés au premier 
+alinéa à la Commission au plus tard le 30 décembre 2020. 
+Le pouvoir de compl éter le présent règ lement en adoptant les nor mes tec hniques de rég lementation visées au premier alinéa 
+est délégué à la Commission conf or mément aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et 
+(UE) n
+o 
+1095/2010. 
+Ar ticle 11 
+T ransparence de la promotion des caractér is tiques environnementales ou sociales et des inv est issements durables 
+dans les rappor ts pér iodiques 
+1. Lorsque les acteurs des marc hés financie rs mettent à disposition un produit financier visé à l’ar ticle 8, paragraphe 1, 
+ou à l’ar ticle 9, paragraphe 1, 2 ou 3, ils décr ivent notamment dans les rappor ts pér iodiques: 
+a) pour un produit fi nancier visé à l’ar ticle 8, paragraphe 1, la mesure dans laquelle les caracté r istiques en vironnementales 
+ou sociales sont respectées; 
+b) pour un produit f inancier visé à l’ar ticle 9, paragraphe 1, 2 ou 3: 
+i) l’incidence g lobale du produit financier en matière de durabilit é, au mo yen d’indicate urs de durabilit é per tinents; ou 
+ii) lorsqu’un indice a été désigné comme indice de référen ce, une compar aison entre l’incidence g lobale du produit 
+fi nancier en matière de durabilit é et les incidences de l’indice désigné et d’un indice de march é large, au mo y en 
+d’indicateurs de durabilité. 
+FR Jour nal officiel de l’Union européenne 9.12.2019                                                                                                                                         L 317/13   
+2. Les inf or mations visées au paragraphe 1 du présent ar ticle sont publiées comme suit: 
+a) pour les g estionnaires de FIA, dans le rappor t annuel visé à l’ar ticle 22 de la directive 2011/61/UE; 
+b) pour les entrepr ises d’assurance, c haque année et par écr it, conf or mément à l’ar ticle 185, paragraphe 6, de la 
+directive 2009/138/CE; 
+c) pour les IRP , dans le rappor t annuel visé à l’ar ticle 29 de la directive (UE) 2016/2341; 
+d) pour les gestionnaires de f onds de capital-r isque éligibles, dans le rappor t annuel visé à l’ar ticle 12 du règ lement (UE) 
+n
+o 
+345/2013; 
+e) pour les ges tionnaires de f onds d’entrepreneur iat social éligibles, dans le rappor t annuel visé à l’ar ticle 13 du règ lement 
+(UE) n
+o 
+346/2013; 
+f) pour les initiate urs de produits de retrait e, par écr it dans le rappor t annuel ou dans un rappor t prévu par le droit 
+national; 
+g) pour les sociét és de ges tion d’OPCVM, dans le rappor t annuel visé à l’ar ticle 69 de la directive 2009/65/CE; 
+h) pour les entrepr ises d’inve stissement qui f our nissent des ser vices de gestion de por tef euille, dans un rappor t pér iodique 
+visé à l’ar ticle 25, paragraphe 6, de la directive 2014/65/UE; 
+i) pour les établissements de crédit qui f our nissent des ser vices de ge stion de por te feuille, dans un rappor t pér iodique visé 
+à l’ar ticle 25, paragraphe 6, de la directive 2014/65/UE; 
+j) pour les f our nisseurs de PEPP , dans le relevé des droits PEPP visé à l’ar ticle 36 du règ lement (UE) 2019/1238. 
+3. Aux fins du paragraphe 1 du présent ar ticle, les acte urs des marc hés financiers peuvent utiliser les inf or mations 
+conte nues dans les rappor ts de gestion conf or mément à l’ar ticle 19 de la directive 2013/34/UE ou celles contenues dans 
+les déclarations non fi nancières conf or mément à l’ar ticle 19 bis de ladit e directive, le cas échéa nt. 
+4. Les autorités européennes de sur veillance élaborent, par l’inter médiaire du comité mixte, des projets de nor mes 
+tec hniques de rég lementation afin de détailler le cont enu et la présentation des inf or mations visées au paragraphe 1. 
+Lorsqu’elles élaborent les projets de nor mes tec hniques de rég lementation visés au premier alinéa, les autorités européennes 
+de sur veillance tiennent comp te des différ ents types de produits fi nanciers, de leurs caractér istiques et de leurs objectifs ainsi 
+que de leurs différ ences. Les autorités européennes de sur veillance mettent à jour les nor mes tec hniques de rég lementation à 
+la lumière des év olutions rég lementaires et tec hnologiques. 
+Les autorités européennes de sur veillance soumett ent les projets de nor mes te chniques de rég lementation visés au premier 
+alinéa à la Commission au plus tard le 30 décembre 2020. 
+Le pouvoir de compl éter le présent règ lement en adoptant les nor mes tec hniques de rég lementation visées au premier alinéa 
+est délégué à la Commission conf or mément aux ar ticles 10 à 14 des règ lements (UE) n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et 
+(UE) n
+o 
+1095/2010. 
+Ar ticle 12 
+Réexamen des informa tions publiées 
+1. Les acteurs des marc hés fi nanciers veillent à ce que tout es les inf or mations publiées conf or mément à l’ar ticle 3, à 
+l’ar ticle 5 ou à l’ar ticle 10 soient tenues à jour . Lorsqu’un acteur des marchés fi nanciers modifi e ces inf or mations, il publie 
+une explication claire de cette modifi cation sur le même sit e intern et. 
+2. Le paragraphe 1 s’applique mutatis mutandis aux conseillers fi nanciers en ce qui concer ne tout e inf or mation publiée 
+conf or mément aux ar ticles 3 et 5. 
+Ar ticle 13 
+Communications publicita ires 
+1. Sans préjudice d’une législation sectorielle plus str ict e, en par ticulier les directives 2009/65/CE, 2014/65/UE et (UE) 
+2016/97 et le règ lement (UE) n
+o 
+1286/2014, les acteur s des marc hés fi nanciers et les conseillers fi nanciers veillent à ce que 
+leurs communications publicitaires ne contredisent pas les inf or mations publiées en ver tu du présent règ lement. 
+2. Les autori tés européennes de sur veillance peuvent élaborer , par l’inte r médiaire du comit é mixte, des projets de 
+nor mes tec hniques d’exécution pour déter miner la présentation type des inf or mations concer nant la promotion des 
+caracté r istiques en vironnementales ou sociales et les inv estissements durables. 
+FR Jour nal officiel de l’Union européenne L 317/14                                                                                                                                         9.12.2019   
+Le pouv oir d’adopt er les nor mes tec hniques d’exécut ion visées au premier alinéa est conféré à la Commission 
+conf or mément à l’ar ticle 15 des règ lements (UE) n
+o 
+1093/2010, (UE) n
+o 
+1094/2010 et (UE) n
+o 
+1095/2010. 
+Ar ticle 14 
+Autor ités compétentes 
+1. Les États membres veillent à ce que les autori tés compét ent es désignées conf or mément à la législation sectori elle, en 
+par ticulier la législation sect or ielle visée à l’ar ticle 6, paragraphe 3, du présent règ lement, et conf or mément à la directive 
+2013/36/UE, contrôlent le respect par les acteur s des march és fi nanciers et les conseillers financiers des exige nces du 
+présent règ lement. Les autori té s compét ent es disposent de tous les pouvoi rs de contrôle et d’enquête qui sont nécessaires 
+pour exercer leurs f onctions au titre du présent règ lement. 
+2. Aux fins du présent règ lement, les autori tés compét entes coopèrent entre elles et se communiquent mutuellement, 
+sans retard injustifié, les inf or mations utiles à l’accompli ssement de leurs missions au titre du présent règ lement. 
+Ar ticle 15 
+T ransparence des IRP et des inter médiaires d’assurance 
+1. Les IRP publient et tiennent à jour les inf or mations visées aux ar ticles 3 à 7 et à l’ar ticle 10, paragraphe 1, premier 
+alinéa, du présent règ lement conf or mément à l’ar ticle 36, paragraphe 2, point f), de la directive (UE) 2016/2341. 
+2. Les interm édiaires d’assurance communiquent les inf or mations visées à l’ar ticle 3, à l’ar ticle 4, paragraphe 5, à 
+l’ar ticle 5, à l’ar ticle 6 et à l’ar ticle 10, paragraphe 1, premier alinéa, du présent règ lement conf or mément à l’ar ticle 23 de la 
+directive (UE) 2016/97. 
+Ar ticle 16 
+Produits de retraite couv er ts par les règlements (CE) n
+o 
+883/2004 et (CE) n
+o 
+987/2009 
+1. Les États membres peuvent décider d’appliquer le présent règ lement aux initiat eurs de produits de retrait e gé rant les 
+régimes nationaux de sécur it é sociale couver ts par les règ lements (CE) n
+o 
+883/2004 et (CE) n
+o 
+987/2009. Dans ces cas, les 
+initiate urs de produits de retrait e visés à l’ar ticle 2, point 1) d), du présent règ lement compr ennent les initiateurs de 
+produits de retrait e gé rant des régimes nationaux de sécur ité sociale et de produits de retrait e visés à l’ar ticle 2, point 8), du 
+présent règ lement. Dans ce cas, la définit ion des produits de retrait e fi gurant à l’ar ticle 2, point 8), du présent règ lement est 
+réput ée inclure les produits de retrait e visés dans la première phrase. 
+2. Les États membres notifient à la Commission et aux autori té s européennes de sur veillance tout e décision adop tée en 
+ver tu du paragraphe 1. 
+Ar ticle 17 
+Dérogations 
+1. Le présent règ lement ne s ’applique ni aux intermédiaires d’assurance f our nissant des conseils en assurance relatifs à 
+des produits d’investissement f ondés sur l’assurance ni aux entrepr ises d’inv estissement f our nissant des conseils en 
+inve stissement qui sont des entrepr ises, indépendamment de leur f or me jur idique, y compris les personnes phy siques ou 
+les travailleurs indépendants, à condition qu’ils emploi ent moins de trois personnes. 
+2. Les États membres peuvent décider d’appliquer le présent règ lement aux interm édiaires d’assurance f our nissant des 
+conseils en assurance relatifs à des produits d’inv estissement f ondés sur l’assurance ou aux entrepr ises d’inv estissement 
+f our nissant des conseils en investissement, tels qu’ils sont visés au paragraphe 1. 
+3. Les États membres notifient à la Commission et aux autori té s européennes de sur veillance tout e décision adop tée en 
+ver tu du paragraphe 2. 
+FR Jour nal officiel de l’Union européenne 9.12.2019                                                                                                                                         L 317/15   
+Ar ticle 18 
+R appor t 
+Les autorités européennes de sur veillance prennent la mesure de la publication volontaire d’inf or mations conf or mément à 
+l’ar ticle 4, paragraphe 1, point a), et à l’ar ticle 7, paragraphe 1, point a). A u plus tard le 10 sep tembre 2022, et c haque 
+année par la suit e, les autorités européennes de sur veillance présent ent à la Commission un rappor t sur les bonnes 
+pratiques et f or mulent des recommandations en vue de nor mes relatives à la communication volontaire d’inf or mations. Ce 
+rappor t annuel examine les imp lications des pratiques de diligence raisonnable sur la publication d’inf or mations au titre du 
+présent règ lement et f or mule des or ientations à cet égard. Ce rappor t est rendu public et transmis au Parleme nt européen et 
+au Conseil. 
+Ar ticle 19 
+Évaluation 
+1. Au plus tard le 30 décembre 2022, la Commission évalue l’application du présent règ lement et, en par ticulier , évalue: 
+a) si la référence au nombre mo ye n de salar iés qui est f aite à l’ar ticle 4, paragraphes 3 et 4, doit être maintenue, rem placée 
+ou accompag née d’autres cr itères, et examine les av antages et la propor tionnalité de la c harge administrative induite; 
+b) si le f onctionnement du présent règ lement est entravé par le manque de données ou leur qualité sous-opti male, y 
+compris en ce qui concer ne les indicateur s concer nant les incidences négat ives sur les f acteurs de durabilit é dans le 
+cadre de sociét és détenues . 
+2. L ’évaluation visée au paragraphe 1 est accompag née, le cas échéant, d’une proposition législative. 
+Ar ticle 20 
+Entrée en vigueur et application 
+1. Le présent règ lement entre en vigueur le vingtième jour suivant celui de sa publication au Jour nal off iciel de 
+l’Union europ éenne. 
+2. Il est applicable à par tir du 10 mars 2021. 
+3. P ar dérogat ion au paragraphe 2 du présent ar ticle, l’ar ticle 4, paragraphes 6 et 7, l’ar ticle 8, paragraphe 3, l’ar ticle 9, 
+paragraphe 5, l’ar ticle 10, paragraphe 2, l’ar ticle 11, paragraphe 4, et l’ar ticle 13, paragraphe 2, s’appliquent à par tir du 
+29 décembre 2019, et l’ar ticle 11, paragraphes 1 à 3, s’applique à par tir du 1
+er 
+janv ier 2022. 
+Le présent règ lement est oblig atoire dans tous ses éléments et directement applicable dans tout 
+État membre. 
+Fait à Strasbourg, le 27 novembre 2019. 
+P ar le P arlement eur opéen 
+Le président 
+D. M. SASSOLI 
+P ar le Conseil 
+Le président 
+T . TUPPURAINEN     
+FR Jour nal officiel de l’Union européenne L 317/16                                                                                                                                         9.12.2019   
