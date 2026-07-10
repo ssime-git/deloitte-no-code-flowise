@@ -2,9 +2,9 @@
 
 **Deux flows importés automatiquement** :
 
-| Flow | Mapping faits → sections | Norme | Modèles |
-|---|---|---|---|
-| `J7 - Rapport Norme SFDR` (v0) | LLM (norme en contexte, ~12k tokens × 3 agents) | texte complet injecté | Claude partout |
+| Flow                                   | Mapping faits → sections                                                     | Norme                           | Modèles                                                         |
+| -------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------- | ---------------------------------------------------------------- |
+| `J7 - Rapport Norme SFDR` (v0)       | LLM (norme en contexte, ~12k tokens × 3 agents)                              | texte complet injecté          | Claude partout                                                   |
 | `J7 - Rapport Norme SFDR v1 (durci)` | **table de décision déterministe** (nœud Custom Function, zéro LLM) | `sfdr-regles.json` versionné | gpt-4o-mini (élicitation, récap, vérif) + Claude (rédaction) |
 
 **Résultat du jeu d'éval** (7 cas dont 1 cas d'incohérence, `init/eval-rapport-norme.py`, mesuré le 2026-07-10 après relecture complète de la table) : v1 rappel 100 % / précision 100 % + incohérence PAI/taille détectée et signalée. v0 : varie d'un run à l'autre (89 % à 100 % de rappel selon les exécutions, incohérence jamais détectée) — illustration concrète de la reproductibilité statistique vs par construction.
@@ -48,6 +48,7 @@ flowchart LR
    - **Guidé** : « Je dois produire un rapport SFDR pour un assureur. » → l'agent pose ses questions une par une.
    - **Direct** : donner tous les faits d'un coup — exemple à copier-coller :
      > Rapport SFDR pour un gestionnaire d'actifs de 620 salariés, PAI pris en compte, produit article 8 sans indice de référence.
+     >
 3. **HITL ①** : le récapitulatif s'affiche avec deux boutons.
    - **Proceed** → la rédaction démarre.
    - **Reject** → une zone de feedback s'ouvre : écrire précisément le fait à corriger ou la section à ajouter/retirer (ex. « le produit est en réalité article 9 avec indice désigné »). L'élicitation reprend en tenant compte du feedback.
@@ -62,15 +63,15 @@ flowchart LR
 
 Les 7 cas du jeu d'éval, à copier-coller tels quels dans le chat. Les sections attendues sont celles de la table de décision relue le 2026-07-10 (`sfdr-regles.json`).
 
-| # | Message à coller | Sections attendues | Ce que le cas démontre |
-|---|---|---|---|
-| C1 | Rapport SFDR pour un gestionnaire d'actifs (acteur des marchés financiers) de 620 salariés, PAI pris en compte, produit article 8 sans indice de référence. | S-01…S-06, S-08, S-09 (8) | Cas nominal riche ; S-02 en **déclaration obligatoire** (> 500 salariés, art. 4 §3) ; pas de S-07 (réservé art. 9) |
-| C2 | Rapport SFDR pour un acteur des marchés financiers de 45 salariés, qui ne prend pas en compte les PAI, produit financier standard (ni article 8 ni article 9), donc aucun indice de référence (non applicable). | S-01…S-05 (5) | S-02 en **comply or explain** (≤ 500) ; S-05 en variante « déclaration de non-prise en compte + raisons » (art. 7 §2, règle R-06b) |
-| C3 | Rapport SFDR pour un conseiller financier de 30 salariés, PAI non pris en compte, produit standard, aucun indice de référence (non applicable). | S-01…S-04 (4) | Un **conseiller** ne déclenche aucune section produit : les art. 7 à 11 ne visent que les acteurs |
-| C4 | Rapport SFDR pour un acteur des marchés financiers de 1200 salariés, PAI pris en compte, produit article 9 avec un indice de référence désigné. | S-01…S-05, S-07, S-08, S-09 (8) | S-07 en variante **avec indice** (art. 9 §1 : alignement + écart vs indice large) |
-| C5 | Rapport SFDR pour un acteur des marchés financiers de 300 salariés, PAI pris en compte, produit article 9 sans indice de référence désigné. | S-01…S-05, S-07, S-08, S-09 (8) | S-07 en variante **sans indice** (art. 9 §2) ; S-02 en comply or explain |
-| C6 | Rapport SFDR pour un conseiller financier de 600 salariés, PAI non pris en compte, produit article 8 sans indice de référence. | S-01…S-04 (4) | Le piège : produit art. 8 **mais** conseiller → pas de sections produit ; la v0 se fait régulièrement avoir sur ce cas |
-| C7 | Rapport SFDR pour un gestionnaire d'actifs (acteur des marchés financiers) de 900 salariés qui ne prend pas en compte les PAI, produit article 8 sans indice de référence. | **aucune — incohérence signalée** | Faits contradictoires (> 500 salariés ⇒ PAI obligatoires, art. 4 §3-4) : la v1 **bloque avec un message explicite** (contrôle K-01) au lieu de rédiger ; la v0 ne détecte rien |
+| #  | Message à coller                                                                                                                                                                                                   | Sections attendues                         | Ce que le cas démontre                                                                                                                                                                   |
+| -- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| C1 | Rapport SFDR pour un gestionnaire d'actifs (acteur des marchés financiers) de 620 salariés, PAI pris en compte, produit article 8 sans indice de référence.                                                     | S-01…S-06, S-08, S-09 (8)                 | Cas nominal riche ; S-02 en**déclaration obligatoire** (> 500 salariés, art. 4 §3) ; pas de S-07 (réservé art. 9)                                                              |
+| C2 | Rapport SFDR pour un acteur des marchés financiers de 45 salariés, qui ne prend pas en compte les PAI, produit financier standard (ni article 8 ni article 9), donc aucun indice de référence (non applicable). | S-01…S-05 (5)                             | S-02 en**comply or explain** (≤ 500) ; S-05 en variante « déclaration de non-prise en compte + raisons » (art. 7 §2, règle R-06b)                                             |
+| C3 | Rapport SFDR pour un conseiller financier de 30 salariés, PAI non pris en compte, produit standard, aucun indice de référence (non applicable).                                                                  | S-01…S-04 (4)                             | Un**conseiller** ne déclenche aucune section produit : les art. 7 à 11 ne visent que les acteurs                                                                                  |
+| C4 | Rapport SFDR pour un acteur des marchés financiers de 1200 salariés, PAI pris en compte, produit article 9 avec un indice de référence désigné.                                                               | S-01…S-05, S-07, S-08, S-09 (8)           | S-07 en variante**avec indice** (art. 9 §1 : alignement + écart vs indice large)                                                                                                  |
+| C5 | Rapport SFDR pour un acteur des marchés financiers de 300 salariés, PAI pris en compte, produit article 9 sans indice de référence désigné.                                                                   | S-01…S-05, S-07, S-08, S-09 (8)           | S-07 en variante**sans indice** (art. 9 §2) ; S-02 en comply or explain                                                                                                            |
+| C6 | Rapport SFDR pour un conseiller financier de 600 salariés, PAI non pris en compte, produit article 8 sans indice de référence.                                                                                   | S-01…S-04 (4)                             | Le piège : produit art. 8**mais** conseiller → pas de sections produit ; la v0 se fait régulièrement avoir sur ce cas                                                           |
+| C7 | Rapport SFDR pour un gestionnaire d'actifs (acteur des marchés financiers) de 900 salariés qui ne prend pas en compte les PAI, produit article 8 sans indice de référence.                                      | **aucune — incohérence signalée** | Faits contradictoires (> 500 salariés ⇒ PAI obligatoires, art. 4 §3-4) : la v1**bloque avec un message explicite** (contrôle K-01) au lieu de rédiger ; la v0 ne détecte rien |
 
 ⚠️ C2 attend S-05 depuis la relecture du 2026-07-10 (règle R-06b) : sur ce cas, une v0 mal lue de la norme omettra S-05 silencieusement — c'est l'exemple type d'omission silencieuse à montrer en formation.
 
@@ -115,10 +116,10 @@ Le mode d'emploi ci-dessus vaut pour les deux flows (mêmes HITL, mêmes boutons
 
 ## Limites connues
 
-- **HITL = Proceed/Reject + feedback texte** : pas d'édition champ par champ des faits ni de cases à cocher par section (limite du nœud Flowise) ; la correction passe par le feedback écrit, qui reboucle sur l'élicitation.
-- **Rédaction en un appel** (toutes les sections d'un coup), pas une itération par section.
-- Sortie en texte structuré (Markdown), pas de mise en page Word/PDF.
-- v0 uniquement : mapping LLM → reproductibilité statistique (98 % de précision mesurée). La v1 supprime cette limite.
+- [ ] **HITL = Proceed/Reject + feedback texte** : pas d'édition champ par champ des faits ni de cases à cocher par section (limite du nœud Flowise) ; la correction passe par le feedback écrit, qui reboucle sur l'élicitation.
+- [ ] **Rédaction en un appel** (toutes les sections d'un coup), pas une itération par section.
+- [ ] Sortie en texte structuré (Markdown), pas de mise en page Word/PDF.
+- [ ] v0 uniquement : mapping LLM → reproductibilité statistique (98 % de précision mesurée). La v1 supprime cette limite.
 
 ## Rejouer le jeu d'éval
 
@@ -136,13 +137,13 @@ python3 init/eval-rapport-norme.py <API_KEY> <FLOW_ID_V0> <FLOW_ID_V1>
 
 ## Fichiers du projet
 
-| Fichier | Rôle |
-|---|---|
-| `init/flows/J7-Rapport-Norme.json` | Flow v0 (norme en contexte, mapping LLM) |
-| `init/flows/J7-Rapport-Norme-v1.json` | Flow v1 durci (moteur déterministe) |
-| `init/build-j7-rapport-norme.py` | Générateur du flow v0 |
-| `init/build-j7-rapport-norme-v1.py` | Générateur du flow v1 (embarque sfdr-regles.json dans le nœud moteur) |
-| `init/eval-rapport-norme.py` | Jeu d'évaluation (6 cas, précision/rappel v0 vs v1) |
-| `data/normes/sfdr-regles.json` | **Table de décision versionnée** : vocabulaire, règles, sections (source de vérité v1) |
-| `data/normes/sfdr-2019-2088-fr.pdf` | La norme source (EUR-Lex) |
-| `data/normes/sfdr-articles-fr.txt` | Texte des articles (utilisé par la v0) |
+| Fichier                                 | Rôle                                                                                             |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `init/flows/J7-Rapport-Norme.json`    | Flow v0 (norme en contexte, mapping LLM)                                                          |
+| `init/flows/J7-Rapport-Norme-v1.json` | Flow v1 durci (moteur déterministe)                                                              |
+| `init/build-j7-rapport-norme.py`      | Générateur du flow v0                                                                           |
+| `init/build-j7-rapport-norme-v1.py`   | Générateur du flow v1 (embarque sfdr-regles.json dans le nœud moteur)                          |
+| `init/eval-rapport-norme.py`          | Jeu d'évaluation (6 cas, précision/rappel v0 vs v1)                                             |
+| `data/normes/sfdr-regles.json`        | **Table de décision versionnée** : vocabulaire, règles, sections (source de vérité v1) |
+| `data/normes/sfdr-2019-2088-fr.pdf`   | La norme source (EUR-Lex)                                                                         |
+| `data/normes/sfdr-articles-fr.txt`    | Texte des articles (utilisé par la v0)                                                           |
