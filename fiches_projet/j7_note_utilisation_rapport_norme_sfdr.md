@@ -58,15 +58,23 @@ flowchart LR
 
 **Important** : au Reject, donnez toujours un feedback écrit — c'est lui qui pilote la correction. Un Reject vide ne dit pas quoi corriger.
 
-## Cas de test (résultat attendu)
+## Cas de test pour la démo (résultats attendus)
 
-Avec l'exemple « 620 salariés, PAI oui, art. 8, sans indice » :
+Les 7 cas du jeu d'éval, à copier-coller tels quels dans le chat. Les sections attendues sont celles de la table de décision relue le 2026-07-10 (`sfdr-regles.json`).
 
-- Sections retenues : **S-01 à S-06, S-08, S-09** — et pas S-07 (réservé aux produits art. 9).
-- S-02 doit ressortir en **déclaration PAI obligatoire** (pas d'option « explain ») : plus de 500 salariés (art. 4, par. 3).
-- Le rapport final contient 8 sections, chacune avec ses références d'articles.
+| # | Message à coller | Sections attendues | Ce que le cas démontre |
+|---|---|---|---|
+| C1 | Rapport SFDR pour un gestionnaire d'actifs (acteur des marchés financiers) de 620 salariés, PAI pris en compte, produit article 8 sans indice de référence. | S-01…S-06, S-08, S-09 (8) | Cas nominal riche ; S-02 en **déclaration obligatoire** (> 500 salariés, art. 4 §3) ; pas de S-07 (réservé art. 9) |
+| C2 | Rapport SFDR pour un acteur des marchés financiers de 45 salariés, qui ne prend pas en compte les PAI, produit financier standard (ni article 8 ni article 9), donc aucun indice de référence (non applicable). | S-01…S-05 (5) | S-02 en **comply or explain** (≤ 500) ; S-05 en variante « déclaration de non-prise en compte + raisons » (art. 7 §2, règle R-06b) |
+| C3 | Rapport SFDR pour un conseiller financier de 30 salariés, PAI non pris en compte, produit standard, aucun indice de référence (non applicable). | S-01…S-04 (4) | Un **conseiller** ne déclenche aucune section produit : les art. 7 à 11 ne visent que les acteurs |
+| C4 | Rapport SFDR pour un acteur des marchés financiers de 1200 salariés, PAI pris en compte, produit article 9 avec un indice de référence désigné. | S-01…S-05, S-07, S-08, S-09 (8) | S-07 en variante **avec indice** (art. 9 §1 : alignement + écart vs indice large) |
+| C5 | Rapport SFDR pour un acteur des marchés financiers de 300 salariés, PAI pris en compte, produit article 9 sans indice de référence désigné. | S-01…S-05, S-07, S-08, S-09 (8) | S-07 en variante **sans indice** (art. 9 §2) ; S-02 en comply or explain |
+| C6 | Rapport SFDR pour un conseiller financier de 600 salariés, PAI non pris en compte, produit article 8 sans indice de référence. | S-01…S-04 (4) | Le piège : produit art. 8 **mais** conseiller → pas de sections produit ; la v0 se fait régulièrement avoir sur ce cas |
+| C7 | Rapport SFDR pour un gestionnaire d'actifs (acteur des marchés financiers) de 900 salariés qui ne prend pas en compte les PAI, produit article 8 sans indice de référence. | **aucune — incohérence signalée** | Faits contradictoires (> 500 salariés ⇒ PAI obligatoires, art. 4 §3-4) : la v1 **bloque avec un message explicite** (contrôle K-01) au lieu de rédiger ; la v0 ne détecte rien |
 
-Pour tester le rebouclage : au HITL ②, rejeter avec par exemple « Supprime toute référence au règlement délégué 2022/1288 » et vérifier que la re-vérification mentionne le rebouclage et ne contrôle que la modification.
+⚠️ C2 attend S-05 depuis la relecture du 2026-07-10 (règle R-06b) : sur ce cas, une v0 mal lue de la norme omettra S-05 silencieusement — c'est l'exemple type d'omission silencieuse à montrer en formation.
+
+**Scénario de démo suggéré** : C1 en v1 (parcours nominal complet : élicitation → HITL ① → rédaction → vérification → HITL ②) ; au HITL ②, rejeter avec « Supprime toute référence au règlement délégué 2022/1288 » pour montrer le rebouclage borné et la re-vérification ciblée ; puis C7 pour l'échec bruyant ; enfin C6 joué sur v0 **et** v1 pour la comparaison mapping LLM vs table de décision (rejouer C6 deux fois sur v0 montre en prime la non-reproductibilité).
 
 ---
 
