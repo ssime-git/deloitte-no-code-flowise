@@ -16,15 +16,17 @@ CASES = [
     {"id": "C1", "prompt": "Rapport SFDR pour un gestionnaire d'actifs (acteur des marches financiers) de 620 salaries, PAI pris en compte, produit article 8 sans indice de reference.",
      "attendu": {"S-01", "S-02", "S-03", "S-04", "S-05", "S-06", "S-08", "S-09"}},
     {"id": "C2", "prompt": "Rapport SFDR pour un acteur des marches financiers de 45 salaries, qui ne prend pas en compte les PAI, produit financier standard (ni article 8 ni article 9), donc aucun indice de reference (non applicable).",
-     "attendu": {"S-01", "S-02", "S-03", "S-04"}},
+     "attendu": {"S-01", "S-02", "S-03", "S-04", "S-05"}},
     {"id": "C3", "prompt": "Rapport SFDR pour un conseiller financier de 30 salaries, PAI non pris en compte, produit standard, aucun indice de reference (non applicable).",
-     "attendu": {"S-01", "S-02", "S-03", "S-04"}},
+     "attendu": {"S-01", "S-02", "S-03", "S-04", "S-05"}},
     {"id": "C4", "prompt": "Rapport SFDR pour un acteur des marches financiers de 1200 salaries, PAI pris en compte, produit article 9 avec un indice de reference designe.",
      "attendu": {"S-01", "S-02", "S-03", "S-04", "S-05", "S-07", "S-08", "S-09"}},
     {"id": "C5", "prompt": "Rapport SFDR pour un acteur des marches financiers de 300 salaries, PAI pris en compte, produit article 9 sans indice de reference designe.",
      "attendu": {"S-01", "S-02", "S-03", "S-04", "S-05", "S-07", "S-08", "S-09"}},
     {"id": "C6", "prompt": "Rapport SFDR pour un conseiller financier de 600 salaries, PAI non pris en compte, produit article 8 sans indice de reference.",
-     "attendu": {"S-01", "S-02", "S-03", "S-04", "S-06", "S-08", "S-09"}},
+     "attendu": {"S-01", "S-02", "S-03", "S-04", "S-05", "S-06", "S-08", "S-09"}},
+    {"id": "C7", "prompt": "Rapport SFDR pour un gestionnaire d'actifs (acteur des marches financiers) de 900 salaries qui ne prend pas en compte les PAI, produit article 8 sans indice de reference.",
+     "attendu": "incoherence"},
 ]
 
 def predict(flow_id, question, session):
@@ -44,6 +46,13 @@ def run(flow_id, tag):
         except Exception as e:
             rows.append((c["id"], set(), c["attendu"], f"ERREUR: {e}"))
             continue
+        if c["attendu"] == "incoherence":
+            # attendu : le flow s'arrete AVANT le HITL 1 avec une question signalant l'incoherence
+            blocked = "HITL 1" not in " ".join(str(n) for n in nodes)
+            signale = bool(re.search(r"incoheren|coheren", text, re.I))
+            err = "" if blocked and signale else f"incoherence non signalee (nodes: {nodes}, text: {text[:120]!r})"
+            rows.append((c["id"], "incoherence-ok" if not err else set(), "incoherence", err))
+            continue
         if "HITL 1" not in " ".join(str(n) for n in nodes):
             rows.append((c["id"], set(), c["attendu"], f"HITL 1 non atteint (nodes: {nodes})"))
             continue
@@ -55,6 +64,9 @@ def report(tag, rows):
     print(f"\n=== {tag} ===")
     tp = fp = fn = 0
     for cid, trouve, attendu, err in rows:
+        if attendu == "incoherence":
+            print(f"{cid}: {'OK (incoherence signalee)' if not err else err}")
+            continue
         if err:
             print(f"{cid}: {err}")
             fn += len(attendu)

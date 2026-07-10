@@ -53,7 +53,7 @@ CATALOGUE = """Catalogue des sections candidates (le perimetre final depend des 
 - S-02 | Declaration PAI ou explication de non-prise en compte (comply or explain) | art. 4, par. 1 a 4 | toujours ; declaration obligatoire (pas d'explain possible) si plus de 500 salaries chez un acteur des marches financiers
 - S-03 | Politiques de remuneration et integration des risques de durabilite | art. 5 | toujours applicable
 - S-04 | Informations precontractuelles sur les risques de durabilite | art. 6 | toujours applicable pour un produit financier
-- S-05 | PAI au niveau du produit financier | art. 7 | si prise_en_compte_pai = oui
+- S-05 | PAI au niveau du produit (prise en compte, ou declaration de non-prise en compte avec raisons) | art. 7, par. 1 et 2 | toujours applicable (le contenu depend de prise_en_compte_pai)
 - S-06 | Informations precontractuelles produit promouvant des caracteristiques E/S | art. 8 | si type_produit = produit_art8
 - S-07 | Informations precontractuelles produit a objectif d'investissement durable | art. 9 | si type_produit = produit_art9 (contenu different selon indice_reference_designe)
 - S-08 | Publication sur le site internet du produit | art. 10 | si type_produit = produit_art8 ou produit_art9

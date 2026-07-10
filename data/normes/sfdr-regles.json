@@ -4,135 +4,258 @@
     "source_pdf": "data/normes/sfdr-2019-2088-fr.pdf",
     "version": "JO L 317 du 9.12.2019",
     "extrait_le": "2026-07-09",
-    "statut": "propose_llm — à relire par l'expert métier (procédure PRD §4.1 E4)"
+    "statut": "correctifs 1 (R-06b, art. 7 par. 2) et 3 (coherence PAI/taille) valides par l'expert le 2026-07-10 ; autres regles encore propose_llm (points ouverts : art. 4 par. 4 societes meres, perimetre produits des conseillers)"
   },
   "vocabulaire": [
     {
       "variable": "type_acteur",
       "type": "enum",
-      "valeurs": ["acteur_marches_financiers", "conseiller_financier"],
+      "valeurs": [
+        "acteur_marches_financiers",
+        "conseiller_financier"
+      ],
       "question_elicitation": "L'entité est-elle un acteur des marchés financiers (gestionnaire, assureur, fonds de pension…) ou un conseiller financier ? (art. 2)"
     },
     {
       "variable": "plus_de_500_salaries",
       "type": "bool",
-      "valeurs": ["oui", "non"],
+      "valeurs": [
+        "oui",
+        "non"
+      ],
       "question_elicitation": "L'entité dépasse-t-elle 500 salariés ? (art. 4, par. 3 et 4)"
     },
     {
       "variable": "prise_en_compte_pai",
       "type": "bool",
-      "valeurs": ["oui", "non"],
+      "valeurs": [
+        "oui",
+        "non"
+      ],
       "question_elicitation": "L'entité prend-elle en compte les principales incidences négatives (PAI) de ses décisions d'investissement sur les facteurs de durabilité ? (art. 4)"
     },
     {
       "variable": "type_produit",
       "type": "enum",
-      "valeurs": ["produit_art8", "produit_art9", "produit_standard"],
+      "valeurs": [
+        "produit_art8",
+        "produit_art9",
+        "produit_standard"
+      ],
       "question_elicitation": "Le produit financier promeut-il des caractéristiques environnementales/sociales (art. 8), a-t-il pour objectif l'investissement durable (art. 9), ou ni l'un ni l'autre (standard) ?"
     },
     {
       "variable": "indice_reference_designe",
       "type": "enum",
-      "valeurs": ["oui", "non", "non_applicable"],
+      "valeurs": [
+        "oui",
+        "non",
+        "non_applicable"
+      ],
       "question_elicitation": "Un indice de référence a-t-il été désigné pour le produit ? (art. 9, par. 1 et 2 — répondre non_applicable si le produit n'est pas art. 9)"
     }
   ],
   "regles": [
     {
       "rule_id": "R-01",
-      "condition": { "et": [] },
-      "sections_declenchees": ["S-01"],
+      "condition": {
+        "et": []
+      },
+      "sections_declenchees": [
+        "S-01"
+      ],
       "ref_norme": "art. 3",
       "note": "Applicable à toute entité (acteur comme conseiller).",
       "statut": "propose_llm"
     },
     {
       "rule_id": "R-02",
-      "condition": { "et": [
-        { "variable": "type_acteur", "op": "=", "valeur": "acteur_marches_financiers" },
-        { "variable": "plus_de_500_salaries", "op": "=", "valeur": "oui" }
-      ] },
-      "sections_declenchees": ["S-02"],
+      "condition": {
+        "et": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "acteur_marches_financiers"
+          },
+          {
+            "variable": "plus_de_500_salaries",
+            "op": "=",
+            "valeur": "oui"
+          }
+        ]
+      },
+      "sections_declenchees": [
+        "S-02"
+      ],
       "ref_norme": "art. 4, par. 3-4",
       "note": "Déclaration PAI OBLIGATOIRE (l'option « explain » n'est pas disponible au-delà de 500 salariés pour un acteur des marchés financiers).",
       "statut": "propose_llm"
     },
     {
       "rule_id": "R-03",
-      "condition": { "ou": [
-        { "variable": "type_acteur", "op": "=", "valeur": "conseiller_financier" },
-        { "variable": "plus_de_500_salaries", "op": "=", "valeur": "non" }
-      ] },
-      "sections_declenchees": ["S-02"],
+      "condition": {
+        "ou": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "conseiller_financier"
+          },
+          {
+            "variable": "plus_de_500_salaries",
+            "op": "=",
+            "valeur": "non"
+          }
+        ]
+      },
+      "sections_declenchees": [
+        "S-02"
+      ],
       "ref_norme": "art. 4, par. 1 et 5",
       "note": "Régime « comply or explain » : déclaration PAI ou explication motivée de sa non-prise en compte.",
       "statut": "propose_llm"
     },
     {
       "rule_id": "R-04",
-      "condition": { "et": [] },
-      "sections_declenchees": ["S-03"],
+      "condition": {
+        "et": []
+      },
+      "sections_declenchees": [
+        "S-03"
+      ],
       "ref_norme": "art. 5",
       "note": "Politiques de rémunération : applicable à toute entité.",
       "statut": "propose_llm"
     },
     {
       "rule_id": "R-05",
-      "condition": { "et": [] },
-      "sections_declenchees": ["S-04"],
+      "condition": {
+        "et": []
+      },
+      "sections_declenchees": [
+        "S-04"
+      ],
       "ref_norme": "art. 6",
       "note": "Transparence précontractuelle sur les risques de durabilité : applicable à tout produit financier.",
       "statut": "propose_llm"
     },
     {
       "rule_id": "R-06",
-      "condition": { "et": [
-        { "variable": "prise_en_compte_pai", "op": "=", "valeur": "oui" }
-      ] },
-      "sections_declenchees": ["S-05"],
+      "condition": {
+        "et": [
+          {
+            "variable": "prise_en_compte_pai",
+            "op": "=",
+            "valeur": "oui"
+          }
+        ]
+      },
+      "sections_declenchees": [
+        "S-05"
+      ],
       "ref_norme": "art. 7, par. 1",
-      "note": "PAI au niveau du produit, dès lors que l'entité les prend en compte au niveau entité.",
-      "statut": "propose_llm"
+      "note": "Variante PAI pris en compte : explication claire et motivee (art. 7 par. 1).",
+      "statut": "valide_expert"
+    },
+    {
+      "rule_id": "R-06b",
+      "condition": {
+        "et": [
+          {
+            "variable": "prise_en_compte_pai",
+            "op": "=",
+            "valeur": "non"
+          }
+        ]
+      },
+      "sections_declenchees": [
+        "S-05"
+      ],
+      "ref_norme": "art. 7, par. 2",
+      "note": "Variante PAI NON pris en compte : les informations precontractuelles du produit doivent contenir une declaration indiquant que l'acteur ne prend pas en compte les incidences negatives ET une explication des raisons.",
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-07",
-      "condition": { "et": [
-        { "variable": "type_produit", "op": "=", "valeur": "produit_art8" }
-      ] },
-      "sections_declenchees": ["S-06"],
+      "condition": {
+        "et": [
+          {
+            "variable": "type_produit",
+            "op": "=",
+            "valeur": "produit_art8"
+          }
+        ]
+      },
+      "sections_declenchees": [
+        "S-06"
+      ],
       "ref_norme": "art. 8",
       "note": "",
       "statut": "propose_llm"
     },
     {
       "rule_id": "R-08",
-      "condition": { "et": [
-        { "variable": "type_produit", "op": "=", "valeur": "produit_art9" },
-        { "variable": "indice_reference_designe", "op": "=", "valeur": "oui" }
-      ] },
-      "sections_declenchees": ["S-07"],
+      "condition": {
+        "et": [
+          {
+            "variable": "type_produit",
+            "op": "=",
+            "valeur": "produit_art9"
+          },
+          {
+            "variable": "indice_reference_designe",
+            "op": "=",
+            "valeur": "oui"
+          }
+        ]
+      },
+      "sections_declenchees": [
+        "S-07"
+      ],
       "ref_norme": "art. 9, par. 1",
       "note": "Variante AVEC indice de référence désigné : expliquer l'alignement sur l'objectif et la différence avec un indice de marché large.",
       "statut": "propose_llm"
     },
     {
       "rule_id": "R-09",
-      "condition": { "et": [
-        { "variable": "type_produit", "op": "=", "valeur": "produit_art9" },
-        { "variable": "indice_reference_designe", "op": "=", "valeur": "non" }
-      ] },
-      "sections_declenchees": ["S-07"],
+      "condition": {
+        "et": [
+          {
+            "variable": "type_produit",
+            "op": "=",
+            "valeur": "produit_art9"
+          },
+          {
+            "variable": "indice_reference_designe",
+            "op": "=",
+            "valeur": "non"
+          }
+        ]
+      },
+      "sections_declenchees": [
+        "S-07"
+      ],
       "ref_norme": "art. 9, par. 2",
       "note": "Variante SANS indice de référence : expliquer comment l'objectif d'investissement durable est atteint.",
       "statut": "propose_llm"
     },
     {
       "rule_id": "R-10",
-      "condition": { "et": [
-        { "variable": "type_produit", "op": "in", "valeur": ["produit_art8", "produit_art9"] }
-      ] },
-      "sections_declenchees": ["S-08", "S-09"],
+      "condition": {
+        "et": [
+          {
+            "variable": "type_produit",
+            "op": "in",
+            "valeur": [
+              "produit_art8",
+              "produit_art9"
+            ]
+          }
+        ]
+      },
+      "sections_declenchees": [
+        "S-08",
+        "S-09"
+      ],
       "ref_norme": "art. 10 et 11",
       "note": "Publication site internet (art. 10) et rapports périodiques (art. 11) pour les produits art. 8 et art. 9.",
       "statut": "propose_llm"
@@ -180,13 +303,14 @@
     },
     {
       "section_id": "S-05",
-      "titre": "PAI au niveau du produit financier",
-      "ref_norme": "art. 7, par. 1",
+      "titre": "PAI au niveau du produit financier (prise en compte ou declaration de non-prise en compte)",
+      "ref_norme": "art. 7",
       "points_obligatoires": [
-        "Explication claire et motivée de la manière dont le produit prend en compte les principales incidences négatives sur les facteurs de durabilité.",
-        "Mention que les informations relatives aux PAI sont disponibles dans les rapports périodiques (renvoi art. 11)."
+        "Si PAI pris en compte : explication claire et motivee de la maniere dont le produit prend en compte les principales incidences negatives (par. 1, point a).",
+        "Si PAI pris en compte : mention que les informations PAI sont disponibles dans les rapports periodiques (par. 1, point b, renvoi art. 11 par. 2).",
+        "Si PAI NON pris en compte : declaration explicite de non-prise en compte et explication des raisons (par. 2)."
       ],
-      "gabarit": "Rédige la prise en compte des PAI au niveau du produit (art. 7 par. 1)."
+      "gabarit": "Redige la section PAI produit (art. 7) en suivant la variante indiquee par la consigne de la regle declenchee (R-06 ou R-06b)."
     },
     {
       "section_id": "S-06",
@@ -228,6 +352,33 @@
         "Produit art. 9 : incidence globale du produit en matière de durabilité (indicateurs pertinents), et si indice désigné, comparaison avec l'indice et avec un indice de marché large."
       ],
       "gabarit": "Rédige le contenu attendu des rapports périodiques (art. 11) selon le type de produit."
+    }
+  ],
+  "coherences": [
+    {
+      "coherence_id": "K-01",
+      "si": {
+        "et": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "acteur_marches_financiers"
+          },
+          {
+            "variable": "plus_de_500_salaries",
+            "op": "=",
+            "valeur": "oui"
+          },
+          {
+            "variable": "prise_en_compte_pai",
+            "op": "=",
+            "valeur": "non"
+          }
+        ]
+      },
+      "message": "Incoherence detectee : un acteur des marches financiers de plus de 500 salaries doit obligatoirement prendre en compte les PAI (art. 4, par. 3-4). Confirmez l'effectif ou corrigez la prise en compte des PAI.",
+      "ref_norme": "art. 4, par. 3-4",
+      "statut": "valide_expert"
     }
   ]
 }

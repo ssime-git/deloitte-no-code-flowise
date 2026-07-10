@@ -7,7 +7,7 @@
 | `J7 - Rapport Norme SFDR` (v0) | LLM (norme en contexte, ~12k tokens × 3 agents) | texte complet injecté | Claude partout |
 | `J7 - Rapport Norme SFDR v1 (durci)` | **table de décision déterministe** (nœud Custom Function, zéro LLM) | `sfdr-regles.json` versionné | gpt-4o-mini (élicitation, récap, vérif) + Claude (rédaction) |
 
-**Résultat du jeu d'éval** (6 cas, `init/eval-rapport-norme.py`, mesuré le 2026-07-09) : v0 rappel 100 % / précision 98 % (1 section en excès sur C6) ; v1 rappel 100 % / précision 100 % — et en v1 c'est garanti par construction, pas mesuré statistiquement.
+**Résultat du jeu d'éval** (7 cas dont 1 cas d'incohérence, `init/eval-rapport-norme.py`, mesuré le 2026-07-10 après relecture expert) : v1 rappel 100 % / précision 100 % + incohérence PAI/taille détectée et signalée. v0 : varie d'un run à l'autre (98 %/95 % sur le dernier run — sections manquantes ou en excès différentes à chaque exécution, incohérence non détectée) — illustration concrète de la reproductibilité statistique vs par construction.
 
 **Type** : Agentflow V2 — 3 agents séquentiels + 2 validations humaines (HITL) + boucle de correction bornée.
 **Norme** : règlement (UE) 2019/2088 « SFDR » (publication d'informations de durabilité dans les services financiers) — open source EUR-Lex.
@@ -97,8 +97,10 @@ Points durs appris en construisant le flow (à respecter si vous modifiez un HIT
 
 Le mode d'emploi ci-dessus vaut pour les deux flows (mêmes HITL, mêmes boutons, même rebouclage). Différences v1 :
 
-- **Moteur de règles déterministe** : le nœud « Moteur de regles » (Custom Function) évalue la table de décision de `data/normes/sfdr-regles.json` (10 règles R-01…R-10, 9 sections S-01…S-09, arbres et/ou de conditions). À faits identiques, sections identiques — traçable : le récap affiche `S-06 déclenchée par R-07 (art. 8)`.
+- **Moteur de règles déterministe** : le nœud « Moteur de regles » (Custom Function) évalue la table de décision de `data/normes/sfdr-regles.json` (11 règles R-01…R-10 + R-06b, 9 sections S-01…S-09, arbres et/ou de conditions). À faits identiques, sections identiques — traçable : le récap affiche `S-06 déclenchée par R-07 (art. 8)`.
 - **La complétude des faits est calculée par le moteur, pas par le LLM** : un fait n'est acquis que s'il porte une valeur canonique du vocabulaire. Fait manquant ou invalide → question ciblée, jamais de rédaction sur des faits incomplets (échec visible).
+- **Contrôles de cohérence entre faits** (`coherences` du JSON) : ex. K-01 — un acteur > 500 salariés déclarant ne pas prendre en compte les PAI (contradiction avec l'art. 4 §3-4) est bloqué avec un message explicite, au lieu d'un rapport bâti sur des faits contradictoires.
+- **Le récap du HITL ① est généré par le moteur** (markdown construit dans le code, recopié tel quel) : les tentatives de le faire produire par gpt-4o-mini omettaient ou intervertissaient des sections — on ne demande pas à un LLM de reproduire une liste déterministe.
 - **La norme n'est plus dans le contexte** : chaque agent ne reçoit que le nécessaire (vocabulaire pour l'élicitation, gabarits + points obligatoires des seules sections retenues pour la rédaction et la vérification). Contexte ÷ ~15.
 - **Modèles panachés** : élicitation, récap et vérification sur `gpt-4o-mini` (gateway OpenAI Liora) ; la rédaction — le livrable — reste sur Claude.
 - **Source de vérité** : `sfdr-regles.json` porte un `statut: propose_llm` par règle — la relecture expert (étape E4 du PRD §4.1) reste à faire pour passer les règles en `valide_expert`.

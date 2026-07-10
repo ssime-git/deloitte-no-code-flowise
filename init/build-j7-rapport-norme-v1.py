@@ -20,9 +20,9 @@ CRED_ANTHROPIC = 'b2c3d4e5-f6a7-8901-bcde-f12345678901'
 CRED_OPENAI = '3bf22f9c-6bdc-4e55-9839-c4b9f0300238'
 GATEWAY = 'https://ai-gateway.liora.tech/v1'
 
-def cfg_openai(temp):
+def cfg_openai(temp, streaming=True):
     return {"llmModel": "chatOpenAI", "FLOWISE_CREDENTIAL_ID": CRED_OPENAI,
-            "modelName": "gpt-4o-mini", "temperature": temp, "streaming": True,
+            "modelName": "gpt-4o-mini", "temperature": temp, "streaming": streaming,
             "basepath": GATEWAY}
 
 def cfg_claude(temp):
@@ -111,6 +111,15 @@ const evalCond = (c) => {
     throw new Error('Operateur inconnu : ' + c.op);
 };
 
+// Controles de coherence entre faits (echec bruyant, jamais silencieux)
+for (const k of (DATA.coherences || [])) {
+    let hit;
+    try { hit = evalCond(k.si); } catch (e) { hit = false; }
+    if (hit) {
+        return { complet: 'non', incoherence: k.coherence_id + ' (' + k.ref_norme + ')', question: k.message, faits };
+    }
+}
+
 const declenchees = [];
 const sectionsMap = {};
 for (const r of DATA.regles) {
@@ -129,9 +138,33 @@ for (const r of DATA.regles) {
     }
 }
 const sections = Object.values(sectionsMap).sort((a, b) => a.section_id.localeCompare(b.section_id));
-return { complet: 'oui', question: '', norme: DATA.meta.norme, version_norme: DATA.meta.version, faits,
+// Recap deterministe pour le HITL 1 : construit ici, jamais reformule par un LLM
+const lignesFaits = DATA.vocabulaire.map(v => '| ' + v.variable + ' | ' + faits[v.variable] + ' |');
+const lignesSections = sections.map(sec =>
+    '| ' + sec.section_id + ' | ' + sec.titre + ' | ' + sec.declenchee_par.join(', ') +
+    ' | ' + (sec.consignes.length ? sec.consignes.join(' ') : '—') + ' |');
+const recap = [
+    '## Validation humaine n°1 — perimetre calcule par la table de decision',
+    '',
+    '**Faits retenus**',
+    '',
+    '| Variable | Valeur |',
+    '|---|---|',
+    ...lignesFaits,
+    '',
+    '**Sections applicables (' + sections.length + ') — memes faits, memes sections, par construction**',
+    '',
+    '| Section | Titre | Declenchee par | Consignes |',
+    '|---|---|---|---|',
+    ...lignesSections,
+    '',
+    'Norme : ' + DATA.meta.norme + ' (' + DATA.meta.version + ')'
+].join('\\n');
+
+return { complet: 'oui', question: '', recap_markdown: recap, norme: DATA.meta.norme,
+         version_norme: DATA.meta.version, faits,
          regles_declenchees: declenchees, nb_sections: sections.length, sections };
-""" % json.dumps({"meta": NORME["meta"], "vocabulaire": NORME["vocabulaire"], "regles": NORME["regles"], "sections": NORME["sections"]},
+""" % json.dumps({"meta": NORME["meta"], "vocabulaire": NORME["vocabulaire"], "regles": NORME["regles"], "sections": NORME["sections"], "coherences": NORME.get("coherences", [])},
                  ensure_ascii=False, indent=1)
 
 # ---------------- prompts ----------------
@@ -161,19 +194,6 @@ Regles :
 - Si une reponse est ambigue, signale-le dans "incertitudes" et reformule la question.
 - Quand TOUS les faits sont connus : question = "" (chaine vide).
 - Si un humain rejette la validation avec un feedback, corrige les faits selon ce feedback exactement."""
-
-RECAP_SYS = """Tu prepares la validation humaine n°1 d'un generateur de rapport SFDR.
-
-Resultat du moteur de regles deterministe (lookup dans la table de decision versionnee, sans LLM) :
-{{ $flow.state.moteur }}
-
-- Si le resultat contient une cle "erreur" : affiche l'erreur en gras et demande a l'utilisateur de rejeter avec la correction — n'invente rien d'autre.
-- Sinon, presente de facon claire et compacte, en francais :
-  1. **Faits retenus** — tableau variable / valeur.
-  2. **Sections applicables** — tableau : section, titre, declenchee par (regle + article), consignes eventuelles.
-  3. Rappelle que ce perimetre sort d'une table de decision deterministe : memes faits => memes sections.
-Termine par : "Validez ce perimetre, ou rejetez en indiquant le fait a corriger."
-N'ajoute rien d'autre : pas de redaction de rapport a ce stade."""
 
 REDIGE_SYS = """Tu es l'agent de REDACTION d'un rapport de conformite SFDR (reglement UE 2019/2088).
 
@@ -214,6 +234,7 @@ nodes.append(clone('startAgentflow', 'startAgentflow_0', 'Start', pos(-200), {
         {"key": "faits_complets", "value": ""},
         {"key": "question", "value": ""},
         {"key": "moteur", "value": ""},
+        {"key": "recap", "value": ""},
         {"key": "brouillon", "value": ""},
         {"key": "rapport_annote", "value": ""},
     ],
@@ -226,7 +247,7 @@ nodes.append(clone('llmAgentflow', 'llmAgentflow_0', 'Agent 1 - Elicitation', po
     "llmEnableMemory": True,
     "llmMemoryType": "allMessages",
     "llmUserMessage": "",
-    "llmReturnResponseAs": "assistantMessage",
+    "llmReturnResponseAs": "userMessage",
     "llmStructuredOutput": [
         {"key": "question", "type": "string",
          "description": "Prochaine question a poser a l'utilisateur (vide si tous les faits sont connus)"},
@@ -239,7 +260,7 @@ nodes.append(clone('llmAgentflow', 'llmAgentflow_0', 'Agent 1 - Elicitation', po
         {"key": "question", "value": "{{ output.question }}"},
         {"key": "faits", "value": "{{ output.faits }}"},
     ],
-    "llmModelConfig": cfg_openai(0.1),
+    "llmModelConfig": cfg_openai(0.1, streaming=False),
 }))
 
 cond = clone('conditionAgentflow', 'conditionAgentflow_0', 'Faits complets ?', pos(580), {
@@ -264,23 +285,17 @@ nodes.append(custom_fn_node('customFunctionAgentflow_0', 'Moteur de regles', pos
     ENGINE_JS,
     [{"key": "moteur", "value": "{{ output }}"},
      {"key": "faits_complets", "value": "{{ output.complet }}"},
-     {"key": "question", "value": "{{ output.question }}"}]))
+     {"key": "question", "value": "{{ output.question }}"},
+     {"key": "recap", "value": "{{ output.recap_markdown }}"}]))
 
-nodes.append(clone('llmAgentflow', 'llmAgentflow_1', 'Recap faits + sections', pos(840, -80), {
-    "llmModel": "chatOpenAI",
-    "llmMessages": [{"role": "system", "content": RECAP_SYS}],
-    "llmEnableMemory": True,
-    "llmMemoryType": "allMessages",
-    "llmUserMessage": "Presente le recapitulatif pour validation.",
-    "llmReturnResponseAs": "assistantMessage",
-    "llmStructuredOutput": [],
-    "llmUpdateState": [],
-    "llmModelConfig": cfg_openai(0.1),
-}))
 
 nodes.append(clone('humanInputAgentflow', 'humanInputAgentflow_0', 'HITL 1 - Validation perimetre', pos(1100, -80), {
-    "humanInputDescriptionType": "fixed",
-    "humanInputDescription": "HITL 1 — Validez les faits retenus et le perimetre de sections calcule par le moteur. Pour corriger : rejetez en precisant le fait a amender.",
+    "humanInputDescriptionType": "dynamic",
+    "humanInputModel": "chatOpenAI",
+    "humanInputModelPrompt": "Recopie EXACTEMENT, mot pour mot, le contenu situe entre les balises <recap> et </recap> — sans reproduire les balises elles-memes, sans rien ajouter ni commenter.\n\n<recap>\n{{ $flow.state.recap }}\n\n---\n\nHITL 1 — Validez ce perimetre, ou rejetez en precisant le fait a corriger.\n</recap>",
+    "humanInputModelConfig": {"humanInputModel": "chatOpenAI", "FLOWISE_CREDENTIAL_ID": CRED_OPENAI,
+                              "modelName": "gpt-4o-mini", "temperature": 0, "streaming": True,
+                              "basepath": GATEWAY},
     "humanInputEnableFeedback": True,
 }))
 
@@ -352,9 +367,8 @@ edges = [
     edge('startAgentflow_0', 'startAgentflow', 'llmAgentflow_0'),
     edge('llmAgentflow_0', 'llmAgentflow', 'customFunctionAgentflow_0'),
     edge('customFunctionAgentflow_0', 'customFunctionAgentflow', 'conditionAgentflow_0'),
-    edge('conditionAgentflow_0', '0', 'llmAgentflow_1', label='oui'),
+    edge('conditionAgentflow_0', '0', 'humanInputAgentflow_0', label='oui'),
     edge('conditionAgentflow_0', '1', 'directReplyAgentflow_0', label='sinon'),
-    edge('llmAgentflow_1', 'llmAgentflow', 'humanInputAgentflow_0'),
     edge('humanInputAgentflow_0', '0', 'llmAgentflow_2', label='Proceed', human=True),
     edge('humanInputAgentflow_0', '1', 'loopAgentflow_0', label='Reject', human=True),
     edge('llmAgentflow_2', 'llmAgentflow', 'llmAgentflow_3'),
