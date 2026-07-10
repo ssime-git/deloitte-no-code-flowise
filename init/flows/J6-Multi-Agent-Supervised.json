@@ -1849,12 +1849,12 @@
           ],
           "outputAnchors": [
             {
-              "id": "humanInputAgentflow_0-output-proceed",
+              "id": "humanInputAgentflow_0-output-0",
               "label": "Proceed",
               "name": "proceed"
             },
             {
-              "id": "humanInputAgentflow_0-output-reject",
+              "id": "humanInputAgentflow_0-output-1",
               "label": "Reject",
               "name": "reject"
             }
@@ -2110,7 +2110,7 @@
       },
       {
         "source": "humanInputAgentflow_0",
-        "sourceHandle": "humanInputAgentflow_0-output-proceed",
+        "sourceHandle": "humanInputAgentflow_0-output-0",
         "target": "directReplyAgentflow_0",
         "targetHandle": "directReplyAgentflow_0",
         "data": {
@@ -2124,7 +2124,7 @@
       },
       {
         "source": "humanInputAgentflow_0",
-        "sourceHandle": "humanInputAgentflow_0-output-reject",
+        "sourceHandle": "humanInputAgentflow_0-output-1",
         "target": "loopAgentflow_2",
         "targetHandle": "loopAgentflow_2",
         "data": {
@@ -3985,12 +3985,12 @@
         ],
         "outputAnchors": [
           {
-            "id": "humanInputAgentflow_0-output-proceed",
+            "id": "humanInputAgentflow_0-output-0",
             "label": "Proceed",
             "name": "proceed"
           },
           {
-            "id": "humanInputAgentflow_0-output-reject",
+            "id": "humanInputAgentflow_0-output-1",
             "label": "Reject",
             "name": "reject"
           }
@@ -4246,7 +4246,7 @@
     },
     {
       "source": "humanInputAgentflow_0",
-      "sourceHandle": "humanInputAgentflow_0-output-proceed",
+      "sourceHandle": "humanInputAgentflow_0-output-0",
       "target": "directReplyAgentflow_0",
       "targetHandle": "directReplyAgentflow_0",
       "data": {
@@ -4260,7 +4260,7 @@
     },
     {
       "source": "humanInputAgentflow_0",
-      "sourceHandle": "humanInputAgentflow_0-output-reject",
+      "sourceHandle": "humanInputAgentflow_0-output-1",
       "target": "loopAgentflow_2",
       "targetHandle": "loopAgentflow_2",
       "data": {
