@@ -4,7 +4,7 @@
     "source_pdf": "data/normes/sfdr-2019-2088-fr.pdf",
     "version": "JO L 317 du 9.12.2019",
     "extrait_le": "2026-07-09",
-    "statut": "correctifs 1 (R-06b, art. 7 par. 2) et 3 (coherence PAI/taille) valides par l'expert le 2026-07-10 ; autres regles encore propose_llm (points ouverts : art. 4 par. 4 societes meres, perimetre produits des conseillers)"
+    "statut": "table relue integralement contre le texte le 2026-07-10, toutes regles valide_expert ; limitations documentees : art. 9 par. 3 (objectif carbone) non modelise ; art. 8-11 restreints aux acteurs des marches financiers"
   },
   "vocabulaire": [
     {
@@ -23,7 +23,7 @@
         "oui",
         "non"
       ],
-      "question_elicitation": "L'entité dépasse-t-elle 500 salariés ? (art. 4, par. 3 et 4)"
+      "question_elicitation": "L'entité dépasse-t-elle 500 salariés en moyenne sur l'exercice, ou est-elle l'entreprise mère d'un grand groupe dépassant 500 salariés sur base consolidée ? (art. 4, par. 3 et 4)"
     },
     {
       "variable": "prise_en_compte_pai",
@@ -66,7 +66,7 @@
       ],
       "ref_norme": "art. 3",
       "note": "Applicable à toute entité (acteur comme conseiller).",
-      "statut": "propose_llm"
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-02",
@@ -88,8 +88,8 @@
         "S-02"
       ],
       "ref_norme": "art. 4, par. 3-4",
-      "note": "Déclaration PAI OBLIGATOIRE (l'option « explain » n'est pas disponible au-delà de 500 salariés pour un acteur des marchés financiers).",
-      "statut": "propose_llm"
+      "note": "Déclaration PAI OBLIGATOIRE (pas d'option « explain ») : acteur dépassant 500 salariés (par. 3) ou entreprise mère d'un grand groupe dépassant 500 salariés en consolidé (par. 4) — les deux cas sont portés par le fait plus_de_500_salaries.",
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-03",
@@ -111,8 +111,8 @@
         "S-02"
       ],
       "ref_norme": "art. 4, par. 1 et 5",
-      "note": "Régime « comply or explain » : déclaration PAI ou explication motivée de sa non-prise en compte.",
-      "statut": "propose_llm"
+      "note": "Régime « comply or explain » : acteur ≤ 500 salariés (par. 1) ; conseiller financier quel que soit l'effectif (par. 5 — prise en compte des PAI dans les conseils, ou raisons de la non-prise en compte).",
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-04",
@@ -124,7 +124,7 @@
       ],
       "ref_norme": "art. 5",
       "note": "Politiques de rémunération : applicable à toute entité.",
-      "statut": "propose_llm"
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-05",
@@ -136,12 +136,17 @@
       ],
       "ref_norme": "art. 6",
       "note": "Transparence précontractuelle sur les risques de durabilité : applicable à tout produit financier.",
-      "statut": "propose_llm"
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-06",
       "condition": {
         "et": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "acteur_marches_financiers"
+          },
           {
             "variable": "prise_en_compte_pai",
             "op": "=",
@@ -153,13 +158,18 @@
         "S-05"
       ],
       "ref_norme": "art. 7, par. 1",
-      "note": "Variante PAI pris en compte : explication claire et motivee (art. 7 par. 1).",
+      "note": "Variante PAI pris en compte : explication claire et motivee (art. 7 par. 1). [Relecture 2026-07-10 : obligation du seul acteur des marches financiers (libelle de l'article) — ne s'applique pas aux conseillers financiers.]",
       "statut": "valide_expert"
     },
     {
       "rule_id": "R-06b",
       "condition": {
         "et": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "acteur_marches_financiers"
+          },
           {
             "variable": "prise_en_compte_pai",
             "op": "=",
@@ -171,13 +181,18 @@
         "S-05"
       ],
       "ref_norme": "art. 7, par. 2",
-      "note": "Variante PAI NON pris en compte : les informations precontractuelles du produit doivent contenir une declaration indiquant que l'acteur ne prend pas en compte les incidences negatives ET une explication des raisons.",
+      "note": "Variante PAI NON pris en compte : les informations precontractuelles du produit doivent contenir une declaration indiquant que l'acteur ne prend pas en compte les incidences negatives ET une explication des raisons. [Relecture 2026-07-10 : obligation du seul acteur des marches financiers (libelle de l'article) — ne s'applique pas aux conseillers financiers.]",
       "statut": "valide_expert"
     },
     {
       "rule_id": "R-07",
       "condition": {
         "et": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "acteur_marches_financiers"
+          },
           {
             "variable": "type_produit",
             "op": "=",
@@ -189,13 +204,18 @@
         "S-06"
       ],
       "ref_norme": "art. 8",
-      "note": "",
-      "statut": "propose_llm"
+      "note": "[Relecture 2026-07-10 : obligation du seul acteur des marches financiers (libelle de l'article) — ne s'applique pas aux conseillers financiers.]",
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-08",
       "condition": {
         "et": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "acteur_marches_financiers"
+          },
           {
             "variable": "type_produit",
             "op": "=",
@@ -212,13 +232,18 @@
         "S-07"
       ],
       "ref_norme": "art. 9, par. 1",
-      "note": "Variante AVEC indice de référence désigné : expliquer l'alignement sur l'objectif et la différence avec un indice de marché large.",
-      "statut": "propose_llm"
+      "note": "Variante AVEC indice de référence désigné : expliquer l'alignement sur l'objectif et la différence avec un indice de marché large. [Relecture 2026-07-10 : obligation du seul acteur des marches financiers (libelle de l'article) — ne s'applique pas aux conseillers financiers.] Limitation v1 : l'art. 9 par. 3 (objectif de reduction des emissions de carbone) n'est pas modelise.",
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-09",
       "condition": {
         "et": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "acteur_marches_financiers"
+          },
           {
             "variable": "type_produit",
             "op": "=",
@@ -235,13 +260,18 @@
         "S-07"
       ],
       "ref_norme": "art. 9, par. 2",
-      "note": "Variante SANS indice de référence : expliquer comment l'objectif d'investissement durable est atteint.",
-      "statut": "propose_llm"
+      "note": "Variante SANS indice de référence : expliquer comment l'objectif d'investissement durable est atteint. [Relecture 2026-07-10 : obligation du seul acteur des marches financiers (libelle de l'article) — ne s'applique pas aux conseillers financiers.] Limitation v1 : l'art. 9 par. 3 (objectif de reduction des emissions de carbone) n'est pas modelise.",
+      "statut": "valide_expert"
     },
     {
       "rule_id": "R-10",
       "condition": {
         "et": [
+          {
+            "variable": "type_acteur",
+            "op": "=",
+            "valeur": "acteur_marches_financiers"
+          },
           {
             "variable": "type_produit",
             "op": "in",
@@ -257,8 +287,8 @@
         "S-09"
       ],
       "ref_norme": "art. 10 et 11",
-      "note": "Publication site internet (art. 10) et rapports périodiques (art. 11) pour les produits art. 8 et art. 9.",
-      "statut": "propose_llm"
+      "note": "Publication site internet (art. 10) et rapports périodiques (art. 11) pour les produits art. 8 et art. 9. [Relecture 2026-07-10 : obligation du seul acteur des marches financiers (libelle de l'article) — ne s'applique pas aux conseillers financiers.]",
+      "statut": "valide_expert"
     }
   ],
   "sections": [

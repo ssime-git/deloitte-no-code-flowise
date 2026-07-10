@@ -7,7 +7,7 @@
 | `J7 - Rapport Norme SFDR` (v0) | LLM (norme en contexte, ~12k tokens × 3 agents) | texte complet injecté | Claude partout |
 | `J7 - Rapport Norme SFDR v1 (durci)` | **table de décision déterministe** (nœud Custom Function, zéro LLM) | `sfdr-regles.json` versionné | gpt-4o-mini (élicitation, récap, vérif) + Claude (rédaction) |
 
-**Résultat du jeu d'éval** (7 cas dont 1 cas d'incohérence, `init/eval-rapport-norme.py`, mesuré le 2026-07-10 après relecture expert) : v1 rappel 100 % / précision 100 % + incohérence PAI/taille détectée et signalée. v0 : varie d'un run à l'autre (98 %/95 % sur le dernier run — sections manquantes ou en excès différentes à chaque exécution, incohérence non détectée) — illustration concrète de la reproductibilité statistique vs par construction.
+**Résultat du jeu d'éval** (7 cas dont 1 cas d'incohérence, `init/eval-rapport-norme.py`, mesuré le 2026-07-10 après relecture complète de la table) : v1 rappel 100 % / précision 100 % + incohérence PAI/taille détectée et signalée. v0 : varie d'un run à l'autre (89 % à 100 % de rappel selon les exécutions, incohérence jamais détectée) — illustration concrète de la reproductibilité statistique vs par construction.
 
 **Type** : Agentflow V2 — 3 agents séquentiels + 2 validations humaines (HITL) + boucle de correction bornée.
 **Norme** : règlement (UE) 2019/2088 « SFDR » (publication d'informations de durabilité dans les services financiers) — open source EUR-Lex.
@@ -103,7 +103,7 @@ Le mode d'emploi ci-dessus vaut pour les deux flows (mêmes HITL, mêmes boutons
 - **Le récap du HITL ① est généré par le moteur** (markdown construit dans le code, recopié tel quel) : les tentatives de le faire produire par gpt-4o-mini omettaient ou intervertissaient des sections — on ne demande pas à un LLM de reproduire une liste déterministe.
 - **La norme n'est plus dans le contexte** : chaque agent ne reçoit que le nécessaire (vocabulaire pour l'élicitation, gabarits + points obligatoires des seules sections retenues pour la rédaction et la vérification). Contexte ÷ ~15.
 - **Modèles panachés** : élicitation, récap et vérification sur `gpt-4o-mini` (gateway OpenAI Liora) ; la rédaction — le livrable — reste sur Claude.
-- **Source de vérité** : `sfdr-regles.json` porte un `statut: propose_llm` par règle — la relecture expert (étape E4 du PRD §4.1) reste à faire pour passer les règles en `valide_expert`.
+- **Source de vérité** : `sfdr-regles.json` — table intégralement relue contre le texte le 2026-07-10 (étape E4 du PRD §4.1), toutes les règles en `valide_expert`. Limitations documentées : art. 9 §3 (objectif carbone) non modélisé ; les sections produit (art. 7 à 11) sont restreintes aux acteurs des marchés financiers (les conseillers ne sont tenus que par les art. 3 à 6).
 
 ## Limites connues
 
