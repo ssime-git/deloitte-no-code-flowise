@@ -25,8 +25,8 @@ chmod +x setup.sh
 #    Éditer le fichier .env et renseigner OPENAI_GATEWAY_API_KEY
 nano .env
 
-# 4. Démarrer la stack
-make up
+# 4. Tout démarrer (stack + attente import des flows + patches Flowise)
+make all
 ```
 
 > ⏳ Le premier démarrage dure 1-2 minutes (téléchargement des images Docker, bootstrap de l'utilisateur et import des flows).
@@ -55,7 +55,8 @@ make from-scratch-j4   # reset complet + import + smoke tests J4
 make from-scratch-j5   # reset complet + import + smoke tests J5 (profil MCP)
 make from-scratch-j6   # reset complet + import + smoke test J6 (profil MCP)
 
-make up                # simple démarrage sans reset
+make all               # up + attente import flows + patches Flowise
+make up                # simple démarrage sans reset ni patches
 make down              # arrêt propre
 make status            # état des conteneurs
 ```
