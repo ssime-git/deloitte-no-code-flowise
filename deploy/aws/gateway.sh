@@ -9,8 +9,8 @@ source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib.sh"
 load_config
 require_aws
 
-INSTRUCTOR_IP="35.181.26.207"
-INSTRUCTOR_DOMAIN="35-181-26-207.sslip.io"
+: "${INSTRUCTOR_IP:?set INSTRUCTOR_IP in config.env (public IP of the instructor VM)}"
+INSTRUCTOR_DOMAIN="$(echo "$INSTRUCTOR_IP" | tr '.' '-').sslip.io"
 SSH_KEY="${SCRIPT_DIR}/flowise-training-key.pem"
 REMOTE_DIR="deloitte-no-code-flowise"
 

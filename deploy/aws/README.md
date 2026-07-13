@@ -83,6 +83,16 @@ aws ec2 terminate-instances --instance-ids i-0abc...    # puis relancer 1 instan
 ./teardown.sh --all     # + deregister l'AMI et supprime ses snapshots (stop des coûts de stockage)
 ```
 
+`teardown.sh` ne couvre ni la VM instructeur (non taguée — la terminer par son ID),
+ni le keypair, ni le security group. Nettoyage complet :
+
+```bash
+aws ec2 terminate-instances --instance-ids <id-vm-instructeur>
+aws ec2 delete-key-pair --key-name flowise-training-key
+aws ec2 delete-security-group --group-name flowise-training-sg   # après terminaison effective des VMs
+rm -f flowise-training-key.pem access.csv .state                  # artefacts locaux périmés
+```
+
 ## 7. Accès HTTPS via gateway (réseaux d'entreprise qui bloquent HTTP:3000)
 
 Certains réseaux d'entreprise (proxy/filtrage) bloquent l'accès direct en HTTP sur un
@@ -99,9 +109,10 @@ Architecture :
   `reverse_proxy <ip-publique-vm-apprenant>:3000`.
 - Les 17 VMs de formation restent strictement inchangées (HTTP:3000, comme avant).
 
-Prérequis one-shot sur la VM instructeur (déjà fait si tu relis ce README après coup) :
-ouvrir 80/443 sur son security group, ajouter `DOMAIN=<ip-instructeur-avec-tirets>.sslip.io`
-dans son `.env`, puis `docker compose --profile mcp --profile https up -d caddy`.
+Prérequis one-shot sur la VM instructeur : ouvrir 80/443 sur son security group,
+ajouter `DOMAIN=<ip-instructeur-avec-tirets>.sslip.io` dans son `.env`, puis
+`docker compose --profile mcp --profile https up -d caddy`. Renseigner ensuite
+`INSTRUCTOR_IP` dans `config.env` (voir §8 pour la recréation complète).
 
 Régénérer le mapping (après un reset/relaunch qui change des IPs, ou pour rafraîchir
 la liste) :
@@ -123,6 +134,42 @@ Limites à connaître :
   strict (catégorie "anonymizer/dynamic-DNS"), passer à un vrai sous-domaine
   (1 enregistrement DNS de type A vers l'IP de la VM instructeur suffit — aucune
   config TLS côté admin, Caddy gère le certificat automatiquement).
+
+## 8. Tout recréer de zéro (après nettoyage complet)
+
+État de départ supposé : **rien n'existe sur AWS** (pas d'instance, pas d'AMI, pas de
+keypair `flowise-training-key`, pas de SG `flowise-training-sg` — c'est l'état laissé
+par le §6). Tout se recrée depuis ce repo :
+
+```bash
+cd deploy/aws
+
+# 1. Config + credentials
+cp config.env.example config.env
+# Renseigner : credentials AWS (ou AWS_PROFILE), OPENAI_GATEWAY_API_KEY,
+# ANTHROPIC_API_KEY, FLOWISE_PASSWORD, COUNT. Mettre à jour TAG_VALUE
+# (ex: flowise-j2027) pour ne pas collisionner avec une ancienne session.
+
+# 2. Keypair (recréée car supprimée au nettoyage)
+make -C ../.. deploy-key        # crée le keypair + .pem local + MAJ config.env
+
+# 3. AMI (le SG flowise-training-sg est recréé automatiquement par bake.sh)
+make -C ../.. deploy-bake       # ~20 min
+
+# 4. Flotte + accès
+make -C ../.. deploy-launch COUNT=17
+make -C ../.. deploy-access    # access.csv régénéré
+```
+
+Si l'accès HTTPS (§7) est nécessaire, la VM instructeur est à recréer **à la main**
+(elle n'est pas scriptée) :
+
+1. Lancer 1 instance Ubuntu depuis l'AMI bakée (ou une Ubuntu vierge + `setup.sh`),
+   SG avec ports 22, 80 et 443 ouverts.
+2. Sur la VM : ajouter `DOMAIN=<ip-avec-tirets>.sslip.io` dans le `.env` du repo, puis
+   `docker compose --profile mcp --profile https up -d caddy`.
+3. En local : renseigner `INSTRUCTOR_IP=<ip publique>` dans `config.env`
+   (requis par `gateway.sh` — plus aucune IP n'est hardcodée), puis `./gateway.sh`.
 
 ## Notes & arbitrages
 
