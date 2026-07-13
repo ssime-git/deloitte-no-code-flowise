@@ -2,6 +2,19 @@
 
 Stack pédagogique Flowise 3.1.2 + PostgreSQL pour la formation Liora.
 
+## Sommaire
+
+- [Prérequis](#prérequis)
+- [1. Première installation (VM vierge)](#1-première-installation-vm-vierge)
+- [2. Utilisation courante (stack déjà déployée)](#2-utilisation-courante-stack-déjà-déployée)
+  - [Commandes utiles](#commandes-utiles) · [Connexion](#connexion) · [Prompts de test](#prompts-de-test) · [Arrêter et relancer from scratch](#arrêter-et-relancer-from-scratch)
+- [3. Déploiement fleet AWS](#3-déploiement-fleet-aws-17-instances-pour-la-formation)
+- [Structure](#structure) · [Architecture](#architecture) · [MCP Server](#mcp-server)
+- [Flows disponibles](#flows-disponibles)
+- [Limite moteur Flowise 3.1.2 — J6](#limite-moteur-flowise-312--j6)
+
+Docs liées : [patches Flowise](patches/README.md) · [flows importés](init/flows/README.md) · [déploiement AWS](deploy/aws/README.md) · [TP jour par jour](docs/courses/)
+
 ## Prérequis
 
 - Git
@@ -29,7 +42,7 @@ nano .env
 make all
 ```
 
-> ⏳ Le premier démarrage dure 1-2 minutes (téléchargement des images Docker, bootstrap de l'utilisateur et import des flows).
+> ⏳ Le premier démarrage dure 1-2 minutes (téléchargement des images Docker, bootstrap de l'utilisateur et import des flows). Les patches appliqués par `make all` sont détaillés dans [patches/README.md](patches/README.md).
 
 ### Vérifier que tout fonctionne
 
@@ -44,6 +57,8 @@ make api-key       # affiche la clé API générée automatiquement
 make test-j2       # test de base : "Bonjour, qui es-tu ?"
 make test-j3       # test RAG : questions URSSAF
 ```
+
+Liste complète des tests par jour : [Commandes utiles](#commandes-utiles). Identifiants UI : [Connexion](#connexion).
 
 ---
 
@@ -66,6 +81,8 @@ Si la stack est déjà déployée et que tu veux juste revérifier :
 ```bash
 make smoke-j3          # smoke tests J3 complets
 ```
+
+Les questions envoyées par chaque `test-*` sont listées dans [Prompts de test](#prompts-de-test).
 
 ## Commandes utiles
 
@@ -280,7 +297,7 @@ Client ──▶ Flowise (3000) ──▶ PostgreSQL
 docker compose --profile mcp up -d
 ```
 
-Expose un endpoint MCP `streamable-http` sur le port `8001`.
+Expose un endpoint MCP `streamable-http` sur le port `8001` (code dans [`mcp-server/`](mcp-server/)). Utilisé par le flow `J5 - Agent MCP` — voir [Flows disponibles](#flows-disponibles).
 
 Healthcheck :
 
@@ -290,12 +307,16 @@ curl http://localhost:8001/health
 
 ## Flows disponibles
 
-- `J2 - Simple Chat`
-- `J3 - RAG Chat`
-- `J4 - Agent Simple`
-- `J4 - Agent RAG`
-- `J5 - Agent MCP`
-- `J6 - Multi-Agent Supervised`
+Importés automatiquement au démarrage depuis [`init/flows/`](init/flows/README.md) ; chaque flow a son TP dans [`docs/courses/`](docs/courses/).
+
+- `J2 - Simple Chat` — [TP](docs/courses/tp_j2_simple_chat.md)
+- `J3 - RAG Chat` — [TP](docs/courses/tp_j3_rag_chat.md)
+- `J4 - Agent Simple` — [TP](docs/courses/tp_j4_agent_simple.md)
+- `J4 - Agent RAG` — [TP](docs/courses/tp_j4_agent_rag.md)
+- `J5 - Agent MCP` — [TP](docs/courses/tp_j5_agent_mcp.md)
+- `J6 - Multi-Agent Supervised` — [TP](docs/courses/tp_j6_multi_agent_supervise.md)
+
+Les prompts de démo correspondants : [Prompts de test](#prompts-de-test).
 
 ## Limite moteur Flowise 3.1.2 — J6
 
@@ -307,3 +328,5 @@ curl http://localhost:8001/health
 - Prompt Superviseur durci : interdit FINISH si un rejet humain récent est présent dans la conversation.
 
 `make smoke-j6` valide l'arrivée au `Human Input`. La clôture complète (Proceed → rapport final affiché) est désormais stable.
+
+Les bugs moteur corrigés à chaud (routage HumanInput, race INPROGRESS, embeddings Jina) sont documentés dans [patches/README.md](patches/README.md) et appliqués par `make patch-flowise` (inclus dans `make all`).
