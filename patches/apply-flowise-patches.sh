@@ -14,15 +14,42 @@ TARGET="/usr/local/lib/node_modules/flowise/dist/utils/buildAgentflow.js"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PATCHED="${SCRIPT_DIR}/buildAgentflow.js"
 
+JINA_PATCHED="${SCRIPT_DIR}/jina-embeddings.js"
+# Both copies: flowise's own @langchain/community + the nested one under flowise-components
+JINA_TARGETS="/usr/local/lib/node_modules/flowise/node_modules/@langchain/community/dist/embeddings/jina.js
+/usr/local/lib/node_modules/flowise/node_modules/flowise-components/node_modules/@langchain/community/dist/embeddings/jina.js"
+
+NEEDS_RESTART=0
+
 # Check if already patched
 if $DOCKER exec "$CONTAINER" grep -q 'ponytail: humanInputAgentflow' "$TARGET" 2>/dev/null; then
   echo "[patch] buildAgentflow.js already patched, skipping"
+else
+  echo "[patch] Applying buildAgentflow.js patch..."
+  $DOCKER exec "$CONTAINER" cp "$TARGET" "${TARGET}.bak"
+  $DOCKER cp "$PATCHED" "$CONTAINER:$TARGET"
+  NEEDS_RESTART=1
+fi
+
+for T in $JINA_TARGETS; do
+  if ! $DOCKER exec "$CONTAINER" test -f "$T" 2>/dev/null; then
+    continue
+  fi
+  if $DOCKER exec "$CONTAINER" grep -q 'ponytail: sequential batches' "$T" 2>/dev/null; then
+    echo "[patch] $(basename "$(dirname "$(dirname "$T")")")/jina.js already patched, skipping"
+  else
+    echo "[patch] Applying jina.js patch to $T..."
+    $DOCKER exec "$CONTAINER" cp "$T" "${T}.bak"
+    $DOCKER cp "$JINA_PATCHED" "$CONTAINER:$T"
+    NEEDS_RESTART=1
+  fi
+done
+
+if [ "$NEEDS_RESTART" = "0" ]; then
+  echo "[patch] Nothing to do"
   exit 0
 fi
 
-echo "[patch] Applying Flowise patches..."
-$DOCKER exec "$CONTAINER" cp "$TARGET" "${TARGET}.bak"
-$DOCKER cp "$PATCHED" "$CONTAINER:$TARGET"
 $DOCKER restart "$CONTAINER"
 
 echo "[patch] Waiting for Flowise to restart..."
